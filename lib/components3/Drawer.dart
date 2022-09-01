@@ -74,10 +74,9 @@ class NavigationDrawer extends StatelessWidget {
                 text: '個人檔案',
               )),
           ListTile(
-<<<<<<< HEAD
+
             onTap: (() => Navigator.pushNamed(context, '/email')),
-=======
->>>>>>> 975116e107f9fc3e38a1fe08de2f76c4e6a1010c
+
               leading: Icon(
                 Icons.local_post_office_outlined,
                 size: Dimensions.fontsize24,

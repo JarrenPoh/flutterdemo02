@@ -1,10 +1,10 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterdemo02/components3/Drawer.dart';
-<<<<<<< HEAD
+
 import 'package:flutterdemo02/pages/Email.dart';
-=======
->>>>>>> 975116e107f9fc3e38a1fe08de2f76c4e6a1010c
+
+
 import 'package:flutterdemo02/pages/Form5.dart';
 import 'package:flutterdemo02/pages/History2Order.dart';
 import 'package:flutterdemo02/pages/MapSplash.dart';
@@ -65,10 +65,8 @@ final routes = {
   '/registersecond': (context) => const RegisterSecondPage(),
   '/registerthird': (context) => const RegisterThirdPage(),
   '/appbardemo': (context) => AppBarDemoPage(),
-<<<<<<< HEAD
+
   '/email': (context) => Email(),
-=======
->>>>>>> 975116e107f9fc3e38a1fe08de2f76c4e6a1010c
 
   // '/myhome':(context)=>MyHomePage(),
   '/splash': (context) => SplashScreen(),
