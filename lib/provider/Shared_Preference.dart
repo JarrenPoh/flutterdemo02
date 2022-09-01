@@ -24,6 +24,8 @@ class UserSimplePreferences {
   //////////////////////
   static Future clearPreference() async {
     await _preferences!.clear();
+    print('刪除記憶存取');
+    print('UserSimplePreferences._keyGoogleKey is ${GetGoogleKey()}');
   }
   /////////////////////
 

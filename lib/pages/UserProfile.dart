@@ -3,6 +3,7 @@ import 'package:flutterdemo02/componentsUserProfile/UserCard.dart';
 import 'package:flutterdemo02/models/ColorSettings.dart';
 import 'package:flutterdemo02/models/MiddleText.dart';
 import 'package:flutterdemo02/provider/Shared_Preference.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import '../models/BetweenSM.dart';
 import '../models/TabsText.dart';
@@ -61,6 +62,7 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           color: Colors.white,
@@ -76,10 +78,12 @@ class _UserProfileState extends State<UserProfile> {
                     height: Dimensions.height50,
                     child: Center(
                       child: GestureDetector(
-                        onTap: () {
-                          UserSimplePreferences.clearPreference();
+                        onTap: () async {
+                          await UserSimplePreferences.clearPreference();
+
                           Navigator.pushNamedAndRemoveUntil(
                               context, '/login', (route) => false);
+                          await GoogleSignInApi.logout();
                         },
                         child: BetweenSM(
                           color: Colors.red,
@@ -138,6 +142,13 @@ class _UserProfileState extends State<UserProfile> {
       ),
     );
   }
+}
+
+class GoogleSignInApi {
+  static final _googleSignIn = GoogleSignIn();
+
+  static Future<GoogleSignInAccount?> login() => _googleSignIn.signIn();
+  static Future logout() => _googleSignIn.disconnect();
 }
 
 class User {

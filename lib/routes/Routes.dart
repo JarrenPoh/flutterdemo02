@@ -1,6 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterdemo02/components3/Drawer.dart';
+import 'package:flutterdemo02/pages/Email.dart';
 import 'package:flutterdemo02/pages/Form5.dart';
 import 'package:flutterdemo02/pages/History2Order.dart';
 import 'package:flutterdemo02/pages/MapSplash.dart';
@@ -61,6 +62,7 @@ final routes = {
   '/registersecond': (context) => const RegisterSecondPage(),
   '/registerthird': (context) => const RegisterThirdPage(),
   '/appbardemo': (context) => AppBarDemoPage(),
+  '/email': (context) => Email(),
 
   // '/myhome':(context)=>MyHomePage(),
   '/splash': (context) => SplashScreen(),
