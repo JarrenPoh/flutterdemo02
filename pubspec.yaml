@@ -66,7 +66,10 @@ dependencies:
   fab_circular_menu: ^1.0.2
   flutter_riverpod:
   google_geocoding: ^0.2.0
+<<<<<<< HEAD
   mailer: ^5.2.0
+=======
+>>>>>>> 975116e107f9fc3e38a1fe08de2f76c4e6a1010c
 
 
 dev_dependencies:

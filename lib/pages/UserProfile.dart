@@ -3,7 +3,10 @@ import 'package:flutterdemo02/componentsUserProfile/UserCard.dart';
 import 'package:flutterdemo02/models/ColorSettings.dart';
 import 'package:flutterdemo02/models/MiddleText.dart';
 import 'package:flutterdemo02/provider/Shared_Preference.dart';
+<<<<<<< HEAD
 import 'package:google_sign_in/google_sign_in.dart';
+=======
+>>>>>>> 975116e107f9fc3e38a1fe08de2f76c4e6a1010c
 import 'package:http/http.dart' as http;
 import '../models/BetweenSM.dart';
 import '../models/TabsText.dart';
@@ -62,7 +65,10 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+<<<<<<< HEAD
       backgroundColor: Colors.white,
+=======
+>>>>>>> 975116e107f9fc3e38a1fe08de2f76c4e6a1010c
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           color: Colors.white,
@@ -78,12 +84,18 @@ class _UserProfileState extends State<UserProfile> {
                     height: Dimensions.height50,
                     child: Center(
                       child: GestureDetector(
+<<<<<<< HEAD
                         onTap: () async {
                           await UserSimplePreferences.clearPreference();
 
                           Navigator.pushNamedAndRemoveUntil(
                               context, '/login', (route) => false);
                           await GoogleSignInApi.logout();
+=======
+                        onTap: () {
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, '/login', (route) => false);
+>>>>>>> 975116e107f9fc3e38a1fe08de2f76c4e6a1010c
                         },
                         child: BetweenSM(
                           color: Colors.red,
@@ -144,6 +156,7 @@ class _UserProfileState extends State<UserProfile> {
   }
 }
 
+<<<<<<< HEAD
 class GoogleSignInApi {
   static final _googleSignIn = GoogleSignIn();
 
@@ -151,6 +164,8 @@ class GoogleSignInApi {
   static Future logout() => _googleSignIn.disconnect();
 }
 
+=======
+>>>>>>> 975116e107f9fc3e38a1fe08de2f76c4e6a1010c
 class User {
   const User({
     required this.name,

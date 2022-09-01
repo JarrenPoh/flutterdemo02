@@ -1,6 +1,9 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # flutterdemo02
 =======
+=======
+>>>>>>> 975116e107f9fc3e38a1fe08de2f76c4e6a1010c
 # flutterdemo02
 
 A new Flutter project.
@@ -17,4 +20,7 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+<<<<<<< HEAD
 >>>>>>> 975116e (20220901)
+=======
+>>>>>>> 975116e107f9fc3e38a1fe08de2f76c4e6a1010c

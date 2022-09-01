@@ -38,7 +38,10 @@ class _HistoryPage2State extends State<HistoryPage2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+<<<<<<< HEAD
       backgroundColor: Colors.white,
+=======
+>>>>>>> 975116e107f9fc3e38a1fe08de2f76c4e6a1010c
       bottomNavigationBar: Container(
         height: 80,
         color: Colors.white,

@@ -21,6 +21,7 @@ class UserSimplePreferences {
   static Future init() async =>
       _preferences = await SharedPreferences.getInstance();
 
+<<<<<<< HEAD
   //////////////////////
   static Future clearPreference() async {
     await _preferences!.clear();
@@ -29,6 +30,8 @@ class UserSimplePreferences {
   }
   /////////////////////
 
+=======
+>>>>>>> 975116e107f9fc3e38a1fe08de2f76c4e6a1010c
   ///////////Refresh Token///////////////
   static Future setRefreshToken(String refreshToken) async {
     await _preferences?.setString(_keyRefreshToken, refreshToken);
