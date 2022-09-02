@@ -24,8 +24,7 @@ class UserUpdateApi {
       };
     }
 
-    String jsonStr = jsonEncode(jsonMap);
-    debugPrint('jsonStr is $jsonStr');
+
     var response = await http.put(
       Uri.parse("https://hello-cycu-delivery-service.herokuapp.com/member"),
       headers: ({

@@ -1,12 +1,18 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutterdemo02/componentsUserProfile/UserCard.dart';
 import 'package:flutterdemo02/models/ColorSettings.dart';
 import 'package:flutterdemo02/models/MiddleText.dart';
+import 'package:flutterdemo02/models/SmallText.dart';
 import 'package:flutterdemo02/provider/Shared_Preference.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
-
+import 'package:flutterdemo02/API/getTokenApi.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import '../models/BetweenSM.dart';
 import '../models/TabsText.dart';
 
@@ -22,21 +28,82 @@ class _UserProfileState extends State<UserProfile> {
     Navigator.pop(context);
   }
 
+  bool? a = true;
+  var name = TextEditingController(text: '');
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
 
-  deleteAccount(key) {
-    var response = http.delete(
+  var errorText = '';
+  var errorStatus = '';
+
+  Future inspect() async {
+    var ss = await deleteAccount(UserSimplePreferences.getToken(), name.text);
+    if (ss == null) {
+      String? refresh_token = UserSimplePreferences.getRefreshToken();
+      var getToken = await getTokenApi.getToken(refresh_token);
+      await UserSimplePreferences.setToken(getToken.headers['token']!);
+      ss = await deleteAccount(UserSimplePreferences.getToken(), name.text);
+    }
+    print('ss is $ss');
+    if (ss['status'] == '帳號已成功刪除') {
+      errorText = ss['result'];
+      errorStatus = ss['status'];
+      setState(() {
+        Get.snackbar(
+          "$errorStatus",
+          "$errorText",
+          snackPosition: SnackPosition.BOTTOM,
+          duration: const Duration(seconds: 4),
+        );
+        name.text = '';
+      });
+      await UserSimplePreferences.clearPreference();
+      Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+      await GoogleSignInApi.logout();
+      
+    } else {
+      setState(() {
+        errorText = ss['result'];
+        errorStatus = ss['status'];
+        Get.snackbar(
+          "$errorStatus",
+          "$errorText",
+          snackPosition: SnackPosition.BOTTOM,
+          duration: const Duration(seconds: 4),
+        );
+        name.text = '';
+      });
+    }
+  }
+
+  deleteAccount(key, name) async {
+    var response = await http.delete(
       Uri.parse('https://hello-cycu-delivery-service.herokuapp.com/member'),
       headers: {
         "token": key,
-        "Content-Type": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
       },
+      body: {"name": name},
     );
-    print('');
+    debugPrint('name is $name');
+    debugPrint(
+        'response statusCode in UserProfile.dart is ${response.statusCode}');
+    var obj = (jsonDecode(response.body));
+
+    debugPrint('obj is ${obj}');
+
+    if (response.statusCode == 200) {
+      return obj;
+    } else if (response.statusCode == 400) {
+      return obj;
+    } else if (response.statusCode == 403) {
+      return null;
+    } else {
+      return obj;
+    }
   }
 
   final userdata = [
@@ -81,11 +148,84 @@ class _UserProfileState extends State<UserProfile> {
                     child: Center(
                       child: GestureDetector(
                         onTap: () async {
-                          await UserSimplePreferences.clearPreference();
+                          a = await showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                backgroundColor: kBottomColor,
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    MiddleText(
+                                      color: kBodyTextColor,
+                                      text: '輸入姓名刪除帳號',
+                                      fontFamily: 'NotoSansMedium',
+                                    ),
+                                    SmallText(
+                                        color: kTextLightColor,
+                                        text: '前往首頁->左上方資訊欄->個人檔案->姓名')
+                                  ],
+                                ),
+                                content: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: Dimensions.height10),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(color: kMaim3Color)),
+                                    child: TextField(
+                                      controller: name,
+                                      maxLines: 1,
+                                      decoration: InputDecoration(
+                                        label: TabText(
+                                          color: kTextLightColor,
+                                          text: '請輸入你的姓名',
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              Dimensions.radius10),
+                                          borderSide: BorderSide(
+                                            color: kBottomColor!,
+                                          ),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              Dimensions.radius10),
+                                          borderSide: BorderSide(
+                                            color: kBottomColor!,
+                                          ),
+                                        ),
+                                        // errorText: titleError ? '不可為空' : null,
+                                      ),
+                                      //使用者輸入帳號有內鍵
+                                      keyboardType: TextInputType.emailAddress,
+                                      //使用者鍵盤多一個"done"鍵盤
+                                      textInputAction: TextInputAction.done,
+                                    ),
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                    child: const Text(
+                                      '取消',
+                                      style: TextStyle(color: kTextLightColor),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(false),
+                                    child: const Text('確認'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
 
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, '/login', (route) => false);
-                          await GoogleSignInApi.logout();
+                          if (a == false) {
+                            inspect();
+                          }
                         },
                         child: BetweenSM(
                           color: Colors.red,
