@@ -45,18 +45,13 @@ class _HistoryPageState extends State<HistoryPage> {
     return await stores;
   }
 
-  
-
   ////////////
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     inspect();
-    
   }
-
- 
 
   void close() {
     Navigator.pop(context);
@@ -65,10 +60,7 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       backgroundColor: Colors.white,
-
-
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 5,
@@ -95,7 +87,7 @@ class _HistoryPageState extends State<HistoryPage> {
               return const Center(child: CircularProgressIndicator());
             } else {
               List<Result2> data = snapshot.data;
-
+              
               return ListView(
                 children: [
                   Padding(

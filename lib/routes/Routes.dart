@@ -1,6 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterdemo02/components3/Drawer.dart';
+import 'package:flutterdemo02/componentsHistory/try.dart';
 
 import 'package:flutterdemo02/pages/Email.dart';
 
@@ -30,6 +31,7 @@ import '../pages/tabs/BookMarkPage.dart';
 // import '../pages/tabs/MyHome.dart';
 import '../pages/ShopCar.dart';
 
+import '../pages/try.dart';
 import '../pages/user/RegisterFirst.dart';
 import '../pages/user/RegisterSecond.dart';
 import '../pages/user/RegisterThird.dart';
@@ -65,6 +67,7 @@ final routes = {
   '/registersecond': (context) => const RegisterSecondPage(),
   '/registerthird': (context) => const RegisterThirdPage(),
   '/appbardemo': (context) => AppBarDemoPage(),
+  '/try': (context) => trytrycan(),
 
   '/email': (context) => Email(),
 

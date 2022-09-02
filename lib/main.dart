@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
         localizationsDelegates: const [],
         debugShowCheckedModeBanner: false,
         home: LoginPage(),
-        initialRoute: '/splash', //初始化的時候要加載哪個路由
+        initialRoute: '/try', //初始化的時候要加載哪個路由
         onGenerateRoute:
             onGenerateRoute //把Routes.dart裡面的onGenerateRoute附值給main.dart的ongenerateRoute
         );
