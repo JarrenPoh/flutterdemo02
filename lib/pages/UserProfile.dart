@@ -63,7 +63,6 @@ class _UserProfileState extends State<UserProfile> {
       await UserSimplePreferences.clearPreference();
       Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
       await GoogleSignInApi.logout();
-      
     } else {
       setState(() {
         errorText = ss['result'];
@@ -106,9 +105,16 @@ class _UserProfileState extends State<UserProfile> {
     }
   }
 
-  final userdata = [
+  
+  @override
+  Widget build(BuildContext context) {
+    final userdata = [
     User(
-        name: '姓名', userName: UserSimplePreferences.getUserName(), edit: false),
+      name: '姓名',
+      userName: UserSimplePreferences.getUserName(),
+      edit: true,
+      correct: true,
+    ),
     User(
       name: 'Email',
       userName: UserSimplePreferences.getUserEmail(),
@@ -128,8 +134,6 @@ class _UserProfileState extends State<UserProfile> {
       verify: UserSimplePreferences.getPhoneVerify() ?? false,
     ),
   ];
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       bottomNavigationBar: Container(

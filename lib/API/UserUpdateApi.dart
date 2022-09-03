@@ -5,25 +5,17 @@ import 'dart:convert';
 import 'dart:async';
 
 class UserUpdateApi {
-  static Future<http.Response?> putUsers(newData, later, token) async {
+  static Future<http.Response?> putUsers(newData, later, token, name) async {
     print(newData);
     print(later);
     Map jsonMap = {};
-    if (newData == null) {
+    
       jsonMap = {
-        "phone": later,
+        if (newData != null) "birthday": newData,
+        if (later != null) "phone": later,
+        if (name != null) "name": name,
       };
-    } else if (later == null) {
-      jsonMap = {
-        "birthday": newData,
-      };
-    } else {
-      jsonMap = {
-        "birthday": newData,
-        "phone": later,
-      };
-    }
-
+    
 
     var response = await http.put(
       Uri.parse("https://hello-cycu-delivery-service.herokuapp.com/member"),
@@ -34,7 +26,7 @@ class UserUpdateApi {
       body: jsonMap,
     );
     // print("this is response ${response}");
-    // print("this is response ${response.body}");
+    print("this is response body ${response.body}");
 
     // print("this is response headers ${response.headers}");
     // print("this is refresh_token ${response.headers['refresh_token']}");
@@ -60,7 +52,7 @@ class UserUpdateApi {
       }),
     );
     // print("this is response ${response}");
-    // print("this is response ${response.body}");
+    print("this is response body ${response.body}");
 
     // print("this is response headers ${response.headers}");
     // print("this is refresh_token ${response.headers['refresh_token']}");

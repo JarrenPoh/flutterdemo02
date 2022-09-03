@@ -31,7 +31,7 @@ class _UserCorrectState extends State<UserCorrect> {
 
   late TwilioFlutter twilioFlutter;
   var textController = TextEditingController(
-    text: UserSimplePreferences.getUserPhone(),
+    text: '',
   );
   bool _validate = false;
   bool _errortext = false;
@@ -46,6 +46,7 @@ class _UserCorrectState extends State<UserCorrect> {
   var textController2 = TextEditingController();
   @override
   void initState() {
+    textController.text = arguments['username'];
     _validate = textController.text == '' ? false : true;
     textController.addListener(() {
       textController.text.length == 10 ? _validate = true : _validate = false;
@@ -62,6 +63,8 @@ class _UserCorrectState extends State<UserCorrect> {
 
   @override
   void dispose() {
+    timer?.cancel();
+    timer=null;
     // TODO: implement dispose
     textController.removeListener(() {
       textController.text.length == 10 ? _validate = true : _validate = false;
@@ -74,15 +77,15 @@ class _UserCorrectState extends State<UserCorrect> {
     super.dispose();
   }
 
-  Future putuser(birthday, phone, token) async {
-    var putusers = await UserUpdateApi.putUsers(birthday, phone, token);
+  Future putuser(birthday, phone, token, name) async {
+    var putusers = await UserUpdateApi.putUsers(birthday, phone, token, name);
     //token到期
     if (putusers == null) {
       String? refresh_token = UserSimplePreferences.getRefreshToken();
       var getToken = await getTokenApi.getToken(refresh_token);
       await UserSimplePreferences.setToken(getToken.headers['token']!);
       putusers = await UserUpdateApi.putUsers(
-          birthday, phone, UserSimplePreferences.getToken());
+          birthday, phone, UserSimplePreferences.getToken(), name);
     }
   }
 
@@ -164,11 +167,11 @@ class _UserCorrectState extends State<UserCorrect> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
       child: Scaffold(
         backgroundColor: Colors.white,
-    
+
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 5,
@@ -186,7 +189,7 @@ class _UserCorrectState extends State<UserCorrect> {
             onPressed: close,
           ),
         ),
-    
+
         ///SingleChildScrollView包Column
         body: Padding(
           padding: EdgeInsets.symmetric(
@@ -194,242 +197,303 @@ class _UserCorrectState extends State<UserCorrect> {
             horizontal: Dimensions.width20,
           ),
           child: Stack(
+            alignment: Alignment.center,
             children: [
-              Column(
+              ListView(
                 children: [
-                  Row(
+                  Column(
                     children: [
-                      TabText(
-                        color: kBodyTextColor,
-                        text: '請填寫你的手機號碼並驗證',
-                        fontFamily: 'NotoSansMedium',
+                      Row(
+                        children: [
+                          TabText(
+                            color: kBodyTextColor,
+                            text: arguments['name'] == '姓名'
+                                ? '請填寫欲修改的稱呼(30字以內)'
+                                : '請填寫你的手機號碼並驗證',
+                            fontFamily: 'NotoSansMedium',
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: Dimensions.height20),
-                    child: TextField(
-                      controller: textController,
-                      textInputAction: TextInputAction.done,
-                      decoration: InputDecoration(
-                        hintText: '請輸入您的手機號碼',
-                        errorText: _errortext == true
-                            ? '格式錯誤'
-                            : verifyError == true
-                                ? varifyErrorText
-                                : null,
-                        label: TabText(
-                          color: kTextLightColor,
-                          text: '手機號碼',
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(Dimensions.radius10),
-                          borderSide: BorderSide(
-                            color: kBottomColor!,
+                      Padding(
+                        padding: EdgeInsets.only(top: Dimensions.height20),
+                        child: TextField(
+                          controller: textController,
+                          textInputAction: TextInputAction.done,
+                          decoration: InputDecoration(
+                            hintText: arguments['name'] == '姓名'
+                                ? '請輸入你的稱呼'
+                                : '請輸入您的手機號碼',
+                            errorText: _errortext == true
+                                ? '格式錯誤'
+                                : verifyError == true
+                                    ? varifyErrorText
+                                    : null,
+                            label: TabText(
+                              color: kTextLightColor,
+                              text: arguments['name'] == '姓名' ? '你的稱呼' : '手機號碼',
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.circular(Dimensions.radius10),
+                              borderSide: BorderSide(
+                                color: kBottomColor!,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.circular(Dimensions.radius10),
+                              borderSide: const BorderSide(
+                                color: Colors.green,
+                              ),
+                            ),
                           ),
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(Dimensions.radius10),
-                          borderSide: const BorderSide(
-                            color: Colors.green,
-                          ),
-                        ),
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: Dimensions.height15,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          children: [
-                            timerStart
-                                ? Container(
+                      if (arguments['name'] == '姓名')
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: Dimensions.height15,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: () async {
+                                  String? text = '';
+                                  if (textController.text != '') {
+                                    text = textController.text;
+                                  } else {
+                                    text = null;
+                                  }
+                                  await putuser(
+                                    UserSimplePreferences.getUserBirthday(),
+                                    UserSimplePreferences.getUserPhone(),
+                                    UserSimplePreferences.getToken(),
+                                    text,
+                                  );
+                                  Navigator.pop(context, text);
+                                },
+                                child: Card(
+                                  borderOnForeground: false,
+                                  color: kMaimColor,
+                                  child: Container(
                                     height: Dimensions.height50 / 1.5,
+                                    width: Dimensions.width20 * 4,
                                     child: Center(
-                                      child: Text(
-                                        '$seconds sec',
-                                        style: TextStyle(color: Colors.white),
+                                      child: TabText(
+                                        color: Colors.white,
+                                        text: '儲存',
+                                        fontFamily: 'NotoSansMedium',
                                       ),
-                                    ),
-                                  )
-                                : Container(),
-                            GestureDetector(
-                              onTap: _validate
-                                  ? () async {
-                                      String? text;
-                                      if (textController.text.isNotEmpty) {
-                                        text = textController.text;
-                                      } else {
-                                        text = null;
-                                      }
-                                      setState(() {
-                                        _validate = false;
-                                        _isLoading = false;
-                                      });
-                                      await putuser(
-                                          UserSimplePreferences
-                                              .getUserBirthday(),
-                                          text,
-                                          UserSimplePreferences.getToken());
-    
-                                      await getSMS(
-                                          UserSimplePreferences.getToken());
-                                      print('getsms is $getsms');
-                                      if (getsms == '成功請求驗證簡訊') {
-                                        setState(
-                                          () {
-                                            _isLoading = true;
-                                            _ifsend = true;
-    
-                                            startTimer();
-                                          },
-                                        );
-                                      } else {
-                                        setState(() {
-                                          varifyErrorText = getsms!;
-                                          verifyError = true;
-                                          _isLoading = true;
-                                          _validate = true;
-                                        });
-                                      }
-                                    }
-                                  : () {
-                                      setState(() {
-                                        _errortext = true;
-                                      });
-                                    },
-                              child: Card(
-                                borderOnForeground: false,
-                                color: _validate
-                                    ? kMaimColor
-                                    : Color.fromARGB(255, 196, 195, 195),
-                                child: Container(
-                                  height: Dimensions.height50 / 1.5,
-                                  child: Center(
-                                    child: TabText(
-                                      color: Colors.white,
-                                      text: '發送簡訊',
-                                      fontFamily: 'NotoSansMedium',
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            timerStart
-                                ? Container(
-                                    height: Dimensions.height50 / 1.5,
-                                    child: Center(
-                                      child: Text('$seconds sec'),
+                            ],
+                          ),
+                        ),
+                      if (arguments['name'] == '手機號碼')
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: Dimensions.height15,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                children: [
+                                  timerStart
+                                      ? Container(
+                                          height: Dimensions.height50 / 1.5,
+                                          child: Center(
+                                            child: Text(
+                                              '$seconds sec',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        )
+                                      : Container(),
+                                  GestureDetector(
+                                    onTap: _validate
+                                        ? () async {
+                                            String? text;
+                                            if (textController
+                                                .text.isNotEmpty) {
+                                              text = textController.text;
+                                            } else {
+                                              text = null;
+                                            }
+                                            setState(() {
+                                              _validate = false;
+                                              _isLoading = false;
+                                            });
+                                            await putuser(
+                                              UserSimplePreferences
+                                                  .getUserBirthday(),
+                                              text,
+                                              UserSimplePreferences.getToken(),
+                                              UserSimplePreferences
+                                                  .getUserName(),
+                                            );
+
+                                            await getSMS(UserSimplePreferences
+                                                .getToken());
+                                            print('getsms is $getsms');
+                                            if (getsms == '成功請求驗證簡訊') {
+                                              setState(
+                                                () {
+                                                  _isLoading = true;
+                                                  _ifsend = true;
+
+                                                  startTimer();
+                                                },
+                                              );
+                                            } else {
+                                              setState(() {
+                                                varifyErrorText = getsms!;
+                                                verifyError = true;
+                                                _isLoading = true;
+                                                _validate = true;
+                                              });
+                                            }
+                                          }
+                                        : () {
+                                            setState(() {
+                                              _errortext = true;
+                                            });
+                                          },
+                                    child: Card(
+                                      borderOnForeground: false,
+                                      color: _validate
+                                          ? kMaimColor
+                                          : Color.fromARGB(255, 196, 195, 195),
+                                      child: Container(
+                                        height: Dimensions.height50 / 1.5,
+                                        child: Center(
+                                          child: TabText(
+                                            color: Colors.white,
+                                            text: '發送簡訊',
+                                            fontFamily: 'NotoSansMedium',
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  )
-                                : Container()
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: Dimensions.height20 * 3.3),
-                    child: TextField(
-                      controller: textController2,
-                      textInputAction: TextInputAction.done,
-                      decoration: InputDecoration(
-                        hintText: '請輸入簡訊驗證碼',
-                        label: TabText(
-                          color: kTextLightColor,
-                          text: '簡訊驗證',
-                        ),
-                        errorText: _errortext2 == true
-                            ? '驗證碼為8位數'
-                            : verifyError2 == true
-                                ? varifyErrorText2
-                                : null,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(Dimensions.radius10),
-                          borderSide: BorderSide(
-                            color: kBottomColor!,
+                                  ),
+                                  timerStart
+                                      ? Container(
+                                          height: Dimensions.height50 / 1.5,
+                                          child: Center(
+                                            child: Text('$seconds sec'),
+                                          ),
+                                        )
+                                      : Container()
+                                ],
+                              ),
+                            ],
                           ),
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(Dimensions.radius10),
-                          borderSide: const BorderSide(
-                            color: Colors.green,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: Dimensions.height15,
-                      horizontal: Dimensions.width20 * 6.5,
-                    ),
-                    child: GestureDetector(
-                      onTap: _validate2 && _ifsend
-                          ? () async {
-                              String? text;
-                              if (textController2.text.isNotEmpty) {
-                                text = textController2.text;
-                              } else {
-                                text = null;
-                              }
-                              setState(() {
-                                _isLoading = false;
-                              });
-    
-                              await sendVerify(
-                                UserSimplePreferences.getToken(),
-                                text,
-                              );
-                              print('sendverify is ${sendverify}');
-                              if (sendverify == '驗證成功') {
-                                _isLoading = true;
-                                Navigator.pop(context, text);
-                              } else {
-                                setState(
-                                  () {
-                                    _isLoading = true;
-                                    varifyErrorText2 = sendverify!;
-                                    verifyError2 = true;
-                                    _ifsend = true;
-                                    _validate2 = true;
-                                    _validate = false;
-                                  },
-                                );
-                              }
-                            }
-                          :  _ifsend == false
-                              ? () {}
-                              : () {
-                                  setState(() {
-                                    _errortext2 = true;
-                                  });
-                                },
-                      child: Card(
-                        borderOnForeground: false,
-                        color: _validate2 && _ifsend
-                            ? kMaimColor
-                            : Color.fromARGB(255, 196, 195, 195),
-                        child: Container(
-                          height: Dimensions.height50 / 1.5,
-                          child: Center(
-                            child: TabText(
-                              color: Colors.white,
-                              text: '確認',
-                              fontFamily: 'NotoSansMedium',
+                      if (arguments['name'] == '手機號碼')
+                        Padding(
+                          padding:
+                              EdgeInsets.only(top: Dimensions.height20 * 3.3),
+                          child: TextField(
+                            controller: textController2,
+                            textInputAction: TextInputAction.done,
+                            decoration: InputDecoration(
+                              hintText: '請輸入簡訊驗證碼',
+                              label: TabText(
+                                color: kTextLightColor,
+                                text: '簡訊驗證',
+                              ),
+                              errorText: _errortext2 == true
+                                  ? '驗證碼為8位數'
+                                  : verifyError2 == true
+                                      ? varifyErrorText2
+                                      : null,
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.circular(Dimensions.radius10),
+                                borderSide: BorderSide(
+                                  color: kBottomColor!,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.circular(Dimensions.radius10),
+                                borderSide: const BorderSide(
+                                  color: Colors.green,
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
+                      if (arguments['name'] == '手機號碼')
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: Dimensions.height15,
+                            horizontal: Dimensions.width20 * 6.5,
+                          ),
+                          child: GestureDetector(
+                            onTap: _validate2 && _ifsend
+                                ? () async {
+                                    String? text;
+                                    if (textController2.text.isNotEmpty) {
+                                      text = textController2.text;
+                                    } else {
+                                      text = null;
+                                    }
+                                    setState(() {
+                                      _isLoading = false;
+                                    });
+
+                                    await sendVerify(
+                                      UserSimplePreferences.getToken(),
+                                      text,
+                                    );
+                                    print('sendverify is ${sendverify}');
+                                    if (sendverify == '驗證成功') {
+                                      _isLoading = true;
+                                      Navigator.pop(context, text);
+                                    } else {
+                                      setState(
+                                        () {
+                                          _isLoading = true;
+                                          varifyErrorText2 = sendverify!;
+                                          verifyError2 = true;
+                                          _ifsend = true;
+                                          _validate2 = true;
+                                          _validate = false;
+                                        },
+                                      );
+                                    }
+                                  }
+                                : _ifsend == false
+                                    ? () {}
+                                    : () {
+                                        setState(() {
+                                          _errortext2 = true;
+                                        });
+                                      },
+                            child: Card(
+                              borderOnForeground: false,
+                              color: _validate2 && _ifsend
+                                  ? kMaimColor
+                                  : Color.fromARGB(255, 196, 195, 195),
+                              child: Container(
+                                height: Dimensions.height50 / 1.5,
+                                child: Center(
+                                  child: TabText(
+                                    color: Colors.white,
+                                    text: '確認',
+                                    fontFamily: 'NotoSansMedium',
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                 ],
               ),

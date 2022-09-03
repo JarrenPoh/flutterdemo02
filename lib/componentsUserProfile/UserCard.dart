@@ -49,15 +49,15 @@ class _UserCardState extends State<UserCard> {
   String name;
   String? username;
   bool? verify;
-  Future putuser(birthday, phone, token) async {
-    var putusers = await UserUpdateApi.putUsers(birthday, phone, token);
+  Future putuser(birthday, phone, token, name) async {
+    var putusers = await UserUpdateApi.putUsers(birthday, phone, token, name);
     //token到期
     if (putusers == null) {
       String? refresh_token = UserSimplePreferences.getRefreshToken();
       var getToken = await getTokenApi.getToken(refresh_token);
       await UserSimplePreferences.setToken(getToken.headers['token']!);
       putusers = await UserUpdateApi.putUsers(
-          birthday, phone, UserSimplePreferences.getToken());
+          birthday, phone, UserSimplePreferences.getToken(), name);
     }
   }
 
@@ -75,6 +75,10 @@ class _UserCardState extends State<UserCard> {
       if (obj!['result']['phone'] != null) {
         await UserSimplePreferences.setUserPhone(obj!['result']['phone']);
       }
+      if (obj!['result']['name'] != null) {
+        await UserSimplePreferences.setUserInformation(
+            null, obj!['result']['name'], null);
+      }
       if (obj['result']['birthday'] != null) {
         await UserSimplePreferences.setUserBirthday(
           obj['result']['birthday'],
@@ -91,13 +95,14 @@ class _UserCardState extends State<UserCard> {
 
   @override
   Widget build(BuildContext context) {
+    print('object');
     return Container(
       margin: EdgeInsets.symmetric(
           horizontal: Dimensions.width10, vertical: Dimensions.height15),
       width: Dimensions.screenWidth,
       child: GestureDetector(
         onTap: () async {
-          ////手機////
+          ////手機或名字////
           if (edit && correct!) {
             var later = await Navigator.pushNamed(context, '/usercorrect',
                 arguments: {'name': name, 'username': username});
@@ -105,15 +110,27 @@ class _UserCardState extends State<UserCard> {
               return;
             } else {
               await getuser(UserSimplePreferences.getToken());
-              setState(() {
-                username = UserSimplePreferences.getUserPhone();
-                Get.snackbar(
-                  "修改成功",
-                  "您已修改了新的$name為 $username ",
-                  snackPosition: SnackPosition.BOTTOM,
-                  duration: const Duration(seconds: 2),
-                );
-              });
+              setState(
+                () {
+                  if (name == '手機號碼') {
+                    username = UserSimplePreferences.getUserPhone();
+                    Get.snackbar(
+                      "修改成功",
+                      "您已修改了新的$name為 $username ",
+                      snackPosition: SnackPosition.BOTTOM,
+                      duration: const Duration(seconds: 2),
+                    );
+                  } else {
+                    username = UserSimplePreferences.getUserName();
+                    Get.snackbar(
+                      "修改成功",
+                      "您已修改了新的$name為 $username ",
+                      snackPosition: SnackPosition.BOTTOM,
+                      duration: const Duration(seconds: 2),
+                    );
+                  }
+                },
+              );
             }
             ////生日////
           } else if (edit && !correct!) {
@@ -122,6 +139,22 @@ class _UserCardState extends State<UserCard> {
               initialDate: DateTime(1995, 10, 17),
               firstDate: DateTime(1900),
               lastDate: DateTime(2100),
+              builder: (context, child) {
+                return Theme(
+                    data: Theme.of(context).copyWith(
+                      colorScheme: ColorScheme.light(
+                        primary:kMaim3Color,
+                        onPrimary: Colors.white,
+                        onSurface: Colors.blueAccent,
+                      ),
+                      textButtonTheme: TextButtonThemeData(
+                        style: TextButton.styleFrom(
+                          primary: Colors.red,
+                        ),
+                      ),
+                    ),
+                    child: child!);
+              },
             );
 
             var newDataStr = newData.toString();
@@ -133,6 +166,7 @@ class _UserCardState extends State<UserCard> {
                 newDate,
                 UserSimplePreferences.getUserPhone(),
                 UserSimplePreferences.getToken(),
+                UserSimplePreferences.getUserName(),
               );
               await getuser(
                 UserSimplePreferences.getToken(),
@@ -182,7 +216,10 @@ class _UserCardState extends State<UserCard> {
                             )
                           ],
                         ),
-                        if (verify != null && verify == true && correct == true)
+                        if (verify != null &&
+                            verify == true &&
+                            correct == true &&
+                            name == '手機號碼')
                           Container(
                             color: kBottomColor,
                             child: TabText(

@@ -56,13 +56,20 @@ class UserSimplePreferences {
   //////////////////////////////////////
   ///////////////UserInformation////////
   static Future setUserInformation(
-    String userEmail,
-    String userName,
-    String userPicture,
+    String? userEmail,
+    String? userName,
+    String? userPicture,
   ) async {
-    await _preferences?.setString(_keyUserEmail, userEmail);
-    await _preferences?.setString(_keyUserName, userName);
-    await _preferences?.setString(_keyUserPicture, userPicture);
+    if (userEmail != null) {
+      await _preferences?.setString(_keyUserEmail, userEmail);
+    }
+
+    if (userName != null) {
+      await _preferences?.setString(_keyUserName, userName);
+    }
+    if (userPicture != null) {
+      await _preferences?.setString(_keyUserPicture, userPicture);
+    }
   }
 
   static String? getUserEmail() => _preferences?.getString(_keyUserEmail);
@@ -107,4 +114,5 @@ class UserSimplePreferences {
 
   static bool? getPhoneVerify() => _preferences!.getBool(_phoneverify);
   //////////////////////////////////////
+
 }
