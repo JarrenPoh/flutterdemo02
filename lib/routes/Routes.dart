@@ -5,15 +5,16 @@ import 'package:flutterdemo02/componentsHistory/try.dart';
 
 import 'package:flutterdemo02/pages/Email.dart';
 
-
 import 'package:flutterdemo02/pages/Form5.dart';
 import 'package:flutterdemo02/pages/History2Order.dart';
 import 'package:flutterdemo02/pages/MapSplash.dart';
+import 'package:flutterdemo02/pages/Privacy.dart';
 import 'package:flutterdemo02/pages/SearchingPage.dart';
 import 'package:flutterdemo02/pages/SplashScreen.dart';
 import 'package:flutterdemo02/pages/UserCorrect.dart';
 import 'package:flutterdemo02/pages/UserProfile.dart';
 import 'package:flutterdemo02/pages/order_successful.dart';
+
 
 import '../componentsShopcar/emptyshopCar.dart';
 
@@ -70,12 +71,18 @@ final routes = {
   '/try': (context) => trytrycan(),
 
   '/email': (context) => Email(),
+  '/privacy': (context) => Privacy(),
+
 
   // '/myhome':(context)=>MyHomePage(),
   '/splash': (context) => SplashScreen(),
   '/login': (context) => const LoginPage(),
-  '/mapsplash': (context, {arguments}) =>  MapSplash(arguments: arguments,),
-  '/googlemap': (context, {arguments}) =>  googleMap(arguments: arguments,),
+  '/mapsplash': (context, {arguments}) => MapSplash(
+        arguments: arguments,
+      ),
+  '/googlemap': (context, {arguments}) => googleMap(
+        arguments: arguments,
+      ),
   // '/login2':(context,{arguments})=> Login2Page(arguments: arguments),
   '/shopcar': (context, {arguments}) => shopCar(
         arguments: arguments,

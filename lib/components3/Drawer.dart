@@ -75,7 +75,7 @@ class NavigationDrawer extends StatelessWidget {
               )),
           ListTile(
 
-            onTap: (() => Navigator.pushNamed(context, '/email')),
+            onTap: (() => Navigator.pushNamed(context, '/email',)),
 
               leading: Icon(
                 Icons.local_post_office_outlined,
@@ -86,6 +86,8 @@ class NavigationDrawer extends StatelessWidget {
                 text: '問題回報',
               )),
           ListTile(
+            onTap: (() => Navigator.pushNamed(context, '/privacy')),
+
               leading: Icon(
                 Icons.library_books_outlined,
                 size: Dimensions.fontsize24,
