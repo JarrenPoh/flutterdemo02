@@ -21,10 +21,12 @@ class PlaceResults extends ChangeNotifier {
 }
 
 class SearchToggle extends ChangeNotifier {
-  bool searchToggle = false;
+  bool? searchToggle;
 
   void toggleSearch(bool v) {
     searchToggle = v;
+    
+    
     notifyListeners();
   }
 }

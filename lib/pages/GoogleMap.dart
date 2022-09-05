@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -6,6 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutterdemo02/GoogleMap/googleMapKey.dart';
 import 'package:flutterdemo02/GoogleMap/map_services.dart';
 import 'package:flutterdemo02/components5/textField.dart';
+import 'package:flutterdemo02/models/ColorSettings.dart';
+import 'package:flutterdemo02/models/TabsText.dart';
 import 'package:flutterdemo02/provider/Shared_Preference.dart';
 import 'package:flutterdemo02/provider/search_places_inGoogleMap.dart';
 import 'package:get/get.dart';
@@ -14,6 +17,8 @@ import 'package:flutterdemo02/API/getTokenApi.dart';
 import 'package:location/location.dart';
 import '../API/StoreModel.dart';
 import 'package:google_geocoding/google_geocoding.dart';
+import 'package:flip_card/flip_card.dart';
+import '../models/BetweenSM.dart';
 //
 //剛進去個個店家就出來
 //搜尋看到店家資料
@@ -53,7 +58,7 @@ class _googleMapState extends ConsumerState<googleMap> {
 
 ////Page controller for nice pageview
   late PageController _pageController;
-  int prevPage = 0;
+  int prevPage = 1;
   var tappedPlaceDetail;
   String placeImg = '';
   var photoGalleryIndex = 0;
@@ -70,8 +75,6 @@ class _googleMapState extends ConsumerState<googleMap> {
 
 ////Marker when inistate
   void iniMarker() async {
-    originbooks = await arguments['originbooks'];
-
     for (var i = 0; i < originbooks!.length; i++) {
       BitmapDescriptor icon = await BitmapDescriptor.fromAssetImage(
           ImageConfiguration.empty, "images/location.png");
@@ -161,40 +164,45 @@ class _googleMapState extends ConsumerState<googleMap> {
 
   @override
   void initState() {
+    originbooks = arguments['originbooks'];
     currentLocation = arguments['currentLocation'];
-    _pageController = PageController(initialPage: 1, viewportFraction: 0.85)
-      ..addListener(_onScroll);
+    _pageController = PageController(initialPage: 1, viewportFraction: 0.85);
+    prevPage = _pageController.initialPage;
     iniMarker();
+    _pageController.addListener(() {
+      if (_pageController.page!.toInt() != prevPage) {
+        prevPage = _pageController.page!.toInt();
+        cardTapped = false;
+        photoGalleryIndex = 1;
+        showBlankCard = false;
+        goToTappedPlace();
+        fetchImage();
+      }
+    });
+
     // TODO: implement initState
     super.initState();
   }
 
-  void _onScroll() {
-    if (_pageController.page!.toInt() != prevPage) {
-      prevPage = _pageController.page!.toInt();
-      cardTapped = false;
-      photoGalleryIndex = 1;
-      showBlankCard = false;
-      goToTappedPlace();
-      fetchImage();
-    }
-  }
+  void _onScroll() {}
 
 ////Fetch image to place inside the tile in the pageView
-  void fetchImage() async {
-    if (_pageController.page !=
-        null) if (originbooks![_pageController.page!.toInt()]!.image != null) {
+  void fetchImage() {
+    if (originbooks![prevPage]!.image != null) {
       setState(() {
-        placeImg = originbooks![_pageController.page!.toInt()]!.image!;
+        placeImg = originbooks![prevPage]!.image!;
       });
     } else {
-      placeImg = '';
+      setState(() {
+        placeImg = '';
+      });
     }
   }
 
   @override
   void dispose() {
     _focusNode.dispose();
+    _pageController.dispose();
     // TODO: implement dispose
     super.dispose();
   }
@@ -208,7 +216,6 @@ class _googleMapState extends ConsumerState<googleMap> {
     //Providers
     final allSearchResults = ref.watch(placeResultsProvider);
     final searchflag = ref.watch(searchToggleProvider);
-    
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -280,7 +287,7 @@ class _googleMapState extends ConsumerState<googleMap> {
                                     Duration(milliseconds: 100),
                                     () async {
                                       if (value.length >= 0) {
-                                        if (!searchflag.searchToggle) {
+                                        if (!searchflag.searchToggle!) {
                                           searchflag.toggleSearch(false);
                                           _markers = {};
                                         }
@@ -299,7 +306,7 @@ class _googleMapState extends ConsumerState<googleMap> {
                         ),
                       )
                     : Container(),
-                searchflag.searchToggle
+                searchflag.searchToggle == true
                     ? allSearchResults.allReturnResults!.length != 0
                         ? Positioned(
                             top: 100.0,
@@ -369,6 +376,13 @@ class _googleMapState extends ConsumerState<googleMap> {
                                       child: ElevatedButton(
                                         onPressed: () {
                                           searchflag.toggleSearch(false);
+                                          searchToggle = false;
+                                          getDirections = false;
+                                          // searchBook(searchController.text,
+                                          //   allSearchResults);
+                                          print(
+                                              'searchflag.searchToggle is ${searchflag.searchToggle}');
+                                          searchController.text = '';
                                         },
                                         child: Center(
                                           child: Text(
@@ -427,7 +441,7 @@ class _googleMapState extends ConsumerState<googleMap> {
                                     Duration(milliseconds: 100),
                                     () async {
                                       if (value.length >= 0) {
-                                        if (!searchflag.searchToggle) {
+                                        if (!searchflag.searchToggle!) {
                                           searchflag.toggleSearch(false);
                                           _markers = {};
                                         }
@@ -446,23 +460,98 @@ class _googleMapState extends ConsumerState<googleMap> {
                         ),
                       )
                     : Container(),
-                pageList
-                    ==true? Positioned(
+                pageList == true
+                    ? Positioned(
                         bottom: 20.0,
                         child: Container(
-                          
                           height: 200.0,
                           width: MediaQuery.of(context).size.width,
                           child: PageView.builder(
                             controller: _pageController,
                             itemCount: originbooks!.length,
                             itemBuilder: (BuildContext context, int index) {
-                              return _placesList(index);
+                              return _placesList(originbooks, index);
                             },
                           ),
                         ),
                       )
                     : Container(),
+                pageList == true
+                    ? Positioned(
+                        top: 80,
+                        left: 15.0,
+                        child: FlipCard(
+                            front: Container(
+                              height: 250.0,
+                              width: 175.00,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(8.0),
+                                ),
+                              ),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    placeImg != ''
+                                        ? Container(
+                                            height: 150.0,
+                                            width: 175.0,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.only(
+                                                bottomLeft:
+                                                    Radius.circular(10.0),
+                                                topLeft: Radius.circular(10.0),
+                                              ),
+                                            ),
+                                            child: Image.network(placeImg),
+                                          )
+                                        : Container(
+                                            height: 150.0,
+                                            width: 175.0,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.only(
+                                                bottomLeft:
+                                                    Radius.circular(10.0),
+                                                topLeft: Radius.circular(10.0),
+                                              ),
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                    Container(
+                                      padding: EdgeInsets.fromLTRB(
+                                        7.0,
+                                        0.0,
+                                        7.0,
+                                        0.0,
+                                      ),
+                                      width: 175.0,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text('Contact'),
+                                          Container(
+                                            width: 104.0,
+                                            child: Text(originbooks![prevPage]!
+                                                .address!),
+                                          ),
+                                          Text('Contact'),
+                                          Container(
+                                            width: 104.0,
+                                            child: Text(originbooks![prevPage]!
+                                                .address!),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            back: Container()),
+                      )
+                    : Container()
               ],
             ),
           ],
@@ -541,7 +630,7 @@ class _googleMapState extends ConsumerState<googleMap> {
     _setMarker(LatLng(endLat, endLng));
   }
 
-  _placesList(index) {
+  _placesList(List<Result?>? placeItem, index) {
     return AnimatedBuilder(
       animation: _pageController,
       builder: (BuildContext context, Widget? widget) {
@@ -552,16 +641,14 @@ class _googleMapState extends ConsumerState<googleMap> {
         }
         return Center(
           child: SizedBox(
-            height: Curves.easeInOut.transform(value) * 125.0,
+            height: Curves.easeInOut.transform(value) * 125.0+2.9,
             width: Curves.easeOut.transform(value) * 350.0,
             child: widget,
           ),
         );
       },
       child: InkWell(
-        onTap: () async {
-          cardTapped = !cardTapped;
-        },
+        onTap: () async {},
         child: Stack(
           children: [
             Center(
@@ -625,7 +712,43 @@ class _googleMapState extends ConsumerState<googleMap> {
                                     color: Colors.blue,
                                   ),
                                 )
-                          : Container()
+                          : Container(),
+                      SizedBox(
+                        width: 5.0,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 170.0,
+                            child: BetweenSM(
+                              color: kBodyTextColor,
+                              text: placeItem![index]!.name!,
+                              fontFamily: 'NotoSansMedium',
+                              maxLines: 1,
+                            ),
+                          ),
+                          Container(
+                            width: 170.0,
+                            child: TabText(
+                              color: kTextLightColor,
+                              text: placeItem[index]!.address!,
+                              fontFamily: 'NotoSansMedium',
+                              maxLines: 1,
+                            ),
+                          ),
+                          Container(
+                            width: 170.0,
+                            child: TabText(
+                              color: Colors.green,
+                              text: '營業狀態:',
+                              fontFamily: 'NotoSansMedium',
+                              maxLines: 1,
+                            ),
+                          ),
+                        ],
+                      )
                     ],
                   ),
                 ),
@@ -681,6 +804,7 @@ class _googleMapState extends ConsumerState<googleMap> {
           FocusManager.instance.primaryFocus?.unfocus();
         },
         onTap: () async {
+          //
           if (searchToggle == true) {
             _markers = {};
             _polylines = {};
@@ -689,6 +813,7 @@ class _googleMapState extends ConsumerState<googleMap> {
               placeItem.lng!,
             );
             searchFlag.toggleSearch(false);
+            //
           } else if (getDirections == true) {
             var directions = await MapServices.getDirections(
               currentLocation,

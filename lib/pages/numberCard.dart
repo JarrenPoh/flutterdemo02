@@ -45,7 +45,7 @@ class _numberCardState extends State<numberCard> {
   ////////////
 
   Timer? timer;
-  static const maxSeconds = 60;
+  static const maxSeconds = 3;
   int seconds = maxSeconds;
   void startTimer() {
     timer = Timer.periodic(Duration(seconds: 1), (_) {

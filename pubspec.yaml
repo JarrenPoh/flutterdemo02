@@ -66,8 +66,8 @@ dependencies:
   fab_circular_menu: ^1.0.2
   flutter_riverpod:
   google_geocoding: ^0.2.0
-
   mailer: ^5.2.0
+  flip_card: ^0.6.0
 
 
 
