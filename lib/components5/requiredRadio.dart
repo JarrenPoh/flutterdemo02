@@ -25,6 +25,8 @@ class RequiredRadio extends StatefulWidget {
     required this.multipleBool,
     required this.requiredCheckBool,
     required this.requiredCheckPrices,
+    required this.max,
+    required this.min,
   }) : super(key: key);
   final ValueChanged<bool> BoolCallBack;
   final ValueChanged<int> NumCallBack;
@@ -41,6 +43,8 @@ class RequiredRadio extends StatefulWidget {
   bool multipleBool;
   List<List> requiredCheckBool;
   num requiredCheckPrices;
+  String? max;
+  String? min;
 
   @override
   State<RequiredRadio> createState() => _RequiredRadioState(
@@ -59,6 +63,8 @@ class RequiredRadio extends StatefulWidget {
         multipleBool: multipleBool,
         requiredCheckBool: requiredCheckBool,
         requiredCheckPrices: requiredCheckPrices,
+        max: max,
+        min: min,
       );
 }
 
@@ -79,6 +85,8 @@ class _RequiredRadioState extends State<RequiredRadio> {
     required this.multipleBool,
     required this.requiredCheckBool,
     required this.requiredCheckPrices,
+    required this.max,
+    required this.min,
   });
   final ValueChanged<bool> BoolCallBack;
   final ValueChanged<int> NumCallBack;
@@ -95,6 +103,8 @@ class _RequiredRadioState extends State<RequiredRadio> {
   bool multipleBool;
   List<List> requiredCheckBool;
   num requiredCheckPrices;
+  String? max;
+  String? min;
 
   ////
   late String selectValue = radiolist[lindex].toString();
@@ -144,11 +154,84 @@ class _RequiredRadioState extends State<RequiredRadio> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                TabText(
-                  color: kBodyTextColor,
-                  text: '必填',
-                  fontFamily: 'NotoSansMedium',
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: Dimensions.width10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(Dimensions.radius10),
+                    color: Colors.red.withOpacity(0.7),
+                  ),
+                  child: TabText(
+                    color: kBodyTextColor,
+                    text: '#必填',
+                    fontFamily: 'NotoSansMedium',
+                  ),
                 ),
+                if (multipleBool == false)
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: Dimensions.width10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(Dimensions.radius10),
+                      color: Colors.blue.withOpacity(0.6),
+                    ),
+                    child: TabText(
+                      color: kBodyTextColor,
+                      text: '#單選',
+                      fontFamily: 'NotoSansMedium',
+                    ),
+                  ),
+                if (multipleBool == true)
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: Dimensions.width10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(Dimensions.radius10),
+                      color: Colors.blue.withOpacity(0.6),
+                    ),
+                    child: Row(
+                      children: [
+                        TabText(
+                          color: kBodyTextColor,
+                          text: '#多選 ',
+                          fontFamily: 'NotoSansMedium',
+                        ),
+                        if (min != null || max != null)
+                          TabText(
+                            color: kBodyTextColor,
+                            text: ': ',
+                            fontFamily: 'NotoSansMedium',
+                          ),
+                        if (min != null && max != null)
+                          Row(
+                            children: [
+                              TabText(
+                                color: kBodyTextColor,
+                                text: '$min ~ ',
+                                fontFamily: 'NotoSansMedium',
+                              ),
+                              TabText(
+                                color: kBodyTextColor,
+                                text: '$max',
+                                fontFamily: 'NotoSansMedium',
+                              ),
+                            ],
+                          ),
+                        
+                        if (min != null && max == null)
+                          TabText(
+                            color: kBodyTextColor,
+                            text: '最少選擇 $min 項',
+                            fontFamily: 'NotoSansMedium',
+                          ),
+                        if (min == null && max != null)
+                          TabText(
+                            color: kBodyTextColor,
+                            text: '最多選擇 $max 項',
+                            fontFamily: 'NotoSansMedium',
+                          ),
+                      ],
+                    ),
+                  ),
               ],
             ),
           ],
@@ -299,7 +382,27 @@ class _RequiredRadioState extends State<RequiredRadio> {
       );
   ////必選都選後radio = true，and計算單選多選多少錢
   void checkRadioBool() {
-    if (radiolist.every((element) => element.isNotEmpty)) {
+    var maxint;
+    var minint;
+
+    if (max == null) {
+      maxint = requiredList.length;
+    } else {
+      maxint = int.parse(max!);
+    }
+    if (min == null) {
+      minint = 1;
+    } else {
+      minint = int.parse(min!);
+    }
+
+    if (radiolist.every(
+      (element) =>
+          element.isNotEmpty &&
+          radiolist[lindex].length <= maxint &&
+          radiolist[lindex].length >= minint,
+    )) {
+      print('object2');
       radiopricesnum = 0;
       radiobool = true;
       BoolCallBack(radiobool);

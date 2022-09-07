@@ -158,18 +158,27 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
                         } else {
                           List<Result> data = snapshot.data;
                           var typeSet = <String>{};
+                          print('object2');
+                          print(data.length);
+
                           for (var i = 0; i < data.length; i++) {
-                            typeSet.add(data[i].place!);
+                            if (data[i].place != null) {
+                              typeSet.add(data[i].place!);
+                            } else {
+                              data[i].place='其它';
+                              typeSet.add(data[i].place!);
+                            }
                           }
-
                           final List<String> typeArray = typeSet.toList();
-
                           for (var i = 0; i < typeArray.length; i++) {
                             // data2.add(typeArray[i]);
-                            data2.add(data
-                                .where((product) =>
-                                    product.place!.contains(typeArray[i]))
-                                .toList());
+                            data2.add(
+                              data
+                                  .where((product) =>
+                                      product.place!.contains(typeArray[i]))
+                                  .toList(),
+                            );
+                            
                           }
 
                           _tabController = TabController(

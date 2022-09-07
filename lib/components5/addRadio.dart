@@ -21,8 +21,12 @@ class addRadio extends StatefulWidget {
     required this.Radioprices,
     required this.lindex,
     required this.Radiopricesnum,
+    required this.max,
+    required this.min,
+    required this.BoolCallBack,
   }) : super(key: key);
   final ValueChanged<int> PricesCallBack;
+  final ValueChanged<bool> BoolCallBack;
   Map arguments;
   List<List> addCheckBool;
   num addCheckPrices;
@@ -35,6 +39,8 @@ class addRadio extends StatefulWidget {
   List<int> Radioprices;
   int lindex;
   int Radiopricesnum;
+  String? max;
+  String? min;
   @override
   State<addRadio> createState() => _addRadioState(
         arguments: arguments,
@@ -50,6 +56,9 @@ class addRadio extends StatefulWidget {
         Radioprices: Radioprices,
         lindex: lindex,
         Radiopricesnum: Radiopricesnum,
+        max: max,
+        min: min,
+        BoolCallBack: BoolCallBack,
       );
 }
 
@@ -68,10 +77,14 @@ class _addRadioState extends State<addRadio> {
     required this.Radioprices,
     required this.lindex,
     required this.Radiopricesnum,
+    required this.max,
+    required this.min,
+    required this.BoolCallBack,
   });
   List addList;
   List<List> addCheckBool;
   final ValueChanged<int> PricesCallBack;
+  final ValueChanged<bool> BoolCallBack;
   Map arguments;
   num addCheckPrices;
   String addTitle;
@@ -82,6 +95,8 @@ class _addRadioState extends State<addRadio> {
   List<int> Radioprices;
   int lindex;
   int Radiopricesnum;
+  String? max;
+  String? min;
   ////
   late String selectValue = Radiolist[lindex].toString();
   //
@@ -127,16 +142,68 @@ class _addRadioState extends State<addRadio> {
             Expanded(
               child: Column(children: const []),
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                TabText(
-                  color: kBodyTextColor,
-                  text: '可選',
-                  fontFamily: 'NotoSansMedium',
-                ),
-              ],
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: Dimensions.width10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(Dimensions.radius10),
+                color: Colors.grey.withOpacity(0.6),
+              ),
+              child: TabText(
+                color: kBodyTextColor,
+                text: '可選',
+                fontFamily: 'NotoSansMedium',
+              ),
             ),
+            if (multipleBool == true)
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: Dimensions.width10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(Dimensions.radius10),
+                  color: Colors.blue.withOpacity(0.6),
+                ),
+                child: Row(
+                  children: [
+                    TabText(
+                      color: kBodyTextColor,
+                      text: '#多選 ',
+                      fontFamily: 'NotoSansMedium',
+                    ),
+                    if (min != null || max != null)
+                          TabText(
+                            color: kBodyTextColor,
+                            text: ': ',
+                            fontFamily: 'NotoSansMedium',
+                          ),
+                    if (min != null && max != null)
+                      Row(
+                        children: [
+                          TabText(
+                            color: kBodyTextColor,
+                            text: '$min ~ ',
+                            fontFamily: 'NotoSansMedium',
+                          ),
+                          TabText(
+                            color: kBodyTextColor,
+                            text: '$max',
+                            fontFamily: 'NotoSansMedium',
+                          ),
+                        ],
+                      ),
+                    if (min != null && max == null)
+                      TabText(
+                        color: kBodyTextColor,
+                        text: '最少選擇 $min 項',
+                        fontFamily: 'NotoSansMedium',
+                      ),
+                    if (min == null && max != null)
+                      TabText(
+                        color: kBodyTextColor,
+                        text: '最多選擇 $max 項',
+                        fontFamily: 'NotoSansMedium',
+                      ),
+                  ],
+                ),
+              ),
           ],
         ),
         SizedBox(height: Dimensions.height10),
@@ -276,14 +343,36 @@ class _addRadioState extends State<addRadio> {
         ),
       );
   void checkTotal() {
-    Radiopricesnum = 0;
+    var maxint;
+    var minint;
+    var bool;
 
-    for (var element in Radioprices) {
-      Radiopricesnum += element.toInt();
+    if (max == null) {
+      maxint = addList.length;
+    } else {
+      maxint = int.parse(max!);
     }
-    PricesCallBack(Radiopricesnum);
+    if (min == null) {
+      minint = 0;
+    } else {
+      minint = int.parse(min!);
+    }
+    if (Radiolist[lindex].length <= maxint &&
+        Radiolist[lindex].length >= minint) {
+      bool = true;
+      Radiopricesnum = 0;
 
-    print('this is Radiopricesnum = ${Radiopricesnum}');
+      for (var element in Radioprices) {
+        Radiopricesnum += element.toInt();
+      }
+      PricesCallBack(Radiopricesnum);
+      BoolCallBack(bool);
+
+      print('this is Radiopricesnum = ${Radiopricesnum}');
+    }else{
+      bool = false;
+      BoolCallBack(bool);
+    }
   }
 }
 

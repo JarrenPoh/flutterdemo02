@@ -119,7 +119,7 @@ class FormPage4State extends State<FormPage4>
                               (product) => product.type.contains(typeArray[i]))
                           .toList());
                     }
-
+                    print(data.last.options);
                     _bloc.init(
                       this,
                       profileHeight,

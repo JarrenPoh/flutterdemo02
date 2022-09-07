@@ -22,6 +22,7 @@ class _ItemListState extends State<ItemList> {
 
   @override
   void initState() {
+    print('group is ${group?.length}');
     // TODO: implement initState
     super.initState();
     pageController.addListener(() {

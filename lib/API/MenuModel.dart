@@ -23,6 +23,8 @@ class Result {
   String? describe;
   late String type;
   String? discount;
+  String? min;
+  String? max;
   String? options;
   String? image;
   String? id;
@@ -36,6 +38,8 @@ class Result {
     required this.discount,
     required this.options,
     required this.id,
+    required this.max,
+    required this.min,
   });
 
   Result.fromJson(Map<String, dynamic> json) {
@@ -47,6 +51,8 @@ class Result {
     discount = json['discount'];
     options = json['options'];
     id = json['id'];
+    max = json['max'];
+    min = json['min'];
   }
 }
 

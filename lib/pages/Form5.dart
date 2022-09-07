@@ -465,6 +465,8 @@ class _FormPage5State extends State<FormPage5> {
                                 requiredList: requiredList()[index]['option'],
                                 requiredTitle: requiredList()[index]['title'],
                                 multipleBool: requiredList()[index]['multiple'],
+                                max: requiredList()[index]['max'],
+                                min: requiredList()[index]['min'],
                                 requiredCheckPrices: requiredCheckPrices,
                                 requiredCheckBool: requiredCheckBool,
                               );
@@ -507,6 +509,11 @@ class _FormPage5State extends State<FormPage5> {
                               }
 
                               return addRadio(
+                                BoolCallBack: (value) {
+                                  setState(() {
+                                    radiobool = value;
+                                  });
+                                },
                                   PricesCallBack: (value) {
                                     setState(() {
                                       Radiopricesnum = value;
@@ -518,6 +525,8 @@ class _FormPage5State extends State<FormPage5> {
                                   addList: addList()[index]['option'],
                                   addTitle: addList()[index]['title'],
                                   multipleBool: addList()[index]['multiple'],
+                                  max: addList()[index]['max'],
+                                  min: addList()[index]['min'],
                                   RadioTitleList: RadioTitleList,
                                   RadioMultiple: RadioMultiple,
                                   Radiolist: Radiolist,
@@ -592,7 +601,7 @@ class _FormPage5State extends State<FormPage5> {
       builder: (context) {
         return AlertDialog(
           title: const Text("提示"),
-          content: const Text('請填選完必填區，方能加入購物車'),
+          content: const Text('請看選擇提示，正確填選後方能加入購物車'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
