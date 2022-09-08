@@ -128,7 +128,7 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
 /////firebase
   @override
   void dispose() {
-    _tabController.dispose();
+    // _tabController.dispose();
     super.dispose();
   }
 
@@ -182,7 +182,10 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
                           }
 
                           _tabController = TabController(
-                              length: typeArray.length, vsync: this);
+                              length: typeArray.length, vsync: this,);
+
+                          
+                          
 
                           return NestedScrollView(
                             headerSliverBuilder: (context, innerBoxIsScrolled) {
@@ -296,6 +299,7 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
                               children: List.generate(
                                 typeArray.length,
                                 (index) {
+
                                   return mainList(
                                     data: data2[index],
                                   );

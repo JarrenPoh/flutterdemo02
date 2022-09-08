@@ -31,9 +31,19 @@ class _mainListState extends State<mainList> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
-        children: List.generate(
-          data.length,
-          (index) => imageItems(
+        children: List.generate(data.length, (index) {
+          bool businessTime;
+          int selectedHour = TimeOfDay.now().hour;
+          if (data[index].businessTime![selectedHour]==true) {
+            print('營業中');
+            businessTime = true;
+          } else {
+            print('尚未營業');
+            businessTime = false;
+          }
+          return imageItems(
+            timeEstimate: data[index].timeEstimate,
+            businessTime: businessTime,
             discount: jsonDecode(data[index].discount!),
             name: data[index].name!,
             address: data[index].address,
@@ -49,12 +59,14 @@ class _mainListState extends State<mainList> {
                     arguments: {
                       'shopname': data[index].name,
                       'shopimage': data[index].image,
-                      'discount': data[index].discount,
-                      'id': data[index].id
+                      'discount': jsonDecode(data[index].discount!),
+                      'id': data[index].id,
+                      'businessTime': businessTime,
+                      'timeEstimate': data[index].timeEstimate,
+                      'describe': data[index].describe,
                     },
                   );
-                   cartController.deleteAll();   
-                            
+                  cartController.deleteAll();
                 }
               } else {
                 Navigator.pushNamed(
@@ -63,14 +75,17 @@ class _mainListState extends State<mainList> {
                   arguments: {
                     'shopname': data[index].name,
                     'shopimage': data[index].image,
-                    'discount': data[index].discount,
-                    'id': data[index].id
+                    'discount': jsonDecode(data[index].discount!),
+                    'id': data[index].id,
+                    'businessTime': businessTime,
+                    'timeEstimate': data[index].timeEstimate,
+                    'describe': data[index].describe,
                   },
                 );
               }
             },
-          ),
-        ),
+          );
+        }),
       ),
     );
   }

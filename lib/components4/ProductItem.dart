@@ -5,6 +5,7 @@ import 'package:flutterdemo02/API/MenuModel.dart';
 import 'package:flutterdemo02/models/BetweenSM.dart';
 import 'package:flutterdemo02/models/ColorSettings.dart';
 import 'package:flutterdemo02/models/SmallText.dart';
+import 'package:flutterdemo02/models/TabsText.dart';
 import 'package:flutterdemo02/pages/Tabs.dart';
 
 class RappiProductItem extends StatelessWidget {
@@ -24,21 +25,55 @@ class RappiProductItem extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: Dimensions.height5),
         child: GestureDetector(
           onTap: () async {
-            cartController.deleteindex = null;
-            final choses =
-                await Navigator.pushNamed(context, '/form5', arguments: {
-              'id': true,
-              'Id': product.id,
-              'name': product.name,
-              'price': int.parse(product.price),
-              'textprice': product.price,
-              'description': product.describe,
-              'image': product.image,
-              'shopname': arguments['shopname'],
-              'ToCart': '加入購物車',
-              'firstNumber': 1,
-              'options': options,
-            });
+            if (arguments['businessTime'] == true) {
+              cartController.deleteindex = null;
+              final choses =
+                  await Navigator.pushNamed(context, '/form5', arguments: {
+                'id': true,
+                'Id': product.id,
+                'name': product.name,
+                'price': int.parse(product.price),
+                'textprice': product.price,
+                'description': product.describe,
+                'image': product.image,
+                'shopname': arguments['shopname'],
+                'ToCart': '加入購物車',
+                'firstNumber': 1,
+                'options': options,
+              });
+            } else {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    backgroundColor: kBottomColor,
+                    scrollable: true,
+                    title: BetweenSM(
+                      color: kBodyTextColor,
+                      text: '店家尚未營業',
+                      fontFamily: 'NotoSansMedium',
+                      maxLines: 3,
+                    ),
+                    content: Column(
+                      children: [
+                        TabText(
+                          color: kBodyTextColor,
+                          text: '店家為正常營業狀況方能進行點餐',
+                          fontFamily: 'NotoSansMedium',
+                          maxLines: 100,
+                        ),
+                      ],
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text('確認'),
+                      ),
+                    ],
+                  );
+                },
+              );
+            }
           },
           child: Card(
               elevation: Dimensions.height5,

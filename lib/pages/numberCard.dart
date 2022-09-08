@@ -135,7 +135,7 @@ class _numberCardState extends State<numberCard> {
                         children: [
                           BigText(
                             color: kBodyTextColor,
-                            text: '70548',
+                            text: '${data2[index].sequence}',
                             weight: FontWeight.bold,
                           ),
                         ],

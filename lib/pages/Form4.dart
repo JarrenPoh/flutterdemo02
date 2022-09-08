@@ -323,7 +323,9 @@ class FormPage4State extends State<FormPage4>
                                                     item.category!);
                                               } else {
                                                 return RappiProductItem(
-                                                    item.product!, arguments);
+                                                  item.product!,
+                                                  arguments,
+                                                );
                                               }
                                             },
                                           ),

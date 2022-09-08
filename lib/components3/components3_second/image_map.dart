@@ -15,12 +15,15 @@ class imageItems extends StatelessWidget {
     required this.image,
     required this.press,
     required this.discount,
+    required this.timeEstimate,
+    required this.businessTime,
   }) : super(key: key);
 
   final String name;
   final String? address;
   final String? image;
-  final int? delivertime = 0;
+  final String? timeEstimate;
+  final bool businessTime;
   final VoidCallback press;
   List? discount = [];
   @override
@@ -95,11 +98,12 @@ class imageItems extends StatelessWidget {
                         ),
                       ),
                     ),
-                  if (delivertime != null)
+                  if (timeEstimate != null)
                     Padding(
                       padding: EdgeInsets.only(
-                          top: Dimensions.screenHeigt / 6.6,
-                          left: Dimensions.screenWidth / 1.4),
+                        top: Dimensions.screenHeigt / 6.6,
+                        left: Dimensions.screenWidth / 1.4,
+                      ),
                       child: Container(
                         height: Dimensions.screenHeigt / 27.5,
                         width: Dimensions.screenWidth / 5.6,
@@ -109,7 +113,7 @@ class imageItems extends StatelessWidget {
                             left: Dimensions.height10),
                         child: SmallText(
                           color: kBodyTextColor,
-                          text: '$delivertime分鐘',
+                          text: '$timeEstimate 分鐘',
                           fontFamily: 'NotoSansBold',
                         ),
                         decoration: BoxDecoration(
@@ -118,22 +122,77 @@ class imageItems extends StatelessWidget {
                           color: Colors.white,
                         ),
                       ),
-                    )
+                    ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: Dimensions.screenHeigt / 6.6,
+                      right: Dimensions.screenWidth / 1.5,
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          height: Dimensions.screenHeigt / 27.5,
+                          padding: EdgeInsets.only(
+                            top: Dimensions.height5,
+                            bottom: Dimensions.height5,
+                            left: Dimensions.height10,
+                            right: Dimensions.height10
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                margin:
+                                    EdgeInsets.only(right: Dimensions.width10 / 2),
+                                width: Dimensions.width15 / 2,
+                                height: Dimensions.width15 / 2,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                    Dimensions.radius20,
+                                  ),
+                                  color: businessTime ? Colors.green : kMaimColor,
+                                ),
+                              ),
+                              SmallText(
+                                text: businessTime ? '營業中' : '尚未營業',
+                                color: kBodyTextColor,
+                                fontFamily: 'NotoSansMedium',
+                              ),
+                            ],
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                BorderRadius.circular(Dimensions.radius20),
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
             ListTile(
-              title: TabText(
-                text: name,
-                color: kBodyTextColor,
-                fontFamily: 'NotoSansMedium',
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TabText(
+                    text: name,
+                    color: kBodyTextColor,
+                    fontFamily: 'NotoSansMedium',
+                  ),
+                ],
               ),
-              subtitle: TabText(
-                text: address!,
-                color: kTextLightColor,
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TabText(
+                    text: address!,
+                    color: kTextLightColor,
+                  ),
+                ],
               ),
               trailing: ElevatedButton(
-                
                 onPressed: () async {
                   LocationData? currentLocation;
                   Location location = Location();
