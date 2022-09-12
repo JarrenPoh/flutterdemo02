@@ -83,13 +83,16 @@ class Order {
 
 class Orders {
   bool tableware;
+  String reservationTime;
   List? order;
   Orders(
     this.tableware,
+    this.reservationTime,
     this.order,
   );
   Map toJson() => {
         'tableware': tableware,
+        'reservation':reservationTime,
         'orders': order,
       };
 }

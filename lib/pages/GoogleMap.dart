@@ -2,12 +2,14 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutterdemo02/GoogleMap/googleMapKey.dart';
 import 'package:flutterdemo02/GoogleMap/map_services.dart';
 import 'package:flutterdemo02/components5/textField.dart';
 import 'package:flutterdemo02/models/ColorSettings.dart';
+import 'package:flutterdemo02/models/SmallText.dart';
 import 'package:flutterdemo02/models/TabsText.dart';
 import 'package:flutterdemo02/provider/Shared_Preference.dart';
 import 'package:flutterdemo02/provider/search_places_inGoogleMap.dart';
@@ -65,6 +67,8 @@ class _googleMapState extends ConsumerState<googleMap> {
   final key = GoogleMapKey;
   var selectedPlaceDetail;
   bool showBlankCard = false;
+  bool isReviews = true;
+  bool isPhotos = false;
 
 ////Text Editing Controllers
   TextEditingController searchController = TextEditingController();
@@ -91,6 +95,7 @@ class _googleMapState extends ConsumerState<googleMap> {
     setState(() {});
   }
 
+////Set Marker when Tapped Something
   void _setMarker(point) {
     var counter = markerIdCounter++;
 
@@ -106,6 +111,7 @@ class _googleMapState extends ConsumerState<googleMap> {
     });
   }
 
+////Set Polyline when get Directions
   void _setPolyline(List<PointLatLng> points) {
     final String polylineIdVal = 'polyline_$polylineIdCounter';
 
@@ -121,16 +127,9 @@ class _googleMapState extends ConsumerState<googleMap> {
     );
   }
 
-  Future convertToPlaceID(String address) async {
-    var googleGeocoding = GoogleGeocoding(GoogleMapKey);
-    var response = await googleGeocoding.geocoding.get(address, []);
-    var placeID = response!.results![0].placeId;
-    return placeID;
-  }
-
   LocationData? currentLocation;
   List<Result?>? originbooks = [];
-
+////set Circle when tapped on screen
   void _setCircle(LatLng point) async {
     final GoogleMapController controller = await _controller.future;
 
@@ -183,8 +182,6 @@ class _googleMapState extends ConsumerState<googleMap> {
     // TODO: implement initState
     super.initState();
   }
-
-  void _onScroll() {}
 
 ////Fetch image to place inside the tile in the pageView
   void fetchImage() {
@@ -481,75 +478,144 @@ class _googleMapState extends ConsumerState<googleMap> {
                         top: 80,
                         left: 15.0,
                         child: FlipCard(
-                            front: Container(
-                              height: 250.0,
-                              width: 175.00,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(8.0),
-                                ),
-                              ),
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    placeImg != ''
-                                        ? Container(
-                                            height: 150.0,
-                                            width: 175.0,
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.only(
-                                                bottomLeft:
-                                                    Radius.circular(10.0),
-                                                topLeft: Radius.circular(10.0),
-                                              ),
-                                            ),
-                                            child: Image.network(placeImg),
-                                          )
-                                        : Container(
-                                            height: 150.0,
-                                            width: 175.0,
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.only(
-                                                bottomLeft:
-                                                    Radius.circular(10.0),
-                                                topLeft: Radius.circular(10.0),
-                                              ),
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                    Container(
-                                      padding: EdgeInsets.fromLTRB(
-                                        7.0,
-                                        0.0,
-                                        7.0,
-                                        0.0,
-                                      ),
-                                      width: 175.0,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text('Contact'),
-                                          Container(
-                                            width: 104.0,
-                                            child: Text(originbooks![prevPage]!
-                                                .address!),
-                                          ),
-                                          Text('Contact'),
-                                          Container(
-                                            width: 104.0,
-                                            child: Text(originbooks![prevPage]!
-                                                .address!),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                          front: Container(
+                            height: 300.0,
+                            width: 225.00,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(8.0),
                               ),
                             ),
-                            back: Container()),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  placeImg != ''
+                                      ? Container(
+                                          height: 150.0,
+                                          width: 225.0,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(10.0),
+                                              topLeft: Radius.circular(10.0),
+                                            ),
+                                          ),
+                                          child: Image.network(placeImg),
+                                        )
+                                      : Container(
+                                          height: 150.0,
+                                          width: 225.0,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                              topLeft:Radius.circular(10.0),
+                                              topRight:Radius.circular(10.0),
+                                              
+                                            ),
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                  Container(
+                                    padding: EdgeInsets.fromLTRB(
+                                      7.0,
+                                      0.0,
+                                      7.0,
+                                      0.0,
+                                    ),
+                                    width: 225.0,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text('Contact'),
+                                        Text(
+                                            originbooks![prevPage]!.address!),
+                                        Text('Contact'),
+                                        Text(
+                                            originbooks![prevPage]!.address!),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          back: Container(
+                            height: 300.0,
+                            width: 225.0,
+                            decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.95),
+                                borderRadius: BorderRadius.circular(8.0)),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            isReviews = true;
+                                            isPhotos = false;
+                                          });
+                                        },
+                                        child: AnimatedContainer(
+                                          duration: Duration(milliseconds: 700),
+                                          curve: Curves.easeIn,
+                                          padding: EdgeInsets.fromLTRB(
+                                              7.0, 4.0, 7.0, 4.0),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(11.0),
+                                            color: isReviews
+                                                ? Colors.green.shade300
+                                                : Colors.white,
+                                          ),
+                                          child: SmallText(
+                                            color: isReviews
+                                                ? Colors.white
+                                                : Colors.black87,
+                                            text: 'Reviews',
+                                            fontFamily: 'NotoSansMedium',
+                                          ),
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            isReviews = false;
+                                            isPhotos = true;
+                                          });
+                                        },
+                                        child: AnimatedContainer(
+                                          duration: Duration(milliseconds: 700),
+                                          curve: Curves.easeIn,
+                                          padding: EdgeInsets.fromLTRB(
+                                              7.0, 4.0, 7.0, 4.0),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(11.0),
+                                            color: isPhotos
+                                                ? Colors.green.shade300
+                                                : Colors.white,
+                                          ),
+                                          child: SmallText(
+                                            color: isPhotos
+                                                ? Colors.white
+                                                : Colors.black87,
+                                            text: 'Photos',
+                                            fontFamily: 'NotoSansMedium',
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       )
                     : Container()
               ],
@@ -641,7 +707,7 @@ class _googleMapState extends ConsumerState<googleMap> {
         }
         return Center(
           child: SizedBox(
-            height: Curves.easeInOut.transform(value) * 125.0+2.9,
+            height: Curves.easeInOut.transform(value) * 125.0 + 2.9,
             width: Curves.easeOut.transform(value) * 350.0,
             child: widget,
           ),

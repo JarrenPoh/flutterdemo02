@@ -14,6 +14,7 @@ import 'package:flutterdemo02/provider/Shared_Preference.dart';
 import 'package:get/get.dart';
 import 'package:flutterdemo02/API/getTokenApi.dart';
 import '../API/shopCarModel.dart';
+import '../componentsShopcar/reservation.dart';
 import '../componentsShopcar/shopcarAppBar.dart';
 import '../controllers/cart_controller.dart';
 import '../models/BetweenSM.dart';
@@ -83,6 +84,7 @@ class _shopCarState extends State<shopCar> {
   StoreInfo? storeInfo;
   int finalPrice = 0;
   bool tableWare = false;
+  String reservation='';
 
   ////////////
   refresh() {
@@ -103,6 +105,8 @@ class _shopCarState extends State<shopCar> {
       cartController.ifUpdate(name: false);
     }
   }
+
+  
 
   @override
   void initState() {
@@ -149,7 +153,8 @@ class _shopCarState extends State<shopCar> {
                         padding: EdgeInsets.all(Dimensions.height15),
                         child: GestureDetector(
                           onTap: () async {
-                            print('UserSimplePreferences.getFinalPrice() is ${UserSimplePreferences.getFinalPrice()}');
+                            print(
+                                'UserSimplePreferences.getFinalPrice() is ${UserSimplePreferences.getFinalPrice()}');
                             if (UserSimplePreferences.getFinalPrice() != 0) {
                               bool? delete = await showDeleteDialod();
                               //發送訂單
@@ -194,6 +199,11 @@ class _shopCarState extends State<shopCar> {
                       thickness: Dimensions.height10,
                       color: kBottomColor,
                     ),
+                    Reservation(notifyParent: refresh),
+                    Divider(
+                      thickness: Dimensions.height10,
+                      color: kBottomColor,
+                    ),
                     total(),
                   ],
                 ),
@@ -212,6 +222,7 @@ class _shopCarState extends State<shopCar> {
     storeInfo = ss.storeInfo;
     finalPrice = ss.total!;
     tableWare = ss.tableware!;
+    reservation = ss.reservation!;
     return showDialog(
       context: context,
       builder: (context) {
@@ -340,6 +351,34 @@ class _shopCarState extends State<shopCar> {
                     fontFamily: 'NotoSansMedium',
                   ),
                 ],
+              ),
+              
+              Row(
+                children: [
+                  TabText(
+                    color: kMaimColor,
+                    text: '* ',
+                    fontFamily: 'NotoSansMedium',
+                  ),
+                  TabText(
+                    color: kBodyTextColor,
+                    text: '取餐時間',
+                    fontFamily: 'NotoSansMedium',
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: const [],
+                    ),
+                  ),
+                  TabText(
+                    color: kMaimColor,
+                    text: reservation,
+                    fontFamily: 'NotoSansMedium',
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: Dimensions.height10,
               ),
               Row(
                 children: [

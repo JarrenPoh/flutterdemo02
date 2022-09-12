@@ -20,8 +20,9 @@ class _contactWayState extends State<contactWay> {
         ListTile(
           title: Padding(
               padding: EdgeInsets.symmetric(
-                  vertical: Dimensions.height10,
-                  horizontal: Dimensions.width15),
+                vertical: Dimensions.height10,
+                horizontal: Dimensions.width15,
+              ),
               child: Text(
                 '聯絡方式',
                 style: TextStyle(fontSize: Dimensions.fontsize24),
@@ -30,7 +31,9 @@ class _contactWayState extends State<contactWay> {
         ListTile(
           leading: Padding(
             padding: EdgeInsets.symmetric(
-                vertical: Dimensions.height10, horizontal: Dimensions.width15),
+              vertical: Dimensions.height10,
+              horizontal: Dimensions.width15,
+            ),
             child: Icon(
               Icons.person_rounded,
               size: Dimensions.icon25,
@@ -38,7 +41,9 @@ class _contactWayState extends State<contactWay> {
           ),
           title: Padding(
             padding: EdgeInsets.only(
-                left: Dimensions.width15, top: Dimensions.height15),
+              left: Dimensions.width15,
+              top: Dimensions.height15,
+            ),
             child: Row(
               children: [
                 MiddleText(

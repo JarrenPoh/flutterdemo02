@@ -17,6 +17,7 @@ class UserSimplePreferences {
   static const _finalPrice = 'finalprice';
   static const _orderPreview = 'orederpreview';
   static const _phoneverify = 'phoneverify';
+  static const _reservation= '_reservation';
 
   static Future init() async =>
       _preferences = await SharedPreferences.getInstance();
@@ -113,6 +114,14 @@ class UserSimplePreferences {
   }
 
   static bool? getPhoneVerify() => _preferences!.getBool(_phoneverify);
+  //////////////////////////////////////
+  //////////////////////////////Reservation/////
+  static Future setReservation(String time) async {
+    await _preferences?.setString(_reservation, time);
+    print('Set Preference successful');
+  }
+
+  static String? getReservation() => _preferences!.getString(_reservation);
   //////////////////////////////////////
 
 }

@@ -17,6 +17,7 @@ class CartController extends GetxController {
   List<dynamic> radiolist = <dynamic>[].obs;
   List<dynamic> Radiolist = <dynamic>[].obs;
   bool tableware = false;
+  String reservationTime = "23:45";
   late int finalPrice;
   bool ifUpdateCar = true;
 
@@ -127,7 +128,9 @@ class CartController extends GetxController {
   ////////////
   ///////清空購物車////
   void deleteAll() {
-    for (var element in cartlist) {cartlist.remove(element);}
+    for (var element in cartlist) {
+      cartlist.remove(element);
+    }
     return null;
   }
 
@@ -149,6 +152,13 @@ class CartController extends GetxController {
   bool tableWare({required bool tablewareBool}) {
     tableware = tablewareBool;
     return tableware;
+  }
+  //////
+
+  ///////取餐時間////
+  String getReservation({required String Time}) {
+    reservationTime = Time;
+    return reservationTime;
   }
   //////
 
@@ -199,8 +209,10 @@ class CartController extends GetxController {
       //////
     }
 
+
+
     ///finalReturn
-    finalReturn = Orders(tableware, ordersReturn);
+    finalReturn = Orders(tableware, reservationTime, ordersReturn);
     //////
     ///optionsReturn Encode成String
     String finalString = jsonEncode(finalReturn);

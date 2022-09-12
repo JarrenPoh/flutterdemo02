@@ -32,6 +32,7 @@ class Result {
   bool? complete;
   bool? accept;
   bool? tableware;
+  String? reservation;
   Result({
     this.order,
     this.dATE,
@@ -41,6 +42,7 @@ class Result {
     this.complete,
     this.accept,
     this.tableware,
+    this.reservation,
   });
 
   Result.fromJson(Map<String, dynamic> json) {
@@ -54,6 +56,7 @@ class Result {
     complete = json['complete'];
     accept = json['accept'];
     tableware = json['tableware'];
+    reservation = json['reservation'];
   }
 
   Map<String, dynamic> toJson() {
@@ -68,6 +71,7 @@ class Result {
     data['complete'] = this.complete;
     data['accept'] = this.accept;
     data['tableware'] = this.tableware;
+    data['reservation'] = this.reservation;
     return data;
   }
 }

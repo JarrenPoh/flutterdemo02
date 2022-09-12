@@ -165,7 +165,7 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
                             if (data[i].place != null) {
                               typeSet.add(data[i].place!);
                             } else {
-                              data[i].place='其它';
+                              data[i].place = '其它';
                               typeSet.add(data[i].place!);
                             }
                           }
@@ -178,14 +178,12 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
                                       product.place!.contains(typeArray[i]))
                                   .toList(),
                             );
-                            
                           }
 
                           _tabController = TabController(
-                              length: typeArray.length, vsync: this,);
-
-                          
-                          
+                            length: typeArray.length,
+                            vsync: this,
+                          );
 
                           return NestedScrollView(
                             headerSliverBuilder: (context, innerBoxIsScrolled) {
@@ -299,7 +297,6 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
                               children: List.generate(
                                 typeArray.length,
                                 (index) {
-
                                   return mainList(
                                     data: data2[index],
                                   );
@@ -342,11 +339,13 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
-                        onPrimary: Colors.black,
-                        minimumSize: Size(15, 30),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(3000.0))),
+                      primary: Colors.white,
+                      onPrimary: Colors.black,
+                      minimumSize: Size(15, 30),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3000.0),
+                      ),
+                    ),
                   ),
                   ElevatedButton(
                     onPressed: () async {

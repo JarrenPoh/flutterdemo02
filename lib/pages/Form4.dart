@@ -26,8 +26,7 @@ class FormPage4 extends StatefulWidget {
   State<FormPage4> createState() => FormPage4State(arguments: arguments);
 }
 
-class FormPage4State extends State<FormPage4>
-    with SingleTickerProviderStateMixin {
+class FormPage4State extends State<FormPage4> with SingleTickerProviderStateMixin {
   FormPage4State({
     required this.arguments,
   });
@@ -209,15 +208,16 @@ class FormPage4State extends State<FormPage4>
                                               context, '/emptyshopcar');
                                         } else {
                                           Navigator.pushNamed(
-                                              context, '/shopcar',
-                                              arguments: {
-                                                'shopname':
-                                                    arguments['shopname'],
-                                                'shopimage':
-                                                    arguments['shopimage'],
-                                                'delivertime':
-                                                    arguments['delivertime']
-                                              });
+                                            context,
+                                            '/shopcar',
+                                            arguments: {
+                                              'shopname': arguments['shopname'],
+                                              'shopimage':
+                                                  arguments['shopimage'],
+                                              'delivertime':
+                                                  arguments['delivertime']
+                                            },
+                                          );
                                         }
                                       } else {
                                         showDialog(
