@@ -116,12 +116,12 @@ class UserSimplePreferences {
   static bool? getPhoneVerify() => _preferences!.getBool(_phoneverify);
   //////////////////////////////////////
   //////////////////////////////Reservation/////
-  static Future setReservation(String time) async {
-    await _preferences?.setString(_reservation, time);
+  static Future setReservation(bool time) async {
+    await _preferences?.setBool(_reservation, time);
     print('Set Preference successful');
   }
 
-  static String? getReservation() => _preferences!.getString(_reservation);
+  static bool? getReservation() => _preferences!.getBool(_reservation);
   //////////////////////////////////////
 
 }

@@ -84,8 +84,8 @@ class _shopCarState extends State<shopCar> {
   StoreInfo? storeInfo;
   int finalPrice = 0;
   bool tableWare = false;
-  String reservation='';
-
+  String reservation = '';
+  bool selectTime = false;
   ////////////
   refresh() {
     print('cartController.ifUpdateCar is ${cartController.ifUpdateCar}');
@@ -105,8 +105,6 @@ class _shopCarState extends State<shopCar> {
       cartController.ifUpdate(name: false);
     }
   }
-
-  
 
   @override
   void initState() {
@@ -156,11 +154,43 @@ class _shopCarState extends State<shopCar> {
                             print(
                                 'UserSimplePreferences.getFinalPrice() is ${UserSimplePreferences.getFinalPrice()}');
                             if (UserSimplePreferences.getFinalPrice() != 0) {
-                              bool? delete = await showDeleteDialod();
-                              //發送訂單
-                              if (delete == false) {
-                                Navigator.pushNamedAndRemoveUntil(context,
-                                    '/ordersuccessful', (route) => false);
+                              if (selectTime == true) {
+                                bool? delete = await showDeleteDialod();
+                                //發送訂單
+                                if (delete == false) {
+                                  Navigator.pushNamedAndRemoveUntil(context,
+                                      '/ordersuccessful', (route) => false);
+                                }
+                              } else {
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (context) => AlertDialog(
+                                    content: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        TabText(
+                                          color: kBodyTextColor,
+                                          text: "請選擇取餐時間",
+                                          fontFamily: 'NotoSansMedium',
+                                        ),
+                                      ],
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () async {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('確定'),
+                                      ),
+                                    ],
+                                    title: BetweenSM(
+                                      text: "尚未填選",
+                                      color: kBodyTextColor,
+                                    ),
+                                  ),
+                                );
                               }
                             }
                           },
@@ -199,7 +229,16 @@ class _shopCarState extends State<shopCar> {
                       thickness: Dimensions.height10,
                       color: kBottomColor,
                     ),
-                    Reservation(notifyParent: refresh),
+                    Reservation(
+                      notifyParent: refresh,
+                      businessTime: arguments['businessTime'],
+                      selectTime: selectTime,
+                      BoolCallBack: (value) {
+                        setState(() {
+                          selectTime = value;
+                        });
+                      },
+                    ),
                     Divider(
                       thickness: Dimensions.height10,
                       color: kBottomColor,
@@ -352,7 +391,6 @@ class _shopCarState extends State<shopCar> {
                   ),
                 ],
               ),
-              
               Row(
                 children: [
                   TabText(

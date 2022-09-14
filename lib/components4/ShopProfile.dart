@@ -23,7 +23,15 @@ class ShopProfileState extends State<ShopProfile> {
     String shopname = arguments['shopname'];
     String describe = arguments['describe'];
     String? timeEstimate = arguments['timeEstimate'];
-    bool businessTime = arguments['businessTime'];
+    bool businessTime;
+    int selectedHour = TimeOfDay.now().hour;
+    if ( arguments['businessTime'][selectedHour] == true) {
+      print('營業中');
+      businessTime = true;
+    } else {
+      print('尚未營業');
+      businessTime = false;
+    }
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: Dimensions.height5,

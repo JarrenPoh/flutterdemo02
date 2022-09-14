@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutterdemo02/API/shopCarApi.dart';
 import 'package:flutterdemo02/pages/Tabs.dart';
 import 'package:get/get.dart';
@@ -17,7 +18,8 @@ class CartController extends GetxController {
   List<dynamic> radiolist = <dynamic>[].obs;
   List<dynamic> Radiolist = <dynamic>[].obs;
   bool tableware = false;
-  String reservationTime = "23:45";
+  
+  String reservationTime = "${TimeOfDay.now().hour.toString().padLeft(2, '0')}:${(TimeOfDay.now().minute).toString().padLeft(2, '0')}";
   late int finalPrice;
   bool ifUpdateCar = true;
 

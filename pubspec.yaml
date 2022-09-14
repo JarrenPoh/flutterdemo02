@@ -68,6 +68,7 @@ dependencies:
   google_geocoding: ^0.2.0
   mailer: ^5.2.0
   flip_card: ^0.6.0
+  time_picker_widget: ^1.0.0+10
 
 
 

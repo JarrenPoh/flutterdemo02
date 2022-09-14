@@ -8,15 +8,38 @@ import 'package:flutterdemo02/models/SmallText.dart';
 import 'package:flutterdemo02/models/TabsText.dart';
 import 'package:flutterdemo02/pages/Tabs.dart';
 
-class RappiProductItem extends StatelessWidget {
+class RappiProductItem extends StatefulWidget {
   Map arguments;
-  RappiProductItem(this.product, this.arguments);
+  RappiProductItem(this.product,  this.arguments);
   final Result product;
+
+  @override
+  State<RappiProductItem> createState() => _RappiProductItemState(arguments:arguments);
+}
+
+class _RappiProductItemState extends State<RappiProductItem> {
+  Map arguments;
+  _RappiProductItemState({required this.arguments});
   List options = [];
+
+  bool? businessTime;
+  int selectedHour = TimeOfDay.now().hour;
+  @override
+  void initState() {
+    if ( arguments['businessTime'][selectedHour] == true) {
+      print('營業中');
+      businessTime = true;
+    } else {
+      print('尚未營業');
+      businessTime = false;
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (product.options != null) {
-      options = jsonDecode(product.options!);
+    if (widget.product.options != null) {
+      options = jsonDecode(widget.product.options!);
     }
 
     return SizedBox(
@@ -25,18 +48,18 @@ class RappiProductItem extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: Dimensions.height5),
         child: GestureDetector(
           onTap: () async {
-            if (arguments['businessTime'] == true) {
+            if (businessTime == true) {
               cartController.deleteindex = null;
               final choses =
                   await Navigator.pushNamed(context, '/form5', arguments: {
                 'id': true,
-                'Id': product.id,
-                'name': product.name,
-                'price': int.parse(product.price),
-                'textprice': product.price,
-                'description': product.describe,
-                'image': product.image,
-                'shopname': arguments['shopname'],
+                'Id': widget.product.id,
+                'name': widget.product.name,
+                'price': int.parse(widget.product.price),
+                'textprice': widget.product.price,
+                'description': widget.product.describe,
+                'image': widget.product.image,
+                'shopname': widget.arguments['shopname'],
                 'ToCart': '加入購物車',
                 'firstNumber': 1,
                 'options': options,
@@ -95,20 +118,20 @@ class RappiProductItem extends StatelessWidget {
                         children: [
                           BetweenSM(
                             color: kBodyTextColor,
-                            text: product.name,
+                            text: widget.product.name,
                             weight: FontWeight.normal,
                             fontFamily: 'NotoSansMedium',
                           ),
-                          if (product.describe != null)
+                          if (widget.product.describe != null)
                             SmallText(
                               color: kTextLightColor,
-                              text: product.describe!,
+                              text: widget.product.describe!,
                             ),
                           SizedBox(
                             height: Dimensions.height5,
                           ),
                           Text(
-                            '\$ ${product.price}',
+                            '\$ ${widget.product.price}',
                             style: const TextStyle(
                                 color: kMaimColor,
                                 fontWeight: FontWeight.normal,
@@ -131,12 +154,12 @@ class RappiProductItem extends StatelessWidget {
                             BorderRadius.circular(Dimensions.radius10),
                         child: Column(
                           children: [
-                            if (product.image != null)
+                            if (widget.product.image != null)
                               Image.asset(
-                                product.image!,
+                                widget.product.image!,
                                 fit: BoxFit.cover,
                               ),
-                            if (product.image == null)
+                            if (widget.product.image == null)
                               Container(
                                 color: Colors.grey,
                                 width: Dimensions.screenWidth / 4.36,
