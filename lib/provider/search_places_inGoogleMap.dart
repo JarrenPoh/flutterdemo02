@@ -23,7 +23,7 @@ class PlaceResults extends ChangeNotifier {
 class SearchToggle extends ChangeNotifier {
   bool? searchToggle;
 
-  void toggleSearch(bool v) {
+  Future<void> toggleSearch(bool v) async {
     searchToggle = v;
     
     

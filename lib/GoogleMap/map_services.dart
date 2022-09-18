@@ -17,7 +17,7 @@ class MapServices {
           "token": token,
           "Content-Type": "application/x-www-form-urlencoded"
         });
-    
+
     if (response.statusCode == 200) {
       var obj = Store.fromJson(jsonDecode(response.body));
       var myaddress = (obj.result as List<Result?>);
@@ -42,17 +42,15 @@ class MapServices {
 
   static Future<Map<String, dynamic>?>? getPlace(String? input) async {
     final String url =
-        'https://maps.googleapis.com/maps/api/place/details/json?place_id=$input&key=$GoogleMapKey';
+        'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=geometry&input=$input&inputtype=textquery&key=$GoogleMapKey';
 
     var response = await http.get(Uri.parse(url));
+    debugPrint('response statuscode in MapgetPlace is ${response.statusCode}');
 
     var json = jsonDecode(response.body);
+    print('json is$json');
 
-    var result = json['result'] as Map<String, dynamic>;
-    print('response statuscode in MapgetPlace is ${response.statusCode}');
-    
-
-    return result;
+    return json;
   }
 
   static Future<Map<String, dynamic>?>? getDirections(
@@ -70,16 +68,14 @@ class MapServices {
       'start_location': json['routes'][0]['legs'][0]['start_location'],
       'end_location': json['routes'][0]['legs'][0]['end_location'],
       'polyline': json['routes'][0]['overview_polyline']['points'],
-      'polyline_decode': PolylinePoints().decodePolyline(json['routes'][0]['overview_polyline']['points'])
+      'polyline_decode': PolylinePoints()
+          .decodePolyline(json['routes'][0]['overview_polyline']['points']),
+      'distance':json['routes'][0]['legs'][0]['distance']['text'],
+      'duration':json['routes'][0]['legs'][0]['duration']['text'],
     };
 
     print('response statuscode in getDirectionsApi is ${response.statusCode}');
-    
 
     return results;
-
-    
-
-    
   }
 }

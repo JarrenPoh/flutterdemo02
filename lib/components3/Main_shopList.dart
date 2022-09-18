@@ -48,6 +48,7 @@ class _mainListState extends State<mainList> {
             name: data[index].name!,
             address: data[index].address,
             image: data[index].image,
+            id:data[index].id!,
             press: () async {
               if (cartController.cartlist.isNotEmpty &&
                   cartController.cartlist.first.shopname != data[index].name) {

@@ -17,6 +17,7 @@ class imageItems extends StatelessWidget {
     required this.discount,
     required this.timeEstimate,
     required this.businessTime,
+    required this.id,
   }) : super(key: key);
 
   final String name;
@@ -25,6 +26,7 @@ class imageItems extends StatelessWidget {
   final String? timeEstimate;
   final bool businessTime;
   final VoidCallback press;
+  final String id;
   List? discount = [];
   @override
   Widget build(BuildContext context) {
@@ -219,6 +221,7 @@ class imageItems extends StatelessWidget {
                     currentLocation = location;
                     Navigator.pushNamed(context, '/mapsplash', arguments: {
                       'currentLocation': currentLocation,
+                      'initialid':id,
                     });
                   });
                   print('currentLocation');

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutterdemo02/API/StoreModel.dart';
@@ -36,12 +37,14 @@ class _SearchingPageState extends State<SearchingPage> {
   }
 
   Future init() async {
-    originbooks = await BookApi.getStores(query, UserSimplePreferences.getToken());
+    originbooks =
+        await BookApi.getStores(query, UserSimplePreferences.getToken());
     if (originbooks == null) {
       String? refresh_token = UserSimplePreferences.getRefreshToken();
       var getToken = await getTokenApi.getToken(refresh_token);
       await UserSimplePreferences.setToken(getToken.headers['token']!);
-      originbooks = await BookApi.getStores(query, UserSimplePreferences.getToken());
+      originbooks =
+          await BookApi.getStores(query, UserSimplePreferences.getToken());
     }
     debugPrint('${originbooks}');
     setState(() {
@@ -146,16 +149,22 @@ class _SearchingPageState extends State<SearchingPage> {
             Navigator.pushNamed(context, '/form4', arguments: {
               'shopname': book.name,
               'shopimage': book.image,
-              'discount': book.discount,
-              'id': book.id
+              'discount': jsonDecode(book.discount!),
+              'id': book.id,
+              'businessTime': book.businessTime,
+              'timeEstimate': book.timeEstimate,
+              'describe': book.describe,
             });
           }
         } else {
           Navigator.pushNamed(context, '/form4', arguments: {
             'shopname': book.name,
             'shopimage': book.image,
-            'discount': book.discount,
-            'id': book.id
+            'discount': jsonDecode(book.discount!),
+            'id': book.id,
+            'businessTime': book.businessTime,
+            'timeEstimate': book.timeEstimate,
+            'describe': book.describe,
           });
         }
       },
