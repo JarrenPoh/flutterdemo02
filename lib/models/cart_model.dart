@@ -83,7 +83,7 @@ class Order {
 
 class Orders {
   bool tableware;
-  String reservationTime;
+  String? reservationTime;
   List? order;
   Orders(
     this.tableware,

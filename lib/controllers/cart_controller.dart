@@ -19,7 +19,7 @@ class CartController extends GetxController {
   List<dynamic> Radiolist = <dynamic>[].obs;
   bool tableware = false;
   
-  String reservationTime = "${TimeOfDay.now().hour.toString().padLeft(2, '0')}:${(TimeOfDay.now().minute).toString().padLeft(2, '0')}";
+  String? reservationTime ;
   late int finalPrice;
   bool ifUpdateCar = true;
 
@@ -158,7 +158,7 @@ class CartController extends GetxController {
   //////
 
   ///////取餐時間////
-  String getReservation({required String Time}) {
+  String? getReservation({required String? Time}) {
     reservationTime = Time;
     return reservationTime;
   }

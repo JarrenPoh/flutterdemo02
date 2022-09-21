@@ -20,14 +20,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutterdemo02/API/getTokenApi.dart';
 import 'package:location/location.dart';
 import '../API/StoreModel.dart';
-import 'package:google_geocoding/google_geocoding.dart';
+
 import 'package:flip_card/flip_card.dart';
 import '../models/BetweenSM.dart';
 import '../models/MiddleText.dart';
 
 //search 要按兩下toggle才等於false
 //照片的東西
-
 
 class googleMap extends ConsumerStatefulWidget {
   googleMap({Key? key, required this.arguments}) : super(key: key);
@@ -146,7 +145,7 @@ class _googleMapState extends ConsumerState<googleMap> {
 
   LocationData? currentLocation;
   List<Result?>? originbooks = [];
-  int? initialpage=0;
+  int? initialpage = 0;
 
   final _focusNode = FocusNode();
   int prevPage = 0;
@@ -154,14 +153,16 @@ class _googleMapState extends ConsumerState<googleMap> {
   void initState() {
     originbooks = arguments['originbooks'];
     currentLocation = arguments['currentLocation'];
-    
+
     if (arguments['initialid'] != null) {
       var initialid = arguments['initialid'];
-      initialpage = originbooks!.indexWhere((element) => element!.id==initialid);
+      initialpage =
+          originbooks!.indexWhere((element) => element!.id == initialid);
     }
 
     fetchImage();
-    _pageController = PageController(initialPage: initialpage!, viewportFraction: 0.85);
+    _pageController =
+        PageController(initialPage: initialpage!, viewportFraction: 0.85);
     iniMarker();
 
     if (arguments['initialid'] != null) {
@@ -247,7 +248,7 @@ class _googleMapState extends ConsumerState<googleMap> {
                     ? Padding(
                         padding: EdgeInsets.fromLTRB(
                             Dimensions.width15,
-                            Dimensions.height20,
+                            Dimensions.height20*2,
                             Dimensions.width15,
                             Dimensions.height5),
                         child: Column(
@@ -573,6 +574,7 @@ class _googleMapState extends ConsumerState<googleMap> {
             },
             icon: Icon(Icons.navigation),
           ),
+          IconButton(onPressed: _currentLocation, icon: Icon(Icons.my_location_outlined),)
         ],
       ),
     );
@@ -779,13 +781,23 @@ class _googleMapState extends ConsumerState<googleMap> {
                                     if (startTime[index] == 0) {
                                       startText = '00:00';
                                     } else if (startTime[index] != 0) {
-                                      startText = '${startTime[index]}:00';
+                                      if (startTime[index] > 12) {
+                                        startText =
+                                            '${startTime[index] - 12}:00';
+                                      } else {
+                                        startText = '${startTime[index]}:00';
+                                      }
                                     }
                                     String endText = '';
                                     if (endTime[index] == 23) {
                                       endText = '00:00';
                                     } else if (endTime[index] != 0) {
-                                      endText = '${endTime[index] + 1}:00';
+                                      if (endTime[index] + 1 > 12) {
+                                        endText =
+                                            '${endTime[index] + 1 - 12}:00';
+                                      } else {
+                                        endText = '${endTime[index] + 1}:00';
+                                      }
                                     }
                                     String startNoon = '';
                                     String endNoon = '';
@@ -803,7 +815,7 @@ class _googleMapState extends ConsumerState<googleMap> {
                                     return Column(
                                       children: [
                                         TabText(
-                                          color: kTextLightColor,
+                                          color: kBodyTextColor,
                                           text:
                                               '$startNoon $startText ~ $endNoon $endText',
                                           fontFamily: 'NotoSansMedium',
@@ -839,7 +851,7 @@ class _googleMapState extends ConsumerState<googleMap> {
                               Container(
                                 width: Dimensions.width10 * 21,
                                 child: TabText(
-                                  color: kTextLightColor,
+                                  color: kBodyTextColor,
                                   text: '${originbooks![index]!.describe}',
                                   maxLines: 10,
                                 ),
@@ -1437,4 +1449,27 @@ class _googleMapState extends ConsumerState<googleMap> {
       },
     );
   }
+
+  void _currentLocation() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    fabKey.currentState?.close();
+   final GoogleMapController controller = await _controller.future;
+   LocationData? currentLocation;
+   var location =  Location();
+   try {
+     currentLocation = await location.getLocation();
+     } on Exception {
+       currentLocation = null;
+       }
+
+    controller.animateCamera(CameraUpdate.newCameraPosition(
+      CameraPosition(
+        bearing: 0,
+        target: LatLng(currentLocation!.latitude!, currentLocation.longitude!),
+        zoom: 17.0,
+      ),
+    ));
+    
+  }
+
 }

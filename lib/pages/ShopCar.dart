@@ -84,7 +84,7 @@ class _shopCarState extends State<shopCar> {
   StoreInfo? storeInfo;
   int finalPrice = 0;
   bool tableWare = false;
-  String reservation = '';
+  String? reservation;
   bool selectTime = false;
   ////////////
   refresh() {
@@ -154,6 +154,7 @@ class _shopCarState extends State<shopCar> {
                             print(
                                 'UserSimplePreferences.getFinalPrice() is ${UserSimplePreferences.getFinalPrice()}');
                             if (UserSimplePreferences.getFinalPrice() != 0) {
+                              print('selectTime == $selectTime 代表可以打開');
                               if (selectTime == true) {
                                 bool? delete = await showDeleteDialod();
                                 //發送訂單
@@ -261,7 +262,7 @@ class _shopCarState extends State<shopCar> {
     storeInfo = ss.storeInfo;
     finalPrice = ss.total!;
     tableWare = ss.tableware!;
-    reservation = ss.reservation!;
+    reservation = ss.reservation;
     return showDialog(
       context: context,
       builder: (context) {
@@ -410,7 +411,12 @@ class _shopCarState extends State<shopCar> {
                   ),
                   TabText(
                     color: kMaimColor,
-                    text: reservation,
+                    text: reservation ?? '即時',
+                    fontFamily: 'NotoSansMedium',
+                  ),
+                  SmallText(
+                    color: kTextLightColor,
+                    text: reservation != null ? '(10分鐘)' : '',
                     fontFamily: 'NotoSansMedium',
                   ),
                 ],

@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
-
+import 'package:flutterdemo02/controllers/cart_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutterdemo02/models/BigText.dart';
 import 'package:flutterdemo02/models/ColorSettings.dart';
 import 'package:flutterdemo02/models/MiddleText.dart';
 import 'package:flutterdemo02/models/TabsText.dart';
-import 'package:flutterdemo02/pages/Tabs.dart';
+
 import 'package:flutterdemo02/provider/Shared_Preference.dart';
 import 'package:flutterdemo02/API/shopCarApi.dart';
 import 'package:get/get.dart';
@@ -27,7 +27,7 @@ class orderSuccessful extends StatefulWidget {
 
 class _orderSuccessfulState extends State<orderSuccessful> {
   late Future<Result?>? order;
-
+final cartController = Get.put(CartController());
   void inspect() async {
     var ss = await spectator();
     if (ss == null) {
@@ -104,6 +104,7 @@ class _orderSuccessfulState extends State<orderSuccessful> {
 
       var myaddress = (obj.result as List<Result2?>);
       SId = myaddress.last!.sId!;
+      debugPrint('comments is ${myaddress.last!.comments}');
 
       return myaddress;
     } else if (response.statusCode == 403) {
@@ -310,9 +311,9 @@ class _orderSuccessfulState extends State<orderSuccessful> {
                                       color: Colors.grey,
                                       child: TextButton(
                                         onPressed: () async {
-                                          cartController.deleteAll();
-                                          await Navigator.pushReplacementNamed(
+                                          Navigator.pushReplacementNamed(
                                               context, '/form3');
+                                          cartController.deleteAll();
                                         },
                                         child: const Text(
                                           '返回首頁',
