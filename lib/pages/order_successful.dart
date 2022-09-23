@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:flutterdemo02/controllers/cart_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,7 +28,7 @@ class orderSuccessful extends StatefulWidget {
 
 class _orderSuccessfulState extends State<orderSuccessful> {
   late Future<Result?>? order;
-final cartController = Get.put(CartController());
+  final cartController = Get.put(CartController());
   void inspect() async {
     var ss = await spectator();
     if (ss == null) {
@@ -56,6 +57,8 @@ final cartController = Get.put(CartController());
   bool isLoading = false;
   bool bottonloading = false;
   bool deal = false;
+  bool haveComments = false;
+  String? comments = '';
   List<Result2?>? accept;
   Timer? timer;
   static const maxSeconds = 60;
@@ -77,6 +80,13 @@ final cartController = Get.put(CartController());
       deal = false;
     } else {
       accept = null;
+    }
+
+    if (accept?.last?.comments != null) {
+      haveComments = true;
+      comments = accept!.last!.comments;
+    } else {
+      haveComments = false;
     }
 
     setState(() {
@@ -104,7 +114,6 @@ final cartController = Get.put(CartController());
 
       var myaddress = (obj.result as List<Result2?>);
       SId = myaddress.last!.sId!;
-      debugPrint('comments is ${myaddress.last!.comments}');
 
       return myaddress;
     } else if (response.statusCode == 403) {
@@ -308,15 +317,54 @@ final cartController = Get.put(CartController());
                                   Center(
                                     child: Card(
                                       borderOnForeground: false,
-                                      color: Colors.grey,
+                                      color: haveComments
+                                          ? Colors.blue
+                                          : Colors.grey,
                                       child: TextButton(
                                         onPressed: () async {
-                                          Navigator.pushReplacementNamed(
-                                              context, '/form3');
-                                          cartController.deleteAll();
+                                          if (haveComments == true) {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return AlertDialog(
+                                                  title: TabText(
+                                                    color: kTextLightColor,
+                                                    text: '店家有話跟你說~',
+                                                    fontFamily:
+                                                        'NotoSansMedium',
+                                                  ),
+                                                  content: MiddleText(
+                                                    color: kBodyTextColor,
+                                                    text: '$comments',
+                                                    fontFamily:
+                                                        'NotoSansMedium',
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                        haveComments=false;
+                                                        setState(() {
+                                                          
+                                                        });
+                                                      },
+                                                      child: TabText(
+                                                        color: Colors.blue,
+                                                        text: '知道了',
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          } else {
+                                            Navigator.pushReplacementNamed(
+                                                context, '/form3');
+                                            cartController.deleteAll();
+                                          }
                                         },
-                                        child: const Text(
-                                          '返回首頁',
+                                        child: Text(
+                                          haveComments ? '店家有話跟你說' : '返回首頁',
                                           style: TextStyle(
                                             color: Colors.white,
                                           ),
