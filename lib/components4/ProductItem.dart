@@ -48,7 +48,7 @@ class _RappiProductItemState extends State<RappiProductItem> {
         padding: EdgeInsets.symmetric(vertical: Dimensions.height5),
         child: GestureDetector(
           onTap: () async {
-            if (businessTime == true) {
+            
               cartController.deleteindex = null;
               final choses =
                   await Navigator.pushNamed(context, '/form5', arguments: {
@@ -64,39 +64,7 @@ class _RappiProductItemState extends State<RappiProductItem> {
                 'firstNumber': 1,
                 'options': options,
               });
-            } else {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    backgroundColor: kBottomColor,
-                    scrollable: true,
-                    title: BetweenSM(
-                      color: kBodyTextColor,
-                      text: '店家尚未營業',
-                      fontFamily: 'NotoSansMedium',
-                      maxLines: 3,
-                    ),
-                    content: Column(
-                      children: [
-                        TabText(
-                          color: kBodyTextColor,
-                          text: '店家為正常營業狀況方能進行點餐',
-                          fontFamily: 'NotoSansMedium',
-                          maxLines: 100,
-                        ),
-                      ],
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: const Text('確認'),
-                      ),
-                    ],
-                  );
-                },
-              );
-            }
+            
           },
           child: Card(
               elevation: Dimensions.height5,

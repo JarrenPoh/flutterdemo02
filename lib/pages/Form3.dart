@@ -5,6 +5,7 @@ import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutterdemo02/pages/numberCard.dart';
+import 'package:flutterdemo02/provider/local_notification_service.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutterdemo02/components3/Main_shopList.dart';
@@ -98,8 +99,15 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
 
   late List<List<Result>> data2 = [];
   ///////
+
+  late final LocalNotificationService service;
+
+ 
+
   @override
   void initState() {
+    
+    
     super.initState();
     inspect().then((value) {
       if (SS != null) {

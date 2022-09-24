@@ -19,6 +19,8 @@ import 'package:flutterdemo02/API/getTokenApi.dart';
 import '../models/BetweenSM.dart';
 import 'package:http/http.dart' as http;
 
+import '../provider/local_notification_service.dart';
+
 class orderSuccessful extends StatefulWidget {
   orderSuccessful({Key? key}) : super(key: key);
 
@@ -45,10 +47,23 @@ class _orderSuccessfulState extends State<orderSuccessful> {
     return await order;
   }
 
+  late final LocalNotificationService service;
+
+  void listenToNotification() =>
+      service.onNotificationClick.stream.listen(onNotificationListener);
+
+  void onNotificationListener(payload) {
+    if (payload != null) {
+      Navigator.pushNamed(context, '/form3');
+    }
+  }
+
   @override
   void initState() {
     inspect();
-
+    service = LocalNotificationService();
+    service.intialize();
+    listenToNotification();
     // TODO: implement initState
     super.initState();
   }
@@ -72,21 +87,33 @@ class _orderSuccessfulState extends State<orderSuccessful> {
       await UserSimplePreferences.setToken(getToken.headers['token']!);
       accept = await historyApi(UserSimplePreferences.getToken());
     }
-//
-    if (accept!.last!.accept == true && accept!.last!.complete == false) {
-      deal = true;
-    } else if (accept!.last!.accept == false &&
-        accept!.last!.complete == true) {
-      deal = false;
-    } else {
-      accept = null;
-    }
 
     if (accept?.last?.comments != null) {
       haveComments = true;
       comments = accept!.last!.comments;
     } else {
       haveComments = false;
+    }
+//
+    if (accept!.last!.accept == true && accept!.last!.complete == false) {
+      deal = true;
+      service.showNotificationWithPayload(
+        id: 0,
+        title: '訂單成立',
+        body: '您已於${accept!.last!.storeInfo!.name}預定${accept!.last!.reservation}' '${haveComments ? ' ，店家留言給你$comments' : ''}',
+        payload: '',
+      );
+    } else if (accept!.last!.accept == false &&
+        accept!.last!.complete == true) {
+      deal = false;
+      service.showNotificationWithPayload(
+        id: 0,
+        title: '訂單不成立',
+        body: '店家拒絕了你的訂單' '${haveComments ? ' ，店家留言給你$comments' : ''}',
+        payload: '',
+      );
+    } else {
+      accept = null;
     }
 
     setState(() {
@@ -343,10 +370,8 @@ class _orderSuccessfulState extends State<orderSuccessful> {
                                                     TextButton(
                                                       onPressed: () {
                                                         Navigator.pop(context);
-                                                        haveComments=false;
-                                                        setState(() {
-                                                          
-                                                        });
+                                                        haveComments = false;
+                                                        setState(() {});
                                                       },
                                                       child: TabText(
                                                         color: Colors.blue,

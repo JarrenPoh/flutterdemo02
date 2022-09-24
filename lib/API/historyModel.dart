@@ -40,6 +40,7 @@ class Result2 {
   bool? tableWare;
   int? sequence;
   String? comments;
+  String?reservation;
 
   Result2({
     this.sId,
@@ -54,6 +55,7 @@ class Result2 {
     this.tableWare,
     this.sequence,
     this.comments,
+    this.reservation,
   });
 
   Result2.fromJson(Map<String, dynamic> json) {
@@ -71,6 +73,7 @@ class Result2 {
     tableWare = json['tableware'];
     sequence = json['sequence'];
     comments = json['comments'];
+    reservation = json['reservation'];
   }
 
   Map<String, dynamic> toJson() {
@@ -88,6 +91,7 @@ class Result2 {
     data['image'] = this.image;
     data['sequence'] = this.sequence;
     data['comments'] = this.comments;
+    data['reservation'] = this.reservation;
     return data;
   }
 }
