@@ -56,25 +56,29 @@ class _ReservationState extends State<Reservation> {
   List? choseFuture;
   bool? choseNow = false;
 
-  List startMin = [];
-  List endMin = [];
-  setTime(index) {
-    startMin = ['00', '10', '20', '30', '40', '50'];
-    endMin = ['10', '20', '30', '40', '50', '00'];
+  List<List> startMin = [];
+  List<List> endMin = [];
+  setTime(lindex) {
     nowTime = TimeOfDay(
       hour: TimeOfDay.now().hour,
       minute: TimeOfDay.now().minute,
     );
-    if (availableHours[index] == nowTime.hour.toInt() + 1) {
-      int x = nowTime.minute ~/ 10;
+    if (availableHours[lindex] == nowTime.hour.toInt() + 1) {
+      int x = nowTime.minute ~/ 10; //取整數
       if (x == 0) {
       } else {
-        startMin.removeRange(0, x + 1);
-        endMin.removeRange(0, x + 1);
+        startMin = [
+          ['00', '10', '20', '30', '40', '50']
+        ];
+        endMin = [
+          ['10', '20', '30', '40', '50', '00']
+        ];
+        startMin.first.removeRange(0, x + 1);
+        endMin.first.removeRange(0, x + 1);
       }
     } else {
-      startMin = ['00', '10', '20', '30', '40', '50'];
-      endMin = ['10', '20', '30', '40', '50', '00'];
+      startMin.add(['00', '10', '20', '30', '40', '50']);
+      endMin.add(['00', '10', '20', '30', '40', '50']);
     }
     print('startMin is $startMin');
     print('endMin is $endMin');
@@ -306,7 +310,7 @@ class _ReservationState extends State<Reservation> {
 
                                   return Column(
                                     children: List.generate(
-                                      startMin.length,
+                                      startMin[lindex].length,
                                       (index) {
                                         return Column(
                                           children: [
@@ -316,8 +320,8 @@ class _ReservationState extends State<Reservation> {
                                             GestureDetector(
                                               onTap: () {
                                                 Navigator.pop(context, [
-                                                  '$canNoon $canText : ${startMin[index]} - ${endMin[index] == '00' ? int.parse(canText) + 1 : int.parse(canText)} : ${endMin[index]}',
-                                                  '${canNoon == '上午' ? canText : (int.parse(canText) + 12).toString()}:${startMin[index]}'
+                                                  '$canNoon $canText : ${startMin[lindex][index]} - ${endMin[lindex][index] == '00' ? int.parse(canText) + 1 : int.parse(canText)} : ${endMin[lindex][index]}',
+                                                  '${canNoon == '上午' ? canText : (int.parse(canText) + 12).toString()}:${startMin[lindex][index]}',
                                                 ]);
                                               },
                                               child: Card(
@@ -344,7 +348,7 @@ class _ReservationState extends State<Reservation> {
                                                       TabText(
                                                         color: kBodyTextColor,
                                                         text:
-                                                            '$canNoon $canText : ${startMin[index]} - ${endMin[index] == '00' ? int.parse(canText) + 1 : int.parse(canText)} : ${endMin[index]}',
+                                                            '$canNoon $canText : ${startMin[lindex][index]} - ${endMin[lindex][index] == '00' ? int.parse(canText) + 1 : int.parse(canText)} : ${endMin[lindex][index]}',
                                                         fontFamily:
                                                             'NotoSansMedium',
                                                       ),
@@ -368,7 +372,7 @@ class _ReservationState extends State<Reservation> {
 
                     //if 'OK' => TimeOfDay
                     print(
-                        'choseTime is ${choseFuture![1].toString().padLeft(2, '0')}');
+                        'choseTime is ${choseFuture![1].toString().padLeft(5, '0')}');
                     print('reservationClose is ${reservationClose}');
                     cartController.getReservation(
                       Time: '${choseFuture![1].toString().padLeft(5, '0')}',

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutterdemo02/controllers/cart_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +14,7 @@ import 'package:flutterdemo02/provider/Shared_Preference.dart';
 import 'package:flutterdemo02/API/shopCarApi.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+
 import '../API/historyModel.dart';
 import '../API/shopCarModel.dart';
 import 'package:flutterdemo02/API/getTokenApi.dart';
@@ -88,7 +90,7 @@ class _orderSuccessfulState extends State<orderSuccessful> {
       accept = await historyApi(UserSimplePreferences.getToken());
     }
 
-    if (accept?.last?.comments != null) {
+    if (accept?.last?.comments != '') {
       haveComments = true;
       comments = accept!.last!.comments;
     } else {
@@ -96,20 +98,45 @@ class _orderSuccessfulState extends State<orderSuccessful> {
     }
 //
     if (accept!.last!.accept == true && accept!.last!.complete == false) {
+      int? finalSecond;
+      if (accept!.last!.reservation != null) {
+        int selectHour = int.parse(accept!.last!.reservation!.substring(0, 2));
+        int selectMinute =
+            int.parse(accept!.last!.reservation!.substring(3, 5));
+        print('selectHour ia $selectHour');
+        print('selectMinute ia $selectMinute');
+        int hour = TimeOfDay.now().hour;
+        int minute = TimeOfDay.now().minute;
+
+        finalSecond =
+            ((selectHour * 60 + selectMinute) - (hour * 60 + minute)) * 60;
+        print('finalSecond ia $finalSecond');
+      }
+
       deal = true;
-      service.showNotificationWithPayload(
+      await service.showNotificationWithPayload(
         id: 0,
-        title: '訂單成立',
-        body: '您已於${accept!.last!.storeInfo!.name}預定${accept!.last!.reservation}' '${haveComments ? ' ，店家留言給你$comments' : ''}',
+        title: '訂單成立(${accept!.last!.storeInfo!.name})',
+        body: '您的取餐時間為${'"${accept!.last!.reservation ?? '即時'}"'}'
+            '${comments != null ? ' ，店家留言給你"$comments"' : ''}',
         payload: '',
       );
+      if (finalSecond != null) {
+        await service.showScheduledNotification(
+          id: 0,
+          title: '時間快到囉',
+          body: '您預定的取餐時間"${accept!.last!.reservation}"快到了，請留意餐點進度',
+          seconds: finalSecond,
+        );
+      }
     } else if (accept!.last!.accept == false &&
-        accept!.last!.complete == true) {
+        accept!.last!.complete == true &&
+        delete == false) {
       deal = false;
       service.showNotificationWithPayload(
         id: 0,
         title: '訂單不成立',
-        body: '店家拒絕了你的訂單' '${haveComments ? ' ，店家留言給你$comments' : ''}',
+        body: '店家拒絕了你的訂單' '${comments != null ? ' ，店家留言給你$comments' : ''}',
         payload: '',
       );
     } else {
