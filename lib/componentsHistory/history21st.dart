@@ -4,13 +4,15 @@ import 'package:flutterdemo02/models/ColorSettings.dart';
 import '../models/TabsText.dart';
 
 class history1st extends StatelessWidget {
-  history1st(
-      {Key? key,
-      required this.shopname,
-      required this.numbering,
-      required this.address})
-      : super(key: key);
+  history1st({
+    Key? key,
+    required this.shopname,
+    required this.numbering,
+    required this.address,
+    this.sequence,
+  }) : super(key: key);
   final String numbering, address, shopname;
+  int? sequence;
   String subNum = '';
   String subnumbering() {
     print(numbering);
@@ -27,25 +29,32 @@ class history1st extends StatelessWidget {
       padding: EdgeInsets.only(bottom: Dimensions.height10),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TabText(color: kTextLightColor, text: '訂單編號'),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    TabText(
-                      color: kBodyTextColor,
-                      text: subnumbering(),
-                      maxLines: 1,
-                      fontFamily: 'NotoSansMedium',
-                    ),
-                  ],
+          if (sequence != null)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TabText(color: kTextLightColor, text: '號碼牌'),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Container(
+                        alignment: Alignment.bottomRight,
+                        width: 180,
+                        child: TabText(
+                          color: kMaimColor,
+                          text: '$sequence',
+                          maxLines: 10,
+                          textAlign: TextAlign.end,
+                          fontFamily: 'NotoSansMedium',
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
           SizedBox(height: Dimensions.height10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -66,6 +75,26 @@ class history1st extends StatelessWidget {
                         textAlign: TextAlign.end,
                         fontFamily: 'NotoSansMedium',
                       ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: Dimensions.height10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TabText(color: kTextLightColor, text: '訂單編號'),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    TabText(
+                      color: kBodyTextColor,
+                      text: subnumbering(),
+                      maxLines: 1,
+                      fontFamily: 'NotoSansMedium',
                     ),
                   ],
                 ),

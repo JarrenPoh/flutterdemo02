@@ -38,9 +38,7 @@ class _HistoryPage2State extends State<HistoryPage2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       backgroundColor: Colors.white,
-
       bottomNavigationBar: Container(
         height: 80,
         color: Colors.white,
@@ -127,8 +125,7 @@ class _HistoryPage2State extends State<HistoryPage2> {
                       text: arguments['shopname'],
                       weight: FontWeight.bold,
                     ),
-                    SizedBox(height: Dimensions.height15),
-                    SizedBox(height: Dimensions.height15),
+                    SizedBox(height: Dimensions.height15 * 2),
                     BetweenSM(
                       color: kBodyTextColor,
                       text: '訂單詳情',
@@ -145,14 +142,17 @@ class _HistoryPage2State extends State<HistoryPage2> {
                       padding:
                           EdgeInsets.symmetric(vertical: Dimensions.height10),
                       child: Column(
-                        children: List.generate(order.length, (index) {
-                          return history2nd(
-                              describes: order[index]['note'],
-                              name: order[index]['name'],
-                              price: order[index]['price'],
-                              options: jsonDecode(order[index]['options']),
-                              counts: order[index]['count']);
-                        }),
+                        children: List.generate(
+                          order.length,
+                          (index) {
+                            return history2nd(
+                                describes: order[index]['note'],
+                                name: order[index]['name'],
+                                price: order[index]['price'],
+                                options: jsonDecode(order[index]['options']),
+                                counts: order[index]['count']);
+                          },
+                        ),
                       ),
                     ),
                     const Divider(),

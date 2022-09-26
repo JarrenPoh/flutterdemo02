@@ -173,6 +173,7 @@ class _ReservationState extends State<Reservation> {
                     if (choseNow == true) {
                       choseNow = false;
                       selectTime = false;
+                      BoolCallBack(selectTime);
                     } else {
                       choseNow = true;
                       selectTime = true;

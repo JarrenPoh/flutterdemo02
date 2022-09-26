@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutterdemo02/API/getTokenApi.dart';
+import 'package:flutterdemo02/models/SmallText.dart';
 import '../API/historyApi.dart';
 import '../API/historyModel.dart';
 import '../models/BetweenSM.dart';
@@ -31,23 +32,22 @@ class _numberCardState extends State<numberCard> {
       stores = HistoryApi.getStores(UserSimplePreferences.getToken());
 
       setState(() {});
-     
     }
     return await stores;
   }
-  
 
   Future spectator() async {
     stores = HistoryApi.getStores(UserSimplePreferences.getToken());
+    setState(() {});
     return await stores;
   }
 
   ////////////
 
   Timer? timer;
-  static const maxSeconds = 3;
+  static const maxSeconds = 30;
   int seconds = maxSeconds;
-  void startTimer() {
+  void startTimer() async{
     timer = Timer.periodic(Duration(seconds: 1), (_) {
       if (seconds == 0) {
         seconds = maxSeconds;
@@ -88,8 +88,8 @@ class _numberCardState extends State<numberCard> {
               data2.add(data[i]);
               print('data[i] is ${data[i]}');
             }
-            
           }
+          var status = '';
 
           return AlertDialog(
             backgroundColor: kBottomColor,
@@ -105,57 +105,80 @@ class _numberCardState extends State<numberCard> {
               ],
             ),
             content: Column(
-              children: List.generate(
-                data2.length,
-                (index) => Container(
+              children: List.generate(data2.length, (index) {
+                if (data2[index].accept == true &&
+                    data2[index].complete == false) {
+                  status = '準備中';
+                }
+                return Container(
                   margin: const EdgeInsets.only(top: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          TabText(
-                            color: kBodyTextColor,
-                            text: '${data2[index].storeInfo!.name}',
-                            fontFamily: 'NotoSansMedium',
-                          ),
-                          Expanded(
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        '/numbercardsecond',
+                        arguments: {
+                          'data2': data2[index],
+                          'shopname': data2[index].storeInfo!.name,
+                          'address': data2[index].storeInfo!.address,
+                          'numbering': data2[index].sId,
+                          'finalprice': data2[index].total,
+                          'sequence':data2[index].sequence,
+                        },
+                      );
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            TabText(
+                              color: kTextLightColor,
+                              text: '${data2[index].storeInfo!.name}',
+                              fontFamily: 'NotoSansMedium',
+                            ),
+                            Expanded(
+                                child: Column(
+                              children: const [],
+                            )),
+                            TabText(
+                              color: kBodyTextColor,
+                              text: 'NO.${data2[index].sequence}',
+                              weight: FontWeight.bold,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            TabText(
+                              color: kBodyTextColor,
+                              text: '金額\$ ${data2[index].total}',
+                              fontFamily: 'NotoSansMedium',
+                            ),
+                            Expanded(
                               child: Column(
-                            children: const [],
-                          )),
-                          TabText(color: kBodyTextColor, text: '$index.')
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          BigText(
-                            color: kBodyTextColor,
-                            text: '${data2[index].sequence}',
-                            weight: FontWeight.bold,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          BetweenSM(
-                            color: kBodyTextColor,
-                            text: '金額\$ ${data[index].total}',
-                          ),
-                        ],
-                      ),
-                      const Divider()
-                    ],
+                                children: const [],
+                              ),
+                            ),
+                            SmallText(
+                              color:
+                                  status == '準備中' ? kMaimColor : kBodyTextColor,
+                              text: '$status',
+                              fontFamily: 'NotoSansMedium',
+                            ),
+                          ],
+                        ),
+                        const Divider()
+                      ],
+                    ),
                   ),
-                ),
-              ),
+                );
+              }),
             ),
             actions: [
               TextButton(

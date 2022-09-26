@@ -1,4 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutterdemo02/provider/utils.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
@@ -35,11 +36,19 @@ class LocalNotificationService {
   }
 
   Future<NotificationDetails> _notificationDetails() async {
-    const AndroidNotificationDetails androidNotificationDetails =
+    // final largeIconPath = await Utils.downloadFile('', 'largeIcon');
+    // final bigPicturePath = await Utils.downloadFile('', 'bigPicture');
+
+    // final styleInformation = BigPictureStyleInformation(
+    //     FilePathAndroidBitmap(bigPicturePath),
+    //     largeIcon: FilePathAndroidBitmap(largeIconPath));
+
+    AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails(
       'channel_id',
       'channel_name',
       channelDescription: 'description',
+      // styleInformation: styleInformation,
       importance: Importance.max,
       priority: Priority.max,
       playSound: true,
@@ -73,10 +82,14 @@ class LocalNotificationService {
       id,
       title,
       body,
-      tz.TZDateTime.from(DateTime.now().add(Duration(seconds: seconds)), tz.local,),
+      tz.TZDateTime.from(
+        DateTime.now().add(Duration(seconds: seconds)),
+        tz.local,
+      ),
       details,
       androidAllowWhileIdle: true,
-      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
     );
   }
 
@@ -87,7 +100,8 @@ class LocalNotificationService {
     required String payload,
   }) async {
     final details = await _notificationDetails();
-    await _localNotificationService.show(id, title, body, details,payload: payload);
+    await _localNotificationService.show(id, title, body, details,
+        payload: payload);
   }
 
   void _onDidReceiveLocalNotification(
@@ -95,11 +109,9 @@ class LocalNotificationService {
     print('id $id');
   }
 
-
-
-  void onSelectNotification(NotificationResponse? payload){
+  void onSelectNotification(NotificationResponse? payload) {
     print('payload $payload');
-    if(payload !=null){
+    if (payload != null) {
       onNotificationClick.add(payload);
     }
   }

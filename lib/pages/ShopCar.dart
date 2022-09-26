@@ -306,7 +306,7 @@ class _shopCarState extends State<shopCar> {
                     ///小計
                     totalprice = 0;
                     for (var i = 0; i < order.length; i++) {
-                      int inin = order[i]['price'];
+                      int inin = order[i]['price']*order[i]['count'];
                       totalprice += inin;
                     }
                     ///////

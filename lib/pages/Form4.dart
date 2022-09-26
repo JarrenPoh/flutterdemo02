@@ -26,7 +26,8 @@ class FormPage4 extends StatefulWidget {
   State<FormPage4> createState() => FormPage4State(arguments: arguments);
 }
 
-class FormPage4State extends State<FormPage4> with SingleTickerProviderStateMixin {
+class FormPage4State extends State<FormPage4>
+    with SingleTickerProviderStateMixin {
   FormPage4State({
     required this.arguments,
   });
@@ -144,11 +145,38 @@ class FormPage4State extends State<FormPage4> with SingleTickerProviderStateMixi
                                     return FlexibleSpaceBar(
                                       background: Column(
                                         children: [
-                                          if (arguments['shopimage'] != null)
-                                            Image.asset(
-                                              arguments['shopimage'],
-                                              fit: BoxFit.cover,
-                                            ),
+                                          arguments['shopimage'] != null
+                                              ? Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.vertical(
+                                                      bottom: Radius.elliptical(
+                                                        Dimensions.screenWidth,
+                                                        30,
+                                                      ),
+                                                    ),
+                                                    image: DecorationImage(
+                                                      image: NetworkImage(
+                                                        arguments['shopimage'],
+                                                      ),
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                )
+                                              : Container(
+                                                width: Dimensions.screenWidth,
+                                                height: Dimensions.screenHeigt / 4.85,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.vertical(
+                                                      bottom: Radius.elliptical(
+                                                        Dimensions.screenWidth,
+                                                        30,
+                                                      ),
+                                                    ),
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
                                         ],
                                       ),
                                       title: AnimatedOpacity(
@@ -216,8 +244,8 @@ class FormPage4State extends State<FormPage4> with SingleTickerProviderStateMixi
                                                   arguments['shopimage'],
                                               'delivertime':
                                                   arguments['delivertime'],
-                                              'businessTime': arguments['businessTime'], 
-                                                 
+                                              'businessTime':
+                                                  arguments['businessTime'],
                                             },
                                           );
                                         }

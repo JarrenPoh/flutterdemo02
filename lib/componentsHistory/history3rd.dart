@@ -52,7 +52,7 @@ class history3rd extends StatelessWidget {
                 children: const [],
               )),
               TabText(
-                color: kMaimColor,
+                color: kBodyTextColor,
                 text: '\$ ${totalprice - finalprice}',
                 fontFamily: 'NotoSansRegular',
               ),
@@ -73,7 +73,7 @@ class history3rd extends StatelessWidget {
                 children: const [],
               )),
               BetweenSM(
-                color: kBodyTextColor,
+                color: kMaimColor,
                 text: '\$ $finalprice',
                 fontFamily: 'NotoSansRegular',
               ),

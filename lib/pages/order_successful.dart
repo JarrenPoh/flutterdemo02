@@ -63,11 +63,18 @@ class _orderSuccessfulState extends State<orderSuccessful> {
   @override
   void initState() {
     inspect();
+    startTimer();
     service = LocalNotificationService();
     service.intialize();
     listenToNotification();
     // TODO: implement initState
     super.initState();
+  }
+  @override
+  void dispose() {
+    timer!.cancel();
+    // TODO: implement dispose
+    super.dispose();
   }
 
   ////申請店家回應
@@ -78,7 +85,7 @@ class _orderSuccessfulState extends State<orderSuccessful> {
   String? comments = '';
   List<Result2?>? accept;
   Timer? timer;
-  static const maxSeconds = 60;
+  static const maxSeconds = 30;
   int seconds = maxSeconds;
   String SId = '';
   void inspect2() async {
@@ -136,20 +143,12 @@ class _orderSuccessfulState extends State<orderSuccessful> {
       service.showNotificationWithPayload(
         id: 0,
         title: '訂單不成立',
-        body: '店家拒絕了你的訂單' '${comments != null ? ' ，店家留言給你$comments' : ''}',
+        body: '店家拒絕了你的訂單' '${comments != null ? ' ，店家留言給你"$comments"' : ''}',
         payload: '',
       );
     } else {
       accept = null;
     }
-
-    setState(() {
-      if (accept == null) {
-        inspect2();
-      }
-
-      print('accept is $accept');
-    });
   }
 
   historyApi(key) async {
@@ -168,7 +167,7 @@ class _orderSuccessfulState extends State<orderSuccessful> {
 
       var myaddress = (obj.result as List<Result2?>);
       SId = myaddress.last!.sId!;
-
+      setState(() {});
       return myaddress;
     } else if (response.statusCode == 403) {
       debugPrint('status${response.statusCode}');
@@ -182,9 +181,13 @@ class _orderSuccessfulState extends State<orderSuccessful> {
     timer = Timer.periodic(Duration(seconds: 1), (_) {
       if (seconds == 0) {
         seconds = maxSeconds;
+        if (accept == null) {
+          inspect2();
+        }
       } else {
         seconds--;
       }
+
       print(seconds);
     });
   }
@@ -306,7 +309,8 @@ class _orderSuccessfulState extends State<orderSuccessful> {
                                               }
                                             },
                                             style: ElevatedButton.styleFrom(
-                                                primary: kMaim3Color),
+                                              primary: kMaim3Color,
+                                            ),
                                             child: SId != ''
                                                 ? TabText(
                                                     text: '撤單',
@@ -410,8 +414,8 @@ class _orderSuccessfulState extends State<orderSuccessful> {
                                               },
                                             );
                                           } else {
-                                            Navigator.pushReplacementNamed(
-                                                context, '/form3');
+                                            Navigator.pushNamedAndRemoveUntil(
+                                                context, '/form3',(route) => false);
                                             cartController.deleteAll();
                                           }
                                         },

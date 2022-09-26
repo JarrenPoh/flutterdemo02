@@ -13,8 +13,8 @@ import 'package:flutterdemo02/pages/SearchingPage.dart';
 import 'package:flutterdemo02/pages/SplashScreen.dart';
 import 'package:flutterdemo02/pages/UserCorrect.dart';
 import 'package:flutterdemo02/pages/UserProfile.dart';
+import 'package:flutterdemo02/pages/numberCarSecond.dart';
 import 'package:flutterdemo02/pages/order_successful.dart';
-
 
 import '../componentsShopcar/emptyshopCar.dart';
 
@@ -44,10 +44,7 @@ final routes = {
   '/form5': (context, {arguments}) => FormPage5(
         arguments: arguments,
       ),
-  '/history': (
-    context,
-  ) =>
-      HistoryPage(),
+  '/history': (context) => HistoryPage(),
   '/history2': (context, {arguments}) => HistoryPage2(
         arguments: arguments,
       ),
@@ -63,7 +60,7 @@ final routes = {
   '/ordersuccessful': (context, {arguments}) => orderSuccessful(),
 
   '/searchingpage': (context, {arguments}) => SearchingPage(),
-
+  '/numbercardsecond': (context, {arguments}) => numberCardSecond(arguments: arguments,),
   '/registerfirst': (context) => const RegisterFirstPage(),
   '/registersecond': (context) => const RegisterSecondPage(),
   '/registerthird': (context) => const RegisterThirdPage(),
@@ -72,7 +69,6 @@ final routes = {
 
   '/email': (context) => Email(),
   '/privacy': (context) => Privacy(),
-
 
   // '/myhome':(context)=>MyHomePage(),
   '/splash': (context) => SplashScreen(),
