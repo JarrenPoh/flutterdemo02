@@ -8,6 +8,7 @@ import 'package:flutterdemo02/components4/ShopProfile.dart';
 import 'package:flutterdemo02/components4/rappic_bloc.dart';
 import 'package:flutterdemo02/models/ColorSettings.dart';
 import 'package:flutterdemo02/models/MiddleText.dart';
+import 'package:flutterdemo02/provider/globals.dart'as globals;
 import 'package:get/get.dart';
 import '../API/MenuModel.dart';
 import '../components4/CategoryItem.dart';
@@ -20,7 +21,7 @@ import '../provider/Shared_Preference.dart';
 
 class FormPage4 extends StatefulWidget {
   Map arguments;
-  FormPage4({Key? key, required this.arguments}) : super(key: key);
+  FormPage4({Key? key, required this.arguments}) : super(key: globals.globalToForm4);
 
   @override
   State<FormPage4> createState() => FormPage4State(arguments: arguments);
@@ -40,7 +41,9 @@ class FormPage4State extends State<FormPage4>
   }
 
   late List<List<Result>> data2 = [];
-
+void ssss(){
+  debugPrint('dsfffffffffffffffffffffffdgaaaaaaaaaaaaaaaaaa');
+}
   ////////////
   void inspect() async {
     var ss = await spectator();

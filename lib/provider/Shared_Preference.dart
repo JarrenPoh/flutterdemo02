@@ -18,6 +18,7 @@ class UserSimplePreferences {
   static const _orderPreview = 'orederpreview';
   static const _phoneverify = 'phoneverify';
   static const _reservation= '_reservation';
+  static const _onesignalappid = '_onesignalappid';
 
   static Future init() async =>
       _preferences = await SharedPreferences.getInstance();
@@ -122,6 +123,14 @@ class UserSimplePreferences {
   }
 
   static bool? getReservation() => _preferences!.getBool(_reservation);
+  //////////////////////////////////////
+   //////////////////////////////OneSignalAppID/////
+  static Future setOneSignalAppID(String id) async {
+    await _preferences?.setString(_onesignalappid, id);
+    print('Set Preference successful');
+  }
+
+  static String? getOneSignalAppID() => _preferences!.getString(_onesignalappid);
   //////////////////////////////////////
 
 }

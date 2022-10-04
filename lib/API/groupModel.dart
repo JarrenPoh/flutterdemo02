@@ -31,13 +31,15 @@ class Result2 {
   String? name;
   String? address;
   String? url;
+  String? image;
 
-  Result2({this.name, this.address, this.url});
+  Result2({this.name, this.address, this.url,this.image});
 
   Result2.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     address = json['address'];
     url = json['url'];
+    image = json['image'];
   }
 
   Map<String, dynamic> toJson() {
@@ -45,6 +47,7 @@ class Result2 {
     data['name'] = this.name;
     data['address'] = this.address;
     data['url'] = this.url;
+    data['image']= this.image;
     return data;
   }
 }

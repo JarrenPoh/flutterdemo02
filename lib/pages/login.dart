@@ -7,9 +7,11 @@ import 'package:flutterdemo02/models/ColorSettings.dart';
 import 'package:flutterdemo02/models/TabsText.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
+import '../API/oneSignalApi.dart';
 import '../provider/Shared_Preference.dart';
 
 // import 'package:flutter_progress_hud/flutter_progress_hud.dart';
@@ -31,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
     // TODO: implement initState
     super.initState();
   }
-
+String appid = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,7 +131,9 @@ class _LoginPageState extends State<LoginPage> {
           list['result']['picture'],
         );
 
-        
+        // await initOneSignal();
+        // await spectator3();
+        await UserSimplePreferences.setOneSignalAppID(appid);
         print('第二個${users.headers}');
         print('第二個${users.body}');
         setState(() {
@@ -147,6 +151,26 @@ class _LoginPageState extends State<LoginPage> {
       print('error occured');
     });
   }
+
+
+  // Future initOneSignal() async {
+  //    OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+
+  //   OneSignal.shared.setRequiresUserPrivacyConsent(true);
+
+  //   await OneSignal.shared.setAppId("ec271f5c-c5ee-4465-8f82-9e5be14bd308");
+  //   await OneSignal.shared.getDeviceState().then(
+  //         (value) => appid= value!.userId!,
+  //       );
+  // }
+
+  // late Future onesign;
+  // Future spectator3() async {
+  //   onesign = OneSignalapi.getOneSignal(
+  //       UserSimplePreferences.getOneSignalAppID()!,
+  //       UserSimplePreferences.getToken());
+  //   return await onesign;
+  // }
 }
 
 class GoogleSignInApi {

@@ -72,6 +72,7 @@ dependencies:
   flutter_local_notifications: ^11.0.1
   timezone: ^0.9.0
   rxdart: ^0.27.5
+  onesignal_flutter: ^3.4.1
 
 
 

@@ -10,9 +10,11 @@ class history1st extends StatelessWidget {
     required this.numbering,
     required this.address,
     this.sequence,
+    this.reservation,
   }) : super(key: key);
   final String numbering, address, shopname;
   int? sequence;
+  String? reservation;
   String subNum = '';
   String subnumbering() {
     print(numbering);
@@ -45,6 +47,33 @@ class history1st extends StatelessWidget {
                         child: TabText(
                           color: kMaimColor,
                           text: '$sequence',
+                          maxLines: 10,
+                          textAlign: TextAlign.end,
+                          fontFamily: 'NotoSansMedium',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          SizedBox(height: Dimensions.height10),
+          if (sequence != null)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TabText(color: kTextLightColor, text: '取餐時間'),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Container(
+                        alignment: Alignment.bottomRight,
+                        width: 180,
+                        child: TabText(
+                          color: kMaimColor,
+                          text: '${reservation??'即時'}',
                           maxLines: 10,
                           textAlign: TextAlign.end,
                           fontFamily: 'NotoSansMedium',

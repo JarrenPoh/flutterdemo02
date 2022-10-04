@@ -63,14 +63,14 @@ class _numberCardState extends State<numberCard> {
     // TODO: implement initState
     super.initState();
     inspect();
-    startTimer();
+    // startTimer();
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    timer?.cancel();
+    // timer?.cancel();
   }
 
   @override
@@ -124,6 +124,7 @@ class _numberCardState extends State<numberCard> {
                           'numbering': data2[index].sId,
                           'finalprice': data2[index].total,
                           'sequence':data2[index].sequence,
+                          'reservation':data2[index].reservation,
                         },
                       );
                     },

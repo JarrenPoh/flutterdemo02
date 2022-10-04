@@ -7,15 +7,29 @@ import '../res/listData.dart';
 import 'Item_card.dart';
 
 class ItemList extends StatefulWidget {
-  ItemList({Key? key, required this.group}) : super(key: key);
+  ItemList(
+      {Key? key,
+      required this.group,
+      required this.press,
+      required this.BodyCallBack})
+      : super(key: key);
   List<Result2?>? group;
+  ValueChanged BodyCallBack;
+  Function() press;
   @override
-  State<ItemList> createState() => _ItemListState(group: group);
+  State<ItemList> createState() => _ItemListState(
+        group: group,
+        press: press,
+        BodyCallBack: BodyCallBack,
+      );
 }
 
 class _ItemListState extends State<ItemList> {
-  _ItemListState({required this.group});
+  _ItemListState(
+      {required this.group, required this.press, required this.BodyCallBack});
   List<Result2?>? group;
+  ValueChanged BodyCallBack;
+  Function() press;
   @override
   PageController pageController = PageController(viewportFraction: 0.85);
   var currPageValue = 0.0;
@@ -61,14 +75,24 @@ class _ItemListState extends State<ItemList> {
                       scrollDirection: Axis.horizontal,
                       itemCount: group!.length,
                       itemBuilder: ((context, index) {
-                        return ItemCard(
-                          index: index,
-                          pageController: pageController,
-                          currPageValue: currPageValue,
-                          title: group![index]!.address!,
-                          image: demoBigImages2[index]['image'],
-                          shopName: group![index]!.name!,
-                          press: () {},
+                        return GestureDetector(
+                          onTap: () {
+                            press();
+                            BodyCallBack({
+                              'address': group![index]!.address!,
+                              'image': group![index]!.image,
+                              'name': group![index]!.name!,
+                              'url' : group![index]!.url,
+                            });
+                          },
+                          child: ItemCard(
+                            index: index,
+                            pageController: pageController,
+                            currPageValue: currPageValue,
+                            title: group![index]!.address!,
+                            image: group![index]!.image,
+                            shopName: group![index]!.name!,
+                          ),
                         );
                       }),
                     ),

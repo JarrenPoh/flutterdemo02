@@ -65,8 +65,7 @@ class _ReservationState extends State<Reservation> {
     );
     if (availableHours[lindex] == nowTime.hour.toInt() + 1) {
       int x = nowTime.minute ~/ 10; //取整數
-      if (x == 0) {
-      } else {
+      
         startMin = [
           ['00', '10', '20', '30', '40', '50']
         ];
@@ -75,10 +74,10 @@ class _ReservationState extends State<Reservation> {
         ];
         startMin.first.removeRange(0, x + 1);
         endMin.first.removeRange(0, x + 1);
-      }
+      
     } else {
       startMin.add(['00', '10', '20', '30', '40', '50']);
-      endMin.add(['00', '10', '20', '30', '40', '50']);
+      endMin.add(['10', '20', '30', '40', '50', '00']);
     }
     print('startMin is $startMin');
     print('endMin is $endMin');
@@ -108,9 +107,18 @@ class _ReservationState extends State<Reservation> {
     }
   }
 
+  bool? businessNow;
   @override
   void initState() {
     setHour();
+    if (businessTime[nowTime.hour] == true) {
+      print('營業中');
+      businessNow = true;
+    } else if(businessTime[nowTime.hour] == false){
+      print('尚未營業');
+      businessNow = false;
+    };
+    print('businessNow is $businessNow');
     // TODO: implement initState
     super.initState();
   }
@@ -169,21 +177,58 @@ class _ReservationState extends State<Reservation> {
               ),
               Center(
                 child: GestureDetector(
-                  onTap: () {
-                    if (choseNow == true) {
-                      choseNow = false;
-                      selectTime = false;
-                      BoolCallBack(selectTime);
-                    } else {
-                      choseNow = true;
-                      selectTime = true;
-                      choseFuture = null;
-                      cartController.getReservation(
-                        Time: null,
+                  onTap: () async {
+                    if (businessNow == false) {
+                      await showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            scrollable: true,
+                            title: MiddleText(
+                              color: kBodyTextColor,
+                              text: '店家尚未營業',
+                              fontFamily: 'NotoSansMedium',
+                            ),
+                            content: Column(
+                              children: [
+                                TabText(
+                                  color: kBodyTextColor,
+                                  text: '店家尚未營業，請改用即時單!',
+                                  fontFamily: 'NotoSansMedium',
+                                ),
+                              ],
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: TabText(
+                                  color: Colors.blue,
+                                  text: '知道了',
+                                  fontFamily: 'NotoSansMedium',
+                                ),
+                              ),
+                            ],
+                          );
+                        },
                       );
-                      cartController.ifUpdate(name: true);
-                      BoolCallBack(selectTime);
-                      widget.notifyParent();
+                    } else if (businessNow == true){
+                      if (choseNow == true) {
+                        choseNow = false;
+                        selectTime = false;
+                        BoolCallBack(selectTime);
+                      } else {
+                        choseNow = true;
+                        selectTime = true;
+                        choseFuture = null;
+                        cartController.getReservation(
+                          Time: null,
+                        );
+                        cartController.ifUpdate(name: true);
+                        BoolCallBack(selectTime);
+                        widget.notifyParent();
+                      }
                     }
                   },
                   child: Card(
@@ -210,15 +255,20 @@ class _ReservationState extends State<Reservation> {
                           SizedBox(
                             width: Dimensions.width10,
                           ),
-                          choseNow == false
+                          businessNow == false
                               ? Icon(
-                                  Icons.check_box_outline_blank,
-                                  color: Colors.grey,
+                                  Icons.error_outline_outlined,
+                                  color: Colors.red,
                                 )
-                              : Icon(
-                                  Icons.check_box_outlined,
-                                  color: Colors.green,
-                                )
+                              : choseNow == false
+                                  ? Icon(
+                                      Icons.check_box_outline_blank,
+                                      color: Colors.grey,
+                                    )
+                                  : Icon(
+                                      Icons.check_box_outlined,
+                                      color: Colors.green,
+                                    )
                         ],
                       ),
                     ),

@@ -160,7 +160,7 @@ class _shopCarState extends State<shopCar> {
                                 //發送訂單
                                 if (delete == false) {
                                   Navigator.pushNamedAndRemoveUntil(context,
-                                      '/ordersuccessful', (route) => false);
+                                      '/numbercardsecond', (route) => false,arguments: {});
                                 }
                               } else {
                                 showDialog(
@@ -306,7 +306,7 @@ class _shopCarState extends State<shopCar> {
                     ///小計
                     totalprice = 0;
                     for (var i = 0; i < order.length; i++) {
-                      int inin = order[i]['price']*order[i]['count'];
+                      int inin = order[i]['price'] * order[i]['count'];
                       totalprice += inin;
                     }
                     ///////

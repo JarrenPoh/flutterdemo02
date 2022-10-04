@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-
+import 'package:flutterdemo02/models/BigText.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,11 +18,13 @@ import 'package:flutterdemo02/res/listData.dart';
 import 'package:location/location.dart';
 
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
+import 'package:url_launcher/link.dart';
 
 import '../API/StoreModel.dart';
 import '../API/form3Api.dart';
 import 'package:flutterdemo02/API/getTokenApi.dart';
 import '../API/groupModel.dart';
+import '../API/oneSignalApi.dart';
 import '../components3/ItemCard_list.dart';
 import '../components3/Drawer.dart';
 import '../components3/SliverAppBar.dart';
@@ -44,21 +47,40 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
   List<Result2?>? SS = [];
   bool ok = false;
   List<Result2?>? group = [];
+  Map body = {};
   //////
+  var appid;
+  Future initOneSignal() async {
+    await OneSignal.shared.setAppId("ec271f5c-c5ee-4465-8f82-9e5be14bd308");
+    await OneSignal.shared.getDeviceState().then((value) async {
+      appid = value!.userId!;
+      await UserSimplePreferences.setOneSignalAppID(appid);
+    });
+  }
+
+  late Future onesign;
+  Future spectator3() async {
+    onesign = OneSignalapi.getOneSignal(
+        UserSimplePreferences.getOneSignalAppID()!,
+        UserSimplePreferences.getToken());
+    return await onesign;
+  }
+
   Future inspect() async {
     var ss = await spectator();
     SS = await spectator2(UserSimplePreferences.getToken());
-
-    if (ss == null || SS == null) {
+    var xx = await spectator3();
+    if (ss == null || SS == null || xx == null) {
       String? refresh_token = UserSimplePreferences.getRefreshToken();
       var getToken = await getTokenApi.getToken(refresh_token);
       await UserSimplePreferences.setToken(getToken.headers['token']!);
       ss = await spectator();
       SS = await spectator2(UserSimplePreferences.getToken());
+      xx = await spectator3();
       setState(() {
         ok = true;
       });
-    } else if (ss != null || SS != null) {
+    } else if (ss != null || SS != null || xx != null) {
       setState(() {
         ok = true;
       });
@@ -102,12 +124,24 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
 
   late final LocalNotificationService service;
 
- 
+  // var appid;
+  // Future initOneSignal() async {
+  //   //  OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+
+  //   // OneSignal.shared.setRequiresUserPrivacyConsent(false);
+
+  //   await OneSignal.shared.setAppId("ec271f5c-c5ee-4465-8f82-9e5be14bd308");
+  //   await OneSignal.shared.getDeviceState().then((value) {
+  //     appid = value!.userId!;
+  //     UserSimplePreferences.setOneSignalAppID(appid);
+
+  //   });
+  //   print('appid is $appid');
+  // }
 
   @override
   void initState() {
-    
-    
+    initOneSignal();
     super.initState();
     inspect().then((value) {
       if (SS != null) {
@@ -229,7 +263,22 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
                                   ),
                                 ),
                                 SliverToBoxAdapter(
-                                  child: ItemList(group: SS),
+                                  child: ItemList(
+                                    BodyCallBack: (value) {
+                                      setState(() {
+                                        body = value;
+                                      });
+                                    },
+                                    group: SS,
+                                    press: () {
+                                      showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        backgroundColor: Colors.transparent,
+                                        context: context,
+                                        builder: (context) => buildSheet(),
+                                      );
+                                    },
+                                  ),
                                 ),
                                 SliverPadding(
                                   padding: EdgeInsets.symmetric(
@@ -409,6 +458,91 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
       ),
     );
   }
+
+  Widget makeDismissible({required Widget child}) => GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => Navigator.of(context).pop(),
+        child: GestureDetector(
+          onTap: () {},
+          child: child,
+        ),
+      );
+
+  Widget buildSheet() => makeDismissible(
+        child: DraggableScrollableSheet(
+          initialChildSize: 0.8,
+          minChildSize: 0.5,
+          maxChildSize: 1,
+          builder: (BuildContext context, ScrollController scrollController) =>
+              Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(Dimensions.radius20),
+              ),
+            ),
+            padding: EdgeInsets.all(Dimensions.height20),
+            child: ListView(
+              controller: scrollController,
+              children: [
+                if (body['url'] != null || body['url'] != '')
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Link(
+                      target: LinkTarget.self,
+                      uri: Uri.parse(body['url']),
+                      builder: (context, followLink) => TextButton(
+                        onPressed: followLink,
+                        child: TabText(
+                          color: kTextLightColor,
+                          text: '詳情',
+                          fontFamily: 'NotoSansMedium',
+                        ),
+                      ),
+                    ),
+                  ),
+                BigText(
+                  color: kBodyTextColor,
+                  text: '     ' + body['name'],
+                  fontFamily: 'NotoSansMedium',
+                ),
+                SizedBox(height: Dimensions.height15),
+                if (body['image'] != null)
+                  AspectRatio(
+                    aspectRatio: 20 / 9,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(Dimensions.radius15),
+                      child: Image.network(
+                        body['image']!,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                if (body['image'] == null)
+                  AspectRatio(
+                    aspectRatio: 20 / 9,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(Dimensions.radius15),
+                      child: Container(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                SizedBox(height: Dimensions.height15),
+                Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: Dimensions.width10 / 2),
+                  child: TabText(
+                    color: kBodyTextColor,
+                    text: body['address'],
+                    fontFamily: 'NotoSansMedium',
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
 }
 
 class MySliverDelegate extends SliverPersistentHeaderDelegate {
