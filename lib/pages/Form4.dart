@@ -21,7 +21,7 @@ import '../provider/Shared_Preference.dart';
 
 class FormPage4 extends StatefulWidget {
   Map arguments;
-  FormPage4({Key? key, required this.arguments}) : super(key: globals.globalToForm4);
+  FormPage4({Key? key, required this.arguments}) : super(key: key);
 
   @override
   State<FormPage4> createState() => FormPage4State(arguments: arguments);

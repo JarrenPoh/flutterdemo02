@@ -95,8 +95,8 @@ class LocalNotificationService {
 
   Future<void> showNotificationWithPayload({
     required int id,
-    required String title,
-    required String body,
+     String? title,
+     String? body,
     required String payload,
   }) async {
     final details = await _notificationDetails();

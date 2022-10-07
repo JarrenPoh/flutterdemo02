@@ -1,3 +1,4 @@
+import 'package:flutterdemo02/provider/Shared_Preference.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class OneSignalapi {
     print('response body in getOneSignal is ${response.body}');
     print('appID is $appID');
     if (response.statusCode == 200) {
+      UserSimplePreferences.setOneSignalApiDone(true);
       return response.body[2];
     } else if (response.statusCode == 403) {
       return null;

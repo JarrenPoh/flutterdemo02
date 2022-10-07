@@ -1,26 +1,31 @@
 import 'dart:convert';
-
+import 'package:flutterdemo02/controllers/cart_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutterdemo02/API/getTokenApi.dart';
 import 'package:flutterdemo02/API/shopCarApi.dart';
 import 'package:flutterdemo02/models/BetweenSM.dart';
+import 'package:flutterdemo02/models/SmallText.dart';
 import 'package:flutterdemo02/models/TabsText.dart';
 import 'package:flutterdemo02/provider/Shared_Preference.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import '../API/historyModel.dart';
 import '../componentsHistory/history21st.dart';
 import '../componentsHistory/history2nd.dart';
 import '../componentsHistory/history3rd.dart';
 import '../models/BigText.dart';
 import '../models/ColorSettings.dart';
+import 'package:flutterdemo02/provider/globals.dart' as globals;
+
+import '../models/MiddleText.dart';
 
 class numberCardSecond extends StatefulWidget {
   numberCardSecond({
-    Key? appNavigator,
+    Key? key,
     required this.arguments,
-  }) : super(key: appNavigator);
+  }) : super(key: globals.globalToNumCard2);
   Map? arguments;
   @override
   State<numberCardSecond> createState() =>
@@ -35,11 +40,6 @@ class numberCardSecondState extends State<numberCardSecond> {
     Icons.restaurant_menu_outlined,
     Icons.restaurant
   ];
-  final List<String> _titles = [
-    "餐點審核",
-    "備餐中..",
-    "完成備餐",
-  ];
 
   var _curStep = 0;
   List<Widget> _iconViews() {
@@ -49,7 +49,7 @@ class numberCardSecondState extends State<numberCardSecond> {
       //colors according to state
       var circleColor = (_curStep >= i + 1) ? kMaim3Color : Colors.grey[100];
 
-      var lineColor = _curStep >= i + 1 ? kMaim3Color : Colors.grey[100];
+      var lineColor = _curStep >= i + 2 ? kMaim3Color : Colors.grey[100];
 
       var iconColor = (_curStep >= i + 1) ? Colors.grey[100] : kMaim3Color;
 
@@ -89,6 +89,11 @@ class numberCardSecondState extends State<numberCardSecond> {
   }
 
   List<Widget> _titleViews() {
+    List<String> _titles = [
+      _curStep == 1 ? "餐點審核" : "審核通過",
+      "備餐中..",
+      "完成備餐",
+    ];
     var list = <Widget>[];
     _titles.asMap().forEach((i, text) {
       var textColor = (_curStep >= i + 1) ? kTextLightColor : Colors.grey[300];
@@ -103,6 +108,29 @@ class numberCardSecondState extends State<numberCardSecond> {
     return list;
   }
 
+  void refreshInformation() {
+    if (data2 != null) {
+      //
+
+//
+      if (accept == true && finish == null) {
+        _curStep = 2; //接受餐點
+      } else if (accept == true && finish == true) {
+        _curStep = 3; //完成餐點
+      } else if (accept == false) {
+        _curStep = 1; //尚未接受餐點
+      }
+//
+    }
+    setState(() {
+      print('setState finished in numCard2.dart');
+      print('_curStep is $_curStep');
+      print('$finish');
+      print('$accept}');
+      print('$comments}');
+    });
+  }
+
   void inspect() async {
     var ss = await shopCarApi.getCar(UserSimplePreferences.getToken());
     if (ss == null) {
@@ -115,10 +143,11 @@ class numberCardSecondState extends State<numberCardSecond> {
   }
 
 ////
-  bool haveComments = false;
   String? comments = '';
   bool delete = false;
-  void inspect2() async {
+  bool? accept;
+  bool? finish;
+  Future inspect2() async {
     data2 = await historyApi(UserSimplePreferences.getToken());
     if (data2 == null) {
       String? refresh_token = await UserSimplePreferences.getRefreshToken();
@@ -126,34 +155,28 @@ class numberCardSecondState extends State<numberCardSecond> {
       await UserSimplePreferences.setToken(getToken.headers['token']!);
       data2 = await historyApi(UserSimplePreferences.getToken());
     }
-
-    if (data2?.comments != '') {
-      haveComments = true;
-      comments = data2!.comments;
-    } else {
-      haveComments = false;
+    order = jsonDecode(data2!.order!);
+    for (var i = 0; i < order!.length; i++) {
+      int inin = order![i]['price'];
+      totalprice += inin;
+      print('totalprice1 is $totalprice');
     }
-
-    if (data2 != null) {
-      order = jsonDecode(data2!.order!);
-      for (var i = 0; i < order!.length; i++) {
-        int inin = order![i]['price'];
-        totalprice += inin;
-        print('totalprice1 is $totalprice');
-      }
-    }
-
     shopname = data2!.storeInfo!.name;
     address = data2!.storeInfo!.address;
     numbering = data2!.sId;
     sequence = data2!.sequence;
     finalprice = data2!.total;
-    reservation =data2!.reservation;
-    setState(() {});
+    reservation = data2!.reservation;
+    SId = data2!.sId!;
+    finish = data2!.finish;
+    accept = data2!.accept;
+    comments = data2!.comments;
+    refreshInformation();
   }
+
 ////
-///
-Future inspect3() async {
+  ///
+  Future inspect3() async {
     var ss = await deleteOrder(UserSimplePreferences.getToken());
     if (ss == null) {
       String? refresh_token = UserSimplePreferences.getRefreshToken();
@@ -193,14 +216,16 @@ Future inspect3() async {
   List options = [];
   String optionsString = '';
   int totalprice = 0;
-  String? shopname, address, numbering,reservation;
+  String? shopname, address, numbering, reservation;
   int? sequence, finalprice;
   String SId = '';
+
+  final cartController = Get.put(CartController());
 
   @override
   void initState() {
     data2 = arguments?['data2'];
-
+    // oneSignalInit();
     if (data2 != null) {
       order = jsonDecode(data2!.order!);
       for (var i = 0; i < order!.length; i++) {
@@ -208,14 +233,19 @@ Future inspect3() async {
         totalprice += inin;
         print('totalprice1 is $totalprice');
       }
-    }
 
-    shopname = arguments?['shopname'];
-    address = arguments?['address'];
-    numbering = arguments?['numbering'];
-    sequence = arguments?['sequence'];
-    finalprice = arguments?['finalprice'];
-    reservation = arguments?['reservation'];
+      shopname = arguments?['shopname'];
+      address = arguments?['address'];
+      numbering = arguments?['numbering'];
+      sequence = arguments?['sequence'];
+      finalprice = arguments?['finalprice'];
+      reservation = arguments?['reservation'];
+      SId = arguments?['SId'];
+      finish = arguments?['finish'];
+      accept = arguments?['accept'];
+      comments = arguments?['comments'];
+      refreshInformation();
+    }
 
     if (data2 == null) {
       inspect();
@@ -234,14 +264,12 @@ Future inspect3() async {
           "Content-Type": "application/x-www-form-urlencoded"
         });
 
+    debugPrint('statusCode in numCard2 is ${response.statusCode}');
     if (response.statusCode == 200) {
-      debugPrint('status${response.statusCode}');
       debugPrint('responsebody${response.body}');
       var obj = Autogenerated2.fromJson(jsonDecode(response.body));
 
       var myaddress = (obj.result as List<Result2?>);
-      SId = myaddress.last!.sId!;
-      // setState(() {});
       return myaddress.last;
     } else if (response.statusCode == 403) {
       debugPrint('status${response.statusCode}');
@@ -302,13 +330,16 @@ Future inspect3() async {
                   fontFamily: 'NotoSansMedium',
                 ),
                 leading: IconButton(
-                    icon: Icon(
-                      Icons.west,
-                      color: kMaimColor,
-                      size: Dimensions.icon25,
-                    ),
-                    onPressed: () => Navigator.pushNamedAndRemoveUntil(
-                        context, '/form3', (route) => false)),
+                  icon: Icon(
+                    Icons.west,
+                    color: kMaimColor,
+                    size: Dimensions.icon25,
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/form3');
+                    cartController.deleteAll();
+                  },
+                ),
               ),
               body: order == null
                   ? Column(
@@ -344,8 +375,105 @@ Future inspect3() async {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: _titleViews(),
                             ),
-                            SizedBox(height: Dimensions.height15 * 4),
                             ////////////
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                SizedBox(height: Dimensions.height15 * 1),
+                                Row(
+                                  children: [
+                                    SmallText(
+                                      color: kTextLightColor,
+                                      text: '我想請求撤單  ->',
+                                      fontFamily: 'NotoSansMedium',
+                                    ),
+                                    SizedBox(
+                                      width: Dimensions.width10,
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () async {
+                                        if (SId != '') {
+                                          await inspect3();
+                                        }
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.white,
+                                      ),
+                                      child: SId != ''
+                                          ? TabText(
+                                              text: '撤單',
+                                              color: kMaim3Color,
+                                              fontFamily: 'NotoSansMedium',
+                                            )
+                                          : Container(
+                                              width: Dimensions.fontsize24 / 2,
+                                              height: Dimensions.fontsize24 / 2,
+                                              child: CircularProgressIndicator(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                    ),
+                                  ],
+                                ),
+                                // SizedBox(height: Dimensions.height15 * 1),
+                                if (comments != null)
+                                  Row(
+                                    children: [
+                                      SmallText(
+                                        color: kTextLightColor,
+                                        text: '店家給你留言  ->',
+                                        fontFamily: 'NotoSansMedium',
+                                      ),
+                                      SizedBox(
+                                        width: Dimensions.width10,
+                                      ),
+                                      ElevatedButton(
+                                          onPressed: () async {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return AlertDialog(
+                                                  title: TabText(
+                                                    color: kTextLightColor,
+                                                    text: '查看留言',
+                                                    fontFamily:
+                                                        'NotoSansMedium',
+                                                  ),
+                                                  content: MiddleText(
+                                                    color: kBodyTextColor,
+                                                    text: '$comments',
+                                                    fontFamily:
+                                                        'NotoSansMedium',
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                        setState(() {});
+                                                      },
+                                                      child: TabText(
+                                                        color: Colors.blue,
+                                                        text: '知道了',
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            primary: Colors.white,
+                                          ),
+                                          child: TabText(
+                                            text: '店家有話跟你說',
+                                            color: kMaim3Color,
+                                            fontFamily: 'NotoSansMedium',
+                                          )),
+                                    ],
+                                  ),
+                                SizedBox(height: Dimensions.height15 * 1),
+                              ],
+                            ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -360,7 +488,7 @@ Future inspect3() async {
                                   address: address!,
                                   numbering: numbering!,
                                   sequence: sequence!,
-                                  reservation:reservation,
+                                  reservation: reservation,
                                 ),
                                 const Divider(),
                                 Padding(
@@ -398,4 +526,44 @@ Future inspect3() async {
       ),
     );
   }
+
+  // void oneSignalInit() {
+  //   globals.appNavigator = GlobalKey<NavigatorState>();
+  //   globals.globalToNumCard2 = GlobalKey<numberCardSecondState>();
+  //   OneSignal.shared.setNotificationOpenedHandler((openedResult) {
+  //     print('openedResult.action!.type; is ${openedResult.action!.type}');
+
+  //     globals.globalToNumCard2?.currentState?.inspect2();
+  //     print('start numCard2 inspect2 is successful');
+
+  //     globals.appNavigator?.currentState?.push(
+  //       MaterialPageRoute(
+  //         builder: (context) => numberCardSecond(
+  //           arguments: {},
+  //         ),
+  //       ),
+  //     );
+  //     print('navigator to orderCard2 is successful');
+  //   });
+
+  //   OneSignal.shared.setNotificationWillShowInForegroundHandler(
+  //     (OSNotificationReceivedEvent event) async {
+  //       event.complete(event.notification);
+  //       print('FOREGROUND HANDLER CALLED WITH: ${event}');
+  //       //  /// Display Notification, send null to not display
+  //       print('看這這這這看這這這這看這這這這看這這這這${event.notification.title}');
+  //       print('看這這這這看這這這這看這這這這看這這這這${event.notification.body}');
+  //       print('看這這這這看這這這這看這這這這看這這這這${event.notification.subtitle}');
+  //       // listenToNotification();
+  //       // await service.showNotificationWithPayload(
+  //       //   id: 0,
+  //       //   title: event.notification.title,
+  //       //   body: event.notification.body,
+  //       //   payload: '',
+  //       // );
+  //       await globals.globalToNumCard2?.currentState?.inspect2();
+  //       print('看這這這這看這這這這看這這這這看這這這這${event.notification.subtitle}');
+  //     },
+  //   );
+  // }
 }

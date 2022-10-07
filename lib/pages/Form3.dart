@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutterdemo02/models/BigText.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,6 +15,7 @@ import 'package:flutterdemo02/models/TabsText.dart';
 import 'package:flutterdemo02/provider/Shared_Preference.dart';
 import 'package:flutterdemo02/res/listData.dart';
 import 'package:location/location.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:url_launcher/link.dart';
@@ -24,11 +24,13 @@ import '../API/StoreModel.dart';
 import '../API/form3Api.dart';
 import 'package:flutterdemo02/API/getTokenApi.dart';
 import '../API/groupModel.dart';
-import '../API/oneSignalApi.dart';
 import '../components3/ItemCard_list.dart';
 import '../components3/Drawer.dart';
 import '../components3/SliverAppBar.dart';
 import '../components3/form3AppBar.dart';
+import 'package:flutterdemo02/provider/globals.dart' as globals;
+
+import 'numberCarSecond.dart';
 
 class FormPage3 extends StatefulWidget {
   FormPage3({
@@ -49,38 +51,59 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
   List<Result2?>? group = [];
   Map body = {};
   //////
-  var appid;
-  Future initOneSignal() async {
-    await OneSignal.shared.setAppId("ec271f5c-c5ee-4465-8f82-9e5be14bd308");
-    await OneSignal.shared.getDeviceState().then((value) async {
-      appid = value!.userId!;
-      await UserSimplePreferences.setOneSignalAppID(appid);
-    });
-  }
+  void oneSignalInit() {
+    globals.appNavigator = GlobalKey<NavigatorState>();
+    globals.globalToNumCard2 = GlobalKey<numberCardSecondState>();
+    OneSignal.shared.setNotificationOpenedHandler((openedResult)async {
+      print('openedResult.action!.type; is ${openedResult.action!.type}');
 
-  late Future onesign;
-  Future spectator3() async {
-    onesign = OneSignalapi.getOneSignal(
-        UserSimplePreferences.getOneSignalAppID()!,
-        UserSimplePreferences.getToken());
-    return await onesign;
+      await globals.globalToNumCard2?.currentState?.inspect2();
+      print('start numCard2 inspect2 is successful');
+
+      await globals.appNavigator?.currentState?.push(
+        MaterialPageRoute(
+          builder: (context) => numberCardSecond(
+            arguments: {},
+          ),
+        ),
+      );
+      print('navigator to orderCard2 is successful');
+    });
+
+    OneSignal.shared.setNotificationWillShowInForegroundHandler(
+      (OSNotificationReceivedEvent event) async {
+        event.complete(event.notification);
+        print('FOREGROUND HANDLER CALLED WITH: ${event}');
+        //  /// Display Notification, send null to not display
+        print('看這這這這看這這這這看這這這這看這這這這${event.notification.title}');
+        print('看這這這這看這這這這看這這這這看這這這這${event.notification.body}');
+        print('看這這這這看這這這這看這這這這看這這這這${event.notification.subtitle}');
+        // listenToNotification();
+        // await service.showNotificationWithPayload(
+        //   id: 0,
+        //   title: event.notification.title,
+        //   body: event.notification.body,
+        //   payload: '',
+        // );
+        await globals.globalToNumCard2?.currentState?.inspect2();
+        print('start numCard2 inspect2 is successful');
+      },
+    );
   }
 
   Future inspect() async {
     var ss = await spectator();
     SS = await spectator2(UserSimplePreferences.getToken());
-    var xx = await spectator3();
-    if (ss == null || SS == null || xx == null) {
+    if (ss == null || SS == null) {
       String? refresh_token = UserSimplePreferences.getRefreshToken();
       var getToken = await getTokenApi.getToken(refresh_token);
       await UserSimplePreferences.setToken(getToken.headers['token']!);
       ss = await spectator();
       SS = await spectator2(UserSimplePreferences.getToken());
-      xx = await spectator3();
       setState(() {
         ok = true;
       });
-    } else if (ss != null || SS != null || xx != null) {
+    } else if (ss != null || SS != null) {
       setState(() {
         ok = true;
       });
@@ -122,32 +145,17 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
   late List<List<Result>> data2 = [];
   ///////
 
-  late final LocalNotificationService service;
-
-  // var appid;
-  // Future initOneSignal() async {
-  //   //  OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-
-  //   // OneSignal.shared.setRequiresUserPrivacyConsent(false);
-
-  //   await OneSignal.shared.setAppId("ec271f5c-c5ee-4465-8f82-9e5be14bd308");
-  //   await OneSignal.shared.getDeviceState().then((value) {
-  //     appid = value!.userId!;
-  //     UserSimplePreferences.setOneSignalAppID(appid);
-
-  //   });
-  //   print('appid is $appid');
-  // }
-
   @override
   void initState() {
-    initOneSignal();
     super.initState();
-    inspect().then((value) {
-      if (SS != null) {
-        if (mounted) {}
-      }
-    });
+    inspect().then(
+      (value) {
+        if (SS != null) {
+          if (mounted) {}
+        }
+      },
+    );
+    oneSignalInit();
   }
 
 /////更新如果一樣就不用申請                   完成

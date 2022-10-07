@@ -14,8 +14,8 @@ class getTokenApi {
           "refresh_token": key,
           "Content-Type": "application/x-www-form-urlencoded"
         });
-    // print("this is response ${response}");
-    // print("this is response ${response.body}");
+    debugPrint("status code on getTokenApi is  ${response.statusCode}");
+    debugPrint("status body on getTokenApi is  ${response.body}");
     // print("this is response headers ${response.headers}");
     // print("this is refresh_token ${response.headers['refresh_token']}");
     // print("7777${response.body}");

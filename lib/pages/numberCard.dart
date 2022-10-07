@@ -47,7 +47,7 @@ class _numberCardState extends State<numberCard> {
   Timer? timer;
   static const maxSeconds = 30;
   int seconds = maxSeconds;
-  void startTimer() async{
+  void startTimer() async {
     timer = Timer.periodic(Duration(seconds: 1), (_) {
       if (seconds == 0) {
         seconds = maxSeconds;
@@ -84,7 +84,7 @@ class _numberCardState extends State<numberCard> {
           List<Result2> data = snapshot.data;
           List<Result2> data2 = [];
           for (var i = 0; i < data.length; i++) {
-            if (data[i].accept == true && data[i].complete == false) {
+            if (data[i].complete != true) {
               data2.add(data[i]);
               print('data[i] is ${data[i]}');
             }
@@ -107,8 +107,14 @@ class _numberCardState extends State<numberCard> {
             content: Column(
               children: List.generate(data2.length, (index) {
                 if (data2[index].accept == true &&
-                    data2[index].complete == false) {
-                  status = '準備中';
+                    data2[index].finish == null) {
+                  status = '備餐中';
+                } else if (data2[index].accept == false &&
+                    data2[index].finish == null) {
+                  status = '審核中';
+                } else if (data2[index].accept == true &&
+                    data2[index].finish == true) {
+                  status = '餐點完成';
                 }
                 return Container(
                   margin: const EdgeInsets.only(top: 10),
@@ -123,8 +129,12 @@ class _numberCardState extends State<numberCard> {
                           'address': data2[index].storeInfo!.address,
                           'numbering': data2[index].sId,
                           'finalprice': data2[index].total,
-                          'sequence':data2[index].sequence,
-                          'reservation':data2[index].reservation,
+                          'sequence': data2[index].sequence,
+                          'reservation': data2[index].reservation,
+                          'SId': data2[index].sId,
+                          'accept': data2[index].accept,
+                          'finish': data2[index].finish,
+                          'comments': data2[index].comments,
                         },
                       );
                     },
@@ -168,7 +178,7 @@ class _numberCardState extends State<numberCard> {
                             ),
                             SmallText(
                               color:
-                                  status == '準備中' ? kMaimColor : kBodyTextColor,
+                                  status == '備餐中'|| status =='審核中' ? kMaimColor : Colors.green,
                               text: '$status',
                               fontFamily: 'NotoSansMedium',
                             ),

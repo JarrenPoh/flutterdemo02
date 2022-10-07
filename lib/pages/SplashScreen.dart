@@ -12,7 +12,9 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 class SplashScreen extends StatefulWidget {
   SplashScreen({
     Key? key,
+    
   }) : super(key: key);
+ 
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
@@ -21,12 +23,29 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  var appid;
+  // Future initOneSignal() async {
+  //   await OneSignal.shared.setAppId("ec271f5c-c5ee-4465-8f82-9e5be14bd308");
+  //   await OneSignal.shared.getDeviceState().then((value) async {
+  //     appid = value!.userId!;
+  //     await UserSimplePreferences.setOneSignalAppID(appid);
+  //   });
+  // }
+
+  @override
+  void initState() {
+    spectator();
+    super.initState();
+    // if (UserSimplePreferences.getOneSignalApiDone() == null) {
+    //   initOneSignal();
+    // }
+  }
+
   void TokenApiInspect() async {
     var getToken = await getTokenApi
         .getToken(UserSimplePreferences.getRefreshToken()); //2sec
     if (getToken.statusCode == 200) {
-      
-          await UserSimplePreferences.setToken(getToken.headers['token']!);
+      await UserSimplePreferences.setToken(getToken.headers['token']!);
       ////FIrebase/////
       await FirebaseAnalytics.instance.logEvent(
         name: 'login_success',
@@ -37,14 +56,28 @@ class _SplashScreenState extends State<SplashScreen> {
         },
       );
       ////////////////
-      print('UserSimplePreferences is ${UserSimplePreferences.getUserBirthday()}');
+      ////oneSinal/////
+      // print(
+      //     'getOneSignalApiDone is ${UserSimplePreferences.getOneSignalApiDone()}');
+      // if (UserSimplePreferences.getOneSignalApiDone() == null) {
+      //   print(
+      //       'getOneSignalAppID is ${UserSimplePreferences.getOneSignalAppID()}');
+      //   await OneSignalapi.getOneSignal(
+      //     UserSimplePreferences.getOneSignalAppID()!,
+      //     UserSimplePreferences.getToken(),
+      //   );
+      // }
+      ////////////////
+      print(
+          'UserSimplePreferences is ${UserSimplePreferences.getUserBirthday()}');
       print('UserSimplePreferences is ${UserSimplePreferences.getUserPhone()}');
-      print('UserSimplePreferences is ${UserSimplePreferences.getPhoneVerify()}');
+      print(
+          'UserSimplePreferences is ${UserSimplePreferences.getPhoneVerify()}');
       if (UserSimplePreferences.getUserBirthday() == null ||
           UserSimplePreferences.getUserPhone() == null ||
           UserSimplePreferences.getPhoneVerify() == null) {
-            
-        var getusers = await UserUpdateApi.getUsers(UserSimplePreferences.getToken());
+        var getusers =
+            await UserUpdateApi.getUsers(UserSimplePreferences.getToken());
         var obj = (jsonDecode(getusers!.body));
         if (obj['result']['birthday'] != null) {
           await UserSimplePreferences.setUserBirthday(
@@ -58,6 +91,7 @@ class _SplashScreenState extends State<SplashScreen> {
               obj['result']['phoneVerify']);
         }
       }
+
       Navigator.pushNamedAndRemoveUntil(context, '/form3', (route) => false);
     } else {
       Navigator.pushReplacementNamed(
@@ -102,13 +136,6 @@ class _SplashScreenState extends State<SplashScreen> {
     } else if (UserSimplePreferences.getRefreshToken() != null) {
       TokenApiInspect();
     }
-  }
-
-  @override
-  void initState() {
-    spectator();
-    // TODO: implement initState
-    super.initState();
   }
 
   @override

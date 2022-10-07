@@ -34,14 +34,9 @@ Future main() async {
   //   // statusBarColor: Colors.red  //android backgroungColor
   // ));
   await UserSimplePreferences.init();
-
-  globals.appNavigator = GlobalKey<NavigatorState>();
-  globals.globalToForm4 = GlobalKey<FormPage4State>();
-
+  
   runApp(ProviderScope(child: MyApp()));
-  late final LocalNotificationService service;
-  service = LocalNotificationService();
-  service.intialize();
+
   OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
 
   await OneSignal.shared.setAppId("ec271f5c-c5ee-4465-8f82-9e5be14bd308");
@@ -55,62 +50,10 @@ Future main() async {
     UserSimplePreferences.setOneSignalAppID(appid);
   });
 
-  var onesignal;
-  Future spectator() async {
-    onesignal = OneSignalapi.getOneSignal(
-        UserSimplePreferences.getOneSignalAppID()!,
-        UserSimplePreferences.getToken());
-    return await onesignal;
-  }
-
-  Future inspect() async {
-    var ss = await spectator();
-    if (ss == null) {
-      String? refresh_token = UserSimplePreferences.getRefreshToken();
-      var getToken = await getTokenApi.getToken(refresh_token);
-      await UserSimplePreferences.setToken(getToken.headers['token']!);
-      onesignal = OneSignalapi.getOneSignal(
-        UserSimplePreferences.getOneSignalAppID()!,
-        UserSimplePreferences.getToken(),
-      );
-    }
-  }
-
-  await inspect();
-
-  // OneSignal.shared.pauseInAppMessages(true);
-  void listenToNotification() => service.onNotificationClick.stream.listen(
-        (payload) {
-          if (payload != null) {
-            // globals.appNavigator?.currentState?.push(
-            //   MaterialPageRoute(
-            //     builder: (context) => LoginPage(),
-            //   ),
-            // );
-            globals.globalToForm4?.currentState?.inspect();
-          }
-        },
-      );
-
-  OneSignal.shared.setNotificationWillShowInForegroundHandler(
-      (OSNotificationReceivedEvent event) {
-        event.complete(event.notification);
-    print('FOREGROUND HANDLER CALLED WITH: ${event}');
-    //  /// Display Notification, send null to not display
-    print('看這這這這看這這這這看這這這這看這這這這${event.notification.title}');
-    print('看這這這這看這這這這看這這這這看這這這這${event.notification.body}');
-    print('看這這這這看這這這這看這這這這看這這這這${event.notification.subtitle}');
-    listenToNotification();
-    service.showNotificationWithPayload(
-      id: 0,
-      title: event.notification.title!,
-      body: event.notification.body!,
-      payload: '',
-    );
-  });
-  
-
-// OneSignal.shared.setInAppMessageClickedHandler((action) {action.clickName;});
+  // if (UserSimplePreferences.getOneSignalApiDone() == null) {
+  //   OneSignalapi.getOneSignal(UserSimplePreferences.getOneSignalAppID()!,
+  //       UserSimplePreferences.getToken());
+  // }
 }
 
 // ignore: use_key_in_widget_constructors
@@ -127,7 +70,8 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           unselectedWidgetColor: kMaimColor,
           primaryColor: kMaimColor,
-          bottomSheetTheme:BottomSheetThemeData(backgroundColor:Colors.transparent ) ,
+          bottomSheetTheme:
+              BottomSheetThemeData(backgroundColor: Colors.transparent),
           appBarTheme: AppBarTheme(
             color: Colors.white,
           ),

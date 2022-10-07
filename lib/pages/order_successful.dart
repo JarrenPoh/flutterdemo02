@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutterdemo02/controllers/cart_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutterdemo02/models/BigText.dart';
@@ -32,7 +31,6 @@ class orderSuccessful extends StatefulWidget {
 
 class _orderSuccessfulState extends State<orderSuccessful> {
   late Future<Result?>? order;
-  final cartController = Get.put(CartController());
   void inspect() async {
     var ss = await spectator();
     if (ss == null) {
@@ -416,7 +414,7 @@ class _orderSuccessfulState extends State<orderSuccessful> {
                                           } else {
                                             Navigator.pushNamedAndRemoveUntil(
                                                 context, '/form3',(route) => false);
-                                            cartController.deleteAll();
+                                            // cartController.deleteAll();
                                           }
                                         },
                                         child: Text(

@@ -10,9 +10,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:flutterdemo02/provider/globals.dart' as globals;
 import '../API/oneSignalApi.dart';
 import '../provider/Shared_Preference.dart';
+import '../provider/local_notification_service.dart';
+import 'Form4.dart';
+import 'numberCarSecond.dart';
 
 // import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 
@@ -33,7 +36,8 @@ class _LoginPageState extends State<LoginPage> {
     // TODO: implement initState
     super.initState();
   }
-String appid = '';
+
+  String appid = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,6 +111,7 @@ String appid = '';
     );
   }
 
+  var userID;
   Future signIn() async {
     setState(() {
       isLoading = true;
@@ -131,9 +136,19 @@ String appid = '';
           list['result']['picture'],
         );
 
-        // await initOneSignal();
-        // await spectator3();
-        await UserSimplePreferences.setOneSignalAppID(appid);
+        OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+
+        await OneSignal.shared.setAppId("ec271f5c-c5ee-4465-8f82-9e5be14bd308");
+        print('object7');
+        await OneSignal.shared.getDeviceState().then((value) {
+          userID = value!.userId;
+          print('userID is $userID');
+        });
+        if (UserSimplePreferences.getOneSignalApiDone() == null) {
+          await OneSignalapi.getOneSignal(UserSimplePreferences.getOneSignalAppID()!,
+              UserSimplePreferences.getToken());
+        }
+        print('object8');
         print('第二個${users.headers}');
         print('第二個${users.body}');
         setState(() {
@@ -151,26 +166,6 @@ String appid = '';
       print('error occured');
     });
   }
-
-
-  // Future initOneSignal() async {
-  //    OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-
-  //   OneSignal.shared.setRequiresUserPrivacyConsent(true);
-
-  //   await OneSignal.shared.setAppId("ec271f5c-c5ee-4465-8f82-9e5be14bd308");
-  //   await OneSignal.shared.getDeviceState().then(
-  //         (value) => appid= value!.userId!,
-  //       );
-  // }
-
-  // late Future onesign;
-  // Future spectator3() async {
-  //   onesign = OneSignalapi.getOneSignal(
-  //       UserSimplePreferences.getOneSignalAppID()!,
-  //       UserSimplePreferences.getToken());
-  //   return await onesign;
-  // }
 }
 
 class GoogleSignInApi {
