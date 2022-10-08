@@ -109,7 +109,7 @@ class _numberCardState extends State<numberCard> {
                 if (data2[index].accept == true &&
                     data2[index].finish == null) {
                   status = '備餐中';
-                } else if (data2[index].accept == false &&
+                } else if (data2[index].accept == null &&
                     data2[index].finish == null) {
                   status = '審核中';
                 } else if (data2[index].accept == true &&

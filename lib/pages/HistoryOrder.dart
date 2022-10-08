@@ -87,9 +87,9 @@ class _HistoryPageState extends State<HistoryPage> {
               return const Center(child: CircularProgressIndicator());
             } else {
               List<Result2> data2 = snapshot.data;
-              List<Result2> data=[];
-              for(var i = 0 ; i < data2.length ; i ++ ){
-                if(data2[i].complete==true){
+              List<Result2> data = [];
+              for (var i = 0; i < data2.length; i++) {
+                if (data2[i].complete == true) {
                   data.add(data2[i]);
                 }
               }
@@ -97,10 +97,11 @@ class _HistoryPageState extends State<HistoryPage> {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(
-                        left: Dimensions.width20,
-                        right: Dimensions.width15,
-                        top: Dimensions.height20,
-                        bottom: Dimensions.height5),
+                      left: Dimensions.width20,
+                      right: Dimensions.width15,
+                      top: Dimensions.height20,
+                      bottom: Dimensions.height5,
+                    ),
                     child: Row(
                       children: [
                         MiddleText(

@@ -118,7 +118,7 @@ class numberCardSecondState extends State<numberCardSecond> {
         _curStep = 2; //接受餐點
       } else if (accept == true && finish == true) {
         _curStep = 3; //完成餐點
-      } else if (accept == false) {
+      } else if (accept == null) {
         _curStep = 1; //尚未接受餐點
       }
 //
