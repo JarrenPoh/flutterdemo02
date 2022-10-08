@@ -50,15 +50,14 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
   bool ok = false;
   List<Result2?>? group = [];
   Map body = {};
+
+
   //////
   void oneSignalInit() {
     globals.appNavigator = GlobalKey<NavigatorState>();
     globals.globalToNumCard2 = GlobalKey<numberCardSecondState>();
     OneSignal.shared.setNotificationOpenedHandler((openedResult)async {
       print('openedResult.action!.type; is ${openedResult.action!.type}');
-
-      await globals.globalToNumCard2?.currentState?.inspect2();
-      print('start numCard2 inspect2 is successful');
 
       await globals.appNavigator?.currentState?.push(
         MaterialPageRoute(
@@ -68,6 +67,11 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
         ),
       );
       print('navigator to orderCard2 is successful');
+
+      await globals.globalToNumCard2?.currentState?.inspect2();
+      print('start numCard2 inspect2 is successful');
+
+      
     });
 
     OneSignal.shared.setNotificationWillShowInForegroundHandler(
@@ -78,15 +82,11 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
         print('看這這這這看這這這這看這這這這看這這這這${event.notification.title}');
         print('看這這這這看這這這這看這這這這看這這這這${event.notification.body}');
         print('看這這這這看這這這這看這這這這看這這這這${event.notification.subtitle}');
-        // listenToNotification();
-        // await service.showNotificationWithPayload(
-        //   id: 0,
-        //   title: event.notification.title,
-        //   body: event.notification.body,
-        //   payload: '',
-        // );
+        
         await globals.globalToNumCard2?.currentState?.inspect2();
         print('start numCard2 inspect2 is successful');
+
+        
       },
     );
   }

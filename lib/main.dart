@@ -34,26 +34,33 @@ Future main() async {
   //   // statusBarColor: Colors.red  //android backgroungColor
   // ));
   await UserSimplePreferences.init();
-  
+
   runApp(ProviderScope(child: MyApp()));
 
   OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
 
   await OneSignal.shared.setAppId("ec271f5c-c5ee-4465-8f82-9e5be14bd308");
 
-  // OneSignal.shared
-  //     .promptUserForPushNotificationPermission()
-  //     .then((accept) => print('accept permision $accept'));
+  OneSignal.shared
+      .promptUserForPushNotificationPermission()
+      .then((accept) => print('accept permision $accept'));
   var appid;
-  await OneSignal.shared.getDeviceState().then((value) {
+  OneSignal.shared.getDeviceState().then((value) {
     appid = value!.userId!;
-    UserSimplePreferences.setOneSignalAppID(appid);
+    print('userid2 is $appid');
+    if (appid != null) {
+      UserSimplePreferences.setOneSignalAppID(appid);
+    }
   });
+  if (appid != null) {
+    await UserSimplePreferences.setOneSignalAppID(appid);
+  }
 
-  // if (UserSimplePreferences.getOneSignalApiDone() == null) {
-  //   OneSignalapi.getOneSignal(UserSimplePreferences.getOneSignalAppID()!,
-  //       UserSimplePreferences.getToken());
-  // }
+  if (UserSimplePreferences.getOneSignalApiDone() == null &&
+      UserSimplePreferences.getOneSignalAppID() != null) {
+    OneSignalapi.getOneSignal(UserSimplePreferences.getOneSignalAppID()!,
+        UserSimplePreferences.getToken());
+  }
 }
 
 // ignore: use_key_in_widget_constructors

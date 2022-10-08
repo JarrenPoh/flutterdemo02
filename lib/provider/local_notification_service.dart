@@ -91,6 +91,7 @@ class LocalNotificationService {
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
     );
+    print('已成功發送schedule notification');
   }
 
   Future<void> showNotificationWithPayload({

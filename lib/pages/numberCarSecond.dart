@@ -20,6 +20,7 @@ import '../models/ColorSettings.dart';
 import 'package:flutterdemo02/provider/globals.dart' as globals;
 
 import '../models/MiddleText.dart';
+import '../provider/local_notification_service.dart';
 
 class numberCardSecond extends StatefulWidget {
   numberCardSecond({
@@ -143,7 +144,7 @@ class numberCardSecondState extends State<numberCardSecond> {
   }
 
 ////
-  String? comments = '';
+  String? comments;
   bool delete = false;
   bool? accept;
   bool? finish;
@@ -172,6 +173,7 @@ class numberCardSecondState extends State<numberCardSecond> {
     accept = data2!.accept;
     comments = data2!.comments;
     refreshInformation();
+    oneSignalInit();
   }
 
 ////
@@ -222,8 +224,63 @@ class numberCardSecondState extends State<numberCardSecond> {
 
   final cartController = Get.put(CartController());
 
+  late final LocalNotificationService service;
+
+  void listenToNotification() =>
+      service.onNotificationClick.stream.listen(onNotificationListener);
+
+  void onNotificationListener(payload) {
+    if (payload != null) {
+      Navigator.pushNamed(context, '/form3');
+    }
+  }
+
+  void oneSignalInit() {
+    // globals.appNavigator = GlobalKey<NavigatorState>();
+    // globals.globalToNumCard2 = GlobalKey<numberCardSecondState>();
+
+    OneSignal.shared.setNotificationWillShowInForegroundHandler(
+      (OSNotificationReceivedEvent event) async {
+        event.complete(event.notification);
+        print('FOREGROUND HANDLER CALLED WITH: ${event}');
+        //  /// Display Notification, send null to not display
+        print('看這這這這看這這這這看這這這這看這這這這${event.notification.title}');
+        print('看這這這這看這這這這看這這這這看這這這這${event.notification.body}');
+        print('看這這這這看這這這這看這這這這看這這這這${event.notification.subtitle}');
+
+        await globals.globalToNumCard2?.currentState?.inspect2();
+        print('start numCard2 inspect2 is successful');
+
+        int? finalSecond;
+        if (reservation != null) {
+          int selectHour =
+              int.parse(reservation!.substring(0, 2));
+          int selectMinute =
+              int.parse(reservation!.substring(3, 5));
+          print('selectHour ia $selectHour');
+          print('selectMinute ia $selectMinute');
+          int hour = TimeOfDay.now().hour;
+          int minute = TimeOfDay.now().minute;
+
+          finalSecond =
+              ((selectHour * 60 + selectMinute) - (hour * 60 + minute)) * 60;
+          print('finalSecond ia $finalSecond');
+        }
+        await service.showScheduledNotification(
+          id: 0,
+          title: '時間快到囉',
+          body: '您預定的取餐時間"${reservation}"快到了，請留意餐點進度',
+          seconds: finalSecond!,
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
+    service = LocalNotificationService();
+    service.intialize();
+    listenToNotification();
     data2 = arguments?['data2'];
     // oneSignalInit();
     if (data2 != null) {
@@ -377,10 +434,10 @@ class numberCardSecondState extends State<numberCardSecond> {
                             ),
                             ////////////
                             Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 SizedBox(height: Dimensions.height15 * 1),
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     SmallText(
                                       color: kTextLightColor,
@@ -418,6 +475,7 @@ class numberCardSecondState extends State<numberCardSecond> {
                                 // SizedBox(height: Dimensions.height15 * 1),
                                 if (comments != null)
                                   Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       SmallText(
                                         color: kTextLightColor,

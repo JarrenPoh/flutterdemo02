@@ -59,6 +59,8 @@ class _historyCardState extends State<historyCard> {
                 'Data': Data,
                 'numbering': Data.sId,
                 'order': jsonDecode(Data.order!),
+                // 'id':店家id,
+
                 // 'orderSet':orderSet,
               });
             },

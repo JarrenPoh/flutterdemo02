@@ -37,7 +37,6 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
   }
 
-  String appid = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,14 +139,19 @@ class _LoginPageState extends State<LoginPage> {
 
         await OneSignal.shared.setAppId("ec271f5c-c5ee-4465-8f82-9e5be14bd308");
         print('object7');
-        await OneSignal.shared.getDeviceState().then((value) {
-          userID = value!.userId;
-          print('userID is $userID');
-        });
-        if (UserSimplePreferences.getOneSignalApiDone() == null) {
-          await OneSignalapi.getOneSignal(UserSimplePreferences.getOneSignalAppID()!,
-              UserSimplePreferences.getToken());
+        OneSignal.shared.getDeviceState().then(
+          (value) {
+            userID = value!.userId;
+            print('userID0 is $userID');
+            if (userID != null) {
+              UserSimplePreferences.setOneSignalAppID(userID);
+            }
+          },
+        );
+        if (userID != null) {
+          await UserSimplePreferences.setOneSignalAppID(userID);
         }
+
         print('object8');
         print('第二個${users.headers}');
         print('第二個${users.body}');

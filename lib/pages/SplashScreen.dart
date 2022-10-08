@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterdemo02/provider/Shared_Preference.dart';
 import 'package:flutterdemo02/API/loginApi.dart';
 import '../API/UserUpdateApi.dart';
+import '../API/oneSignalApi.dart';
 import '../provider/Shared_Preference.dart';
 import 'package:flutterdemo02/API/getTokenApi.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -12,9 +13,8 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 class SplashScreen extends StatefulWidget {
   SplashScreen({
     Key? key,
-    
   }) : super(key: key);
- 
+
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
@@ -23,22 +23,10 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  var appid;
-  // Future initOneSignal() async {
-  //   await OneSignal.shared.setAppId("ec271f5c-c5ee-4465-8f82-9e5be14bd308");
-  //   await OneSignal.shared.getDeviceState().then((value) async {
-  //     appid = value!.userId!;
-  //     await UserSimplePreferences.setOneSignalAppID(appid);
-  //   });
-  // }
-
   @override
   void initState() {
     spectator();
     super.initState();
-    // if (UserSimplePreferences.getOneSignalApiDone() == null) {
-    //   initOneSignal();
-    // }
   }
 
   void TokenApiInspect() async {
@@ -58,15 +46,11 @@ class _SplashScreenState extends State<SplashScreen> {
       ////////////////
       ////oneSinal/////
       // print(
-      //     'getOneSignalApiDone is ${UserSimplePreferences.getOneSignalApiDone()}');
-      // if (UserSimplePreferences.getOneSignalApiDone() == null) {
-      //   print(
-      //       'getOneSignalAppID is ${UserSimplePreferences.getOneSignalAppID()}');
-      //   await OneSignalapi.getOneSignal(
-      //     UserSimplePreferences.getOneSignalAppID()!,
-      //     UserSimplePreferences.getToken(),
-      //   );
-      // }
+      //     'getOneSignalAppID is ${UserSimplePreferences.getOneSignalAppID()}');
+      if (UserSimplePreferences.getOneSignalApiDone() == null&&UserSimplePreferences.getOneSignalAppID() != null) {
+        OneSignalapi.getOneSignal(UserSimplePreferences.getOneSignalAppID()!,
+            UserSimplePreferences.getToken());
+      }
       ////////////////
       print(
           'UserSimplePreferences is ${UserSimplePreferences.getUserBirthday()}');

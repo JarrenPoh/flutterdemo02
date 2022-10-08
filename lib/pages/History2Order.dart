@@ -58,7 +58,24 @@ class _HistoryPage2State extends State<HistoryPage2> {
                       Padding(
                         padding: const EdgeInsets.all(0),
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              '/form4',
+                              arguments: {
+                                'shopname': arguments['shopname'],
+                                'shopimage': arguments['image'],
+                                'discount':
+                                    arguments['discount'],
+                                'id': arguments['shopname'],
+                                'businessTime':
+                                    arguments['shopname'],
+                                'timeEstimate':
+                                    arguments['shopname'],
+                                'describe': arguments['shopname'],
+                              },
+                            );
+                          },
                           child: TabText(
                             color: Colors.white,
                             text: '前往店家',
