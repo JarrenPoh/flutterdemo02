@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:flutterdemo02/models/ColorSettings.dart';
 import 'package:flutterdemo02/models/TabsText.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:new_version/new_version.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
@@ -33,8 +35,36 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
+    _checkVersion();
     // TODO: implement initState
     super.initState();
+  }
+
+  void _checkVersion() async {
+    // final newVersion = NewVersion(androidId: 'com.FORDON.flutterdemo02');
+    final newVersion = NewVersion(
+      iOSId: 'com.google.Vespa',
+      androidId: 'com.snapchat.android',
+    );
+    final status = await newVersion.getVersionStatus();
+    if (status != null) {
+      if (status.canUpdate) {
+        newVersion.showUpdateDialog(
+            context: context,
+            versionStatus: status,
+            dialogTitle: '更新',
+            allowDismissal: true,
+            dismissButtonText: '退出',
+            dialogText: '請更新foodone app至最高版本',
+            updateButtonText: '更新',
+            dismissAction: () {
+              SystemNavigator.pop();
+            });
+      }
+    }
+
+    debugPrint('device version : ${status!.localVersion}');
+    debugPrint('store version : ${status.storeVersion}');
   }
 
   @override

@@ -67,12 +67,12 @@ class _HistoryPage2State extends State<HistoryPage2> {
                                 'shopimage': arguments['image'],
                                 'discount':
                                     arguments['discount'],
-                                'id': arguments['shopname'],
+                                'id': arguments['id'],
                                 'businessTime':
-                                    arguments['shopname'],
+                                    arguments['businessTime'],
                                 'timeEstimate':
-                                    arguments['shopname'],
-                                'describe': arguments['shopname'],
+                                    arguments['timeEstimate'],
+                                'describe': arguments['describe'],
                               },
                             );
                           },

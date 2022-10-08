@@ -42,6 +42,7 @@ class Result2 {
   int? sequence;
   String? comments;
   String?reservation;
+  String? store;
 
   Result2({
     this.sId,
@@ -58,6 +59,7 @@ class Result2 {
     this.sequence,
     this.comments,
     this.reservation,
+    this.store
   });
 
   Result2.fromJson(Map<String, dynamic> json) {
@@ -77,6 +79,7 @@ class Result2 {
     sequence = json['sequence'];
     comments = json['comments'];
     reservation = json['reservation'];
+    store = json['store'];
   }
 
   Map<String, dynamic> toJson() {
@@ -96,6 +99,7 @@ class Result2 {
     data['sequence'] = this.sequence;
     data['comments'] = this.comments;
     data['reservation'] = this.reservation;
+    data['store'] = this.store;
     return data;
   }
 }
