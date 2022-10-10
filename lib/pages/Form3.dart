@@ -56,6 +56,7 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
   void oneSignalInit() {
     globals.appNavigator = GlobalKey<NavigatorState>();
     globals.globalToNumCard2 = GlobalKey<numberCardSecondState>();
+    globals.globalToNumCard = GlobalKey<numberCardState>();
     OneSignal.shared.setNotificationOpenedHandler((openedResult) async {
       print('openedResult.action!.type; is ${openedResult.action!.type}');
       
@@ -70,6 +71,9 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
 
       await globals.globalToNumCard2?.currentState?.inspect2();
       print('start numCard2 inspect2 is successful');
+
+      await globals.globalToNumCard?.currentState?.inspect();
+      print('start numCard inspect2 is successful');
     });
 
     OneSignal.shared.setNotificationWillShowInForegroundHandler(
@@ -84,6 +88,9 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
 
         await globals.globalToNumCard2?.currentState?.inspect2();
         print('start numCard2 inspect2 is successful');
+
+        await globals.globalToNumCard?.currentState?.inspect();
+      print('start numCard inspect2 is successful');
       },
     );
   }

@@ -26,7 +26,7 @@ class numberCardSecond extends StatefulWidget {
   numberCardSecond({
     Key? key,
     required this.arguments,
-  }) : super(key: globals.globalToNumCard2);
+  }) : super(key: globals.globalToNumCard2??key);
   Map? arguments;
   @override
   State<numberCardSecond> createState() =>
@@ -126,13 +126,15 @@ class numberCardSecondState extends State<numberCardSecond> {
       }
 //
     }
-    setState(() {
-      print('setState finished in numCard2.dart');
-      print('_curStep is $_curStep');
-      print('$finish');
-      print('$accept}');
-      print('$comments}');
-    });
+    setState(
+      () {
+        print('setState finished in numCard2.dart');
+        print('_curStep is $_curStep');
+        print('$finish');
+        print('$accept}');
+        print('$comments}');
+      },
+    );
   }
 
   void inspect() async {
@@ -199,7 +201,7 @@ class numberCardSecondState extends State<numberCardSecond> {
           "$Status",
           "$Text",
           snackPosition: SnackPosition.BOTTOM,
-          duration: const Duration(seconds: 1),
+          duration: const Duration(seconds: 2),
         );
       });
     } else {
@@ -210,7 +212,7 @@ class numberCardSecondState extends State<numberCardSecond> {
           "$Status",
           "$Text",
           snackPosition: SnackPosition.BOTTOM,
-          duration: const Duration(seconds: 1),
+          duration: const Duration(seconds: 2),
         );
       });
     }
@@ -256,6 +258,9 @@ class numberCardSecondState extends State<numberCardSecond> {
 
       await globals.globalToNumCard2?.currentState?.inspect2();
       print('start numCard2 inspect2 is successful');
+
+      await globals.globalToNumCard?.currentState?.inspect();
+      print('start numCard inspect2 is successful');
     });
     OneSignal.shared.setOnWillDisplayInAppMessageHandler((message) {
       message.messageId;
@@ -271,6 +276,9 @@ class numberCardSecondState extends State<numberCardSecond> {
 
         await globals.globalToNumCard2?.currentState?.inspect2();
         print('start numCard2 inspect2 is successful');
+
+        await globals.globalToNumCard?.currentState?.inspect();
+      print('start numCard inspect2 is successful');
 
         int? finalSecond;
         if (reservation != null) {
@@ -492,7 +500,7 @@ class numberCardSecondState extends State<numberCardSecond> {
                                   ],
                                 ),
                                 // SizedBox(height: Dimensions.height15 * 1),
-                                if (comments != null)
+                                if (comments!=null)
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -505,47 +513,46 @@ class numberCardSecondState extends State<numberCardSecond> {
                                         width: Dimensions.width10,
                                       ),
                                       ElevatedButton(
-                                          onPressed: () async {
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return AlertDialog(
-                                                  title: TabText(
-                                                    color: kTextLightColor,
-                                                    text: '查看留言',
-                                                    fontFamily:
-                                                        'NotoSansMedium',
-                                                  ),
-                                                  content: MiddleText(
-                                                    color: kBodyTextColor,
-                                                    text: '$comments',
-                                                    fontFamily:
-                                                        'NotoSansMedium',
-                                                  ),
-                                                  actions: [
-                                                    TextButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                        setState(() {});
-                                                      },
-                                                      child: TabText(
-                                                        color: Colors.blue,
-                                                        text: '知道了',
-                                                      ),
+                                        onPressed: () async {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: TabText(
+                                                  color: kTextLightColor,
+                                                  text: '查看留言',
+                                                  fontFamily: 'NotoSansMedium',
+                                                ),
+                                                content: MiddleText(
+                                                  color: kBodyTextColor,
+                                                  text: '$comments',
+                                                  fontFamily: 'NotoSansMedium',
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                      setState(() {});
+                                                    },
+                                                    child: TabText(
+                                                      color: Colors.blue,
+                                                      text: '知道了',
                                                     ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            primary: Colors.white,
-                                          ),
-                                          child: TabText(
-                                            text: '店家有話跟你說',
-                                            color: kMaim3Color,
-                                            fontFamily: 'NotoSansMedium',
-                                          )),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Colors.white,
+                                        ),
+                                        child: TabText(
+                                          text: '店家有話跟你說',
+                                          color: kMaim3Color,
+                                          fontFamily: 'NotoSansMedium',
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 SizedBox(height: Dimensions.height15 * 1),

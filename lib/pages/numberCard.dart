@@ -1,8 +1,9 @@
 import 'dart:async';
-
+import 'package:flutterdemo02/provider/globals.dart' as globals;
 import 'package:flutter/material.dart';
 import 'package:flutterdemo02/API/getTokenApi.dart';
 import 'package:flutterdemo02/models/SmallText.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import '../API/historyApi.dart';
 import '../API/historyModel.dart';
 import '../models/BetweenSM.dart';
@@ -11,15 +12,16 @@ import '../models/ColorSettings.dart';
 import '../models/MiddleText.dart';
 import '../models/TabsText.dart';
 import '../provider/Shared_Preference.dart';
+import 'numberCarSecond.dart';
 
 class numberCard extends StatefulWidget {
-  numberCard({Key? key}) : super(key: key);
+  numberCard({Key? key}) : super(key: globals.globalToNumCard??key);
 
   @override
-  State<numberCard> createState() => _numberCardState();
+  State<numberCard> createState() => numberCardState();
 }
 
-class _numberCardState extends State<numberCard> {
+class numberCardState extends State<numberCard> {
   @override
   late Future<List<Result2?>?> stores;
 ////////////
@@ -44,26 +46,54 @@ class _numberCardState extends State<numberCard> {
 
   ////////////
 
-  Timer? timer;
-  static const maxSeconds = 30;
-  int seconds = maxSeconds;
-  void startTimer() async {
-    timer = Timer.periodic(Duration(seconds: 1), (_) {
-      if (seconds == 0) {
-        seconds = maxSeconds;
-        inspect();
-      } else {
-        seconds--;
-      }
-      print(seconds);
-    });
-  }
+  // void oneSignalInit() {
+  //   globals.appNavigator = GlobalKey<NavigatorState>();
+  //   globals.globalToNumCard2 = GlobalKey<numberCardSecondState>();
+  //   globals.globalToNumCard = GlobalKey<numberCardState>();
+  //   OneSignal.shared.setNotificationOpenedHandler((openedResult) async {
+  //     print('openedResult.action!.type; is ${openedResult.action!.type}');
+      
+  //     await globals.appNavigator?.currentState?.push(
+  //       MaterialPageRoute(
+  //         builder: (context) => numberCardSecond(
+  //           arguments: {},
+  //         ),
+  //       ),
+  //     );
+  //     print('navigator to orderCard2 is successful');
+
+  //     await globals.globalToNumCard2?.currentState?.inspect2();
+  //     print('start numCard2 inspect2 is successful');
+
+  //     await globals.globalToNumCard?.currentState?.inspect();
+  //     print('start numCard inspect2 is successful');
+  //   });
+
+  //   OneSignal.shared.setNotificationWillShowInForegroundHandler(
+  //     (OSNotificationReceivedEvent event) async {
+        
+  //       event.complete(event.notification);
+  //       print('FOREGROUND HANDLER CALLED WITH: ${event}');
+  //       //  /// Display Notification, send null to not display
+  //       print('看這這這這看這這這這看這這這這看這這這這${event.notification.title}');
+  //       print('看這這這這看這這這這看這這這這看這這這這${event.notification.body}');
+  //       print('看這這這這看這這這這看這這這這看這這這這${event.notification.subtitle}');
+
+  //       await globals.globalToNumCard2?.currentState?.inspect2();
+  //       print('start numCard2 inspect2 is successful');
+
+  //       await globals.globalToNumCard?.currentState?.inspect();
+  //     print('start numCard inspect2 is successful');
+  //     },
+  //   );
+  // }
+  
 
   void initState() {
     // TODO: implement initState
     super.initState();
     inspect();
-    // startTimer();
+    
   }
 
   @override
