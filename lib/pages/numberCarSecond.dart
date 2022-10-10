@@ -78,11 +78,14 @@ class numberCardSecondState extends State<numberCardSecond> {
 
       //line between icons
       if (i != _icons.length - 1) {
-        list.add(Expanded(
+        list.add(
+          Expanded(
             child: Container(
-          height: 2,
-          color: lineColor,
-        )));
+              height: 2,
+              color: lineColor,
+            ),
+          ),
+        );
       }
     });
 
@@ -239,6 +242,24 @@ class numberCardSecondState extends State<numberCardSecond> {
     // globals.appNavigator = GlobalKey<NavigatorState>();
     // globals.globalToNumCard2 = GlobalKey<numberCardSecondState>();
 
+    OneSignal.shared.setNotificationOpenedHandler((openedResult) async {
+      print('openedResult.action!.type; is ${openedResult.action!.type}');
+
+      await globals.appNavigator?.currentState?.push(
+        MaterialPageRoute(
+          builder: (context) => numberCardSecond(
+            arguments: {},
+          ),
+        ),
+      );
+      print('navigator to orderCard2 is successful');
+
+      await globals.globalToNumCard2?.currentState?.inspect2();
+      print('start numCard2 inspect2 is successful');
+    });
+    OneSignal.shared.setOnWillDisplayInAppMessageHandler((message) {
+      message.messageId;
+    });
     OneSignal.shared.setNotificationWillShowInForegroundHandler(
       (OSNotificationReceivedEvent event) async {
         event.complete(event.notification);
@@ -253,10 +274,8 @@ class numberCardSecondState extends State<numberCardSecond> {
 
         int? finalSecond;
         if (reservation != null) {
-          int selectHour =
-              int.parse(reservation!.substring(0, 2));
-          int selectMinute =
-              int.parse(reservation!.substring(3, 5));
+          int selectHour = int.parse(reservation!.substring(0, 2));
+          int selectMinute = int.parse(reservation!.substring(3, 5));
           print('selectHour ia $selectHour');
           print('selectMinute ia $selectMinute');
           int hour = TimeOfDay.now().hour;
@@ -557,12 +576,13 @@ class numberCardSecondState extends State<numberCardSecond> {
                                       order!.length,
                                       (index) {
                                         return history2nd(
-                                            describes: order![index]['note'],
-                                            name: order![index]['name'],
-                                            price: order![index]['price'],
-                                            options: jsonDecode(
-                                                order![index]['options']),
-                                            counts: order![index]['count']);
+                                          describes: order![index]['note'],
+                                          name: order![index]['name'],
+                                          price: order![index]['price'],
+                                          options: jsonDecode(
+                                              order![index]['options']),
+                                          counts: order![index]['count'],
+                                        );
                                       },
                                     ),
                                   ),

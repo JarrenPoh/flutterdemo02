@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutterdemo02/models/BigText.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
@@ -51,14 +52,13 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
   List<Result2?>? group = [];
   Map body = {};
 
-
   //////
   void oneSignalInit() {
     globals.appNavigator = GlobalKey<NavigatorState>();
     globals.globalToNumCard2 = GlobalKey<numberCardSecondState>();
-    OneSignal.shared.setNotificationOpenedHandler((openedResult)async {
+    OneSignal.shared.setNotificationOpenedHandler((openedResult) async {
       print('openedResult.action!.type; is ${openedResult.action!.type}');
-
+      
       await globals.appNavigator?.currentState?.push(
         MaterialPageRoute(
           builder: (context) => numberCardSecond(
@@ -70,23 +70,20 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
 
       await globals.globalToNumCard2?.currentState?.inspect2();
       print('start numCard2 inspect2 is successful');
-
-      
     });
 
     OneSignal.shared.setNotificationWillShowInForegroundHandler(
       (OSNotificationReceivedEvent event) async {
+        
         event.complete(event.notification);
         print('FOREGROUND HANDLER CALLED WITH: ${event}');
         //  /// Display Notification, send null to not display
         print('看這這這這看這這這這看這這這這看這這這這${event.notification.title}');
         print('看這這這這看這這這這看這這這這看這這這這${event.notification.body}');
         print('看這這這這看這這這這看這這這這看這這這這${event.notification.subtitle}');
-        
+
         await globals.globalToNumCard2?.currentState?.inspect2();
         print('start numCard2 inspect2 is successful');
-
-        
       },
     );
   }

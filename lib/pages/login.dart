@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    _checkVersion();
+    // _checkVersion();
     // TODO: implement initState
     super.initState();
   }
@@ -43,9 +43,9 @@ class _LoginPageState extends State<LoginPage> {
   void _checkVersion() async {
     // final newVersion = NewVersion(androidId: 'com.FORDON.flutterdemo02');
     final newVersion = NewVersion(
-      iOSId: 'com.google.Vespa',
       androidId: 'com.snapchat.android',
     );
+     
     final status = await newVersion.getVersionStatus();
     if (status != null) {
       if (status.canUpdate) {
