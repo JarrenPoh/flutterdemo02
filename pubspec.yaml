@@ -76,6 +76,7 @@ dependencies:
   new_version: ^0.3.1
   package_info_plus: ^1.4.3+1
   rename: ^2.0.1
+  firebase_core: ^1.24.0
 
 
 
