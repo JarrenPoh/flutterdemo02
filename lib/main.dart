@@ -23,7 +23,7 @@ import 'package:flutterdemo02/provider/globals.dart' as globals;
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    
+    options: DefaultFirebaseOptions.currentPlatform,
   );
   await SystemChrome.setPreferredOrientations(
     [
@@ -52,6 +52,7 @@ Future main() async {
     appid = value!.userId!;
     print('userid2 is $appid');
     if (appid != null) {
+      print('object is ${UserSimplePreferences.getToken()}');
       UserSimplePreferences.setOneSignalAppID(appid);
     }
   });
@@ -60,7 +61,8 @@ Future main() async {
   }
 
   if (UserSimplePreferences.getOneSignalApiDone() == null &&
-      UserSimplePreferences.getOneSignalAppID() != null) {
+      UserSimplePreferences.getOneSignalAppID() != null &&
+      UserSimplePreferences.getToken() != null) {
     OneSignalapi.getOneSignal(UserSimplePreferences.getOneSignalAppID()!,
         UserSimplePreferences.getToken());
   }
@@ -68,12 +70,8 @@ Future main() async {
 
 // ignore: use_key_in_widget_constructors
 class MyApp extends StatelessWidget {
-
-  
   @override
   Widget build(BuildContext context) {
-    
-    
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(statusBarColor: Colors.transparent),
     );

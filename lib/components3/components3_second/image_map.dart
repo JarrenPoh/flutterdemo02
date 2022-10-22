@@ -112,7 +112,7 @@ class imageItems extends StatelessWidget {
                         padding: EdgeInsets.only(
                             top: Dimensions.height5,
                             bottom: Dimensions.height5,
-                            left: Dimensions.height10),
+                            left: Dimensions.height10,),
                         child: SmallText(
                           color: kBodyTextColor,
                           text: '$timeEstimate 分鐘',
