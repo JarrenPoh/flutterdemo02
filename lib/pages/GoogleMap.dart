@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ui';
+import 'dart:ui' as ui;
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -84,10 +84,17 @@ class _googleMapState extends ConsumerState<googleMap> {
   int polylineIdCounter = 1;
 
 ////Marker when inistate
+
+Future<Uint8List> getBytesFromAsset(String path, int width) async {
+  ByteData data = await rootBundle.load(path);
+  ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+  ui.FrameInfo fi = await codec.getNextFrame();
+  return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+}
+
   Future<void> iniMarker() async {
     for (var i = 0; i < originbooks!.length; i++) {
-      BitmapDescriptor icon = await BitmapDescriptor.fromAssetImage(
-          ImageConfiguration.empty, "images/marker2.png");
+          final Uint8List markerIcon = await getBytesFromAsset('images/marker2.png', 120);
       var counter = markerIdCounter++;
       final Marker marker = Marker(
         markerId: MarkerId('marker_$counter'),
@@ -99,7 +106,7 @@ class _googleMapState extends ConsumerState<googleMap> {
           );
           debugPrint('處夢到的是數字 $i 和 ${originbooks![i]!.name!}');
         },
-        icon: icon,
+        icon: BitmapDescriptor.fromBytes(markerIcon),
       );
       _markers.add(marker);
     }
@@ -836,7 +843,7 @@ class _googleMapState extends ConsumerState<googleMap> {
                           width: Dimensions.width10 * 21,
                         ),
                       ),
-                      if (originbooks![index]!.describe != '')
+                      if (originbooks![index]!.describe != null)
                         Padding(
                           padding: EdgeInsets.symmetric(
                               vertical: Dimensions.height5),
