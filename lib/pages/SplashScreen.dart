@@ -48,7 +48,8 @@ class _SplashScreenState extends State<SplashScreen> {
       ////oneSinal/////
       // print(
       //     'getOneSignalAppID is ${UserSimplePreferences.getOneSignalAppID()}');
-      if (UserSimplePreferences.getOneSignalApiDone() == null&&UserSimplePreferences.getOneSignalAppID() != null) {
+      if (UserSimplePreferences.getOneSignalApiDone() == null&&UserSimplePreferences.getOneSignalAppID() != null&&
+      UserSimplePreferences.getToken() != null) {
         OneSignalapi.getOneSignal(UserSimplePreferences.getOneSignalAppID()!,
             UserSimplePreferences.getToken());
       }

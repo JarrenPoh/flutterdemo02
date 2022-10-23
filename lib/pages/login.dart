@@ -18,6 +18,7 @@ import '../provider/Shared_Preference.dart';
 import '../provider/local_notification_service.dart';
 import 'Form4.dart';
 import 'numberCarSecond.dart';
+import 'package:sign_button/sign_button.dart';
 
 // import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 
@@ -45,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
     final newVersion = NewVersion(
       androidId: 'com.snapchat.android',
     );
-     
+
     final status = await newVersion.getVersionStatus();
     if (status != null) {
       if (status.canUpdate) {
@@ -97,37 +98,68 @@ class _LoginPageState extends State<LoginPage> {
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: Dimensions.width20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        child: Stack(
                           children: [
-                            const Text(
-                              'Sign In',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 40,
-                              ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  'Sign In',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 40,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: Dimensions.height20 * 3,
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        height: Dimensions.height15 * 3,
+                                        child: SignInButton(
+                                          buttonType: ButtonType.google,
+                                          buttonSize: ButtonSize
+                                              .medium, // small(default), medium, large
+                                          onPressed: signIn,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: Dimensions.height20,
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        height: Dimensions.height15 * 3,
+                                        child: SignInButton(
+                                          buttonType: ButtonType.apple,
+                                          buttonSize: ButtonSize
+                                              .medium, // small(default), medium, large
+                                          onPressed: signIn,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                            SizedBox(
-                              height: Dimensions.height20 * 2,
-                            ),
-                            ElevatedButton.icon(
-                              onPressed: signIn,
-                              icon: const FaIcon(
-                                FontAwesomeIcons.google,
-                                color: Colors.red,
-                              ),
-                              label: TabText(
-                                color: kBodyTextColor,
-                                text: 'Sign Up with Goolgle ',
-                                fontFamily: 'NotoSansBold',
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.white,
-                                onPrimary: Colors.black,
-                                minimumSize: Size(
-                                    double.infinity - Dimensions.width20, 50),
-                              ),
+                            const Positioned(
+                              bottom: 50,
+                              right: 15,
+                              child:  Text(
+                                 'Foodone - 福團團',
+                                 style: TextStyle(
+                                   color: Colors.white,
+                                   fontWeight: FontWeight.bold,
+                                   fontSize: 15,
+                                 ),
+                               ),
                             ),
                           ],
                         ),

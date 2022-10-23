@@ -7,7 +7,11 @@
 	<key>REVERSED_CLIENT_ID</key>
 	<string>com.googleusercontent.apps.827645634937-g6q4ufgdtn0d471eg47qb92ifi8o6fc3</string>
 	<key>ANDROID_CLIENT_ID</key>
+<<<<<<< HEAD
 	<string>827645634937-ntqg18hiotkirl4vt7jp9ric6qpmhhje.apps.googleusercontent.com</string>
+=======
+	<string>827645634937-je0h9ii2gvknm8cc7lrc5q7qghsdr40q.apps.googleusercontent.com</string>
+>>>>>>> 83bc408bef9a8763a9c1a09c7e6fc46c9ae8b4bb
 	<key>API_KEY</key>
 	<string>AIzaSyD5ifnI9b_0hZfoqGPvGUikJdtD8YdIlmE</string>
 	<key>GCM_SENDER_ID</key>

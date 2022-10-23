@@ -79,9 +79,9 @@ class _ItemListState extends State<ItemList> {
                           onTap: () {
                             press();
                             BodyCallBack({
-                              'address': group![index]!.address!,
+                              'subtitle': group![index]!.subtitle!,
                               'image': group![index]!.image,
-                              'name': group![index]!.name!,
+                              'title': group![index]!.title!,
                               'url' : group![index]!.url,
                             });
                           },
@@ -89,9 +89,9 @@ class _ItemListState extends State<ItemList> {
                             index: index,
                             pageController: pageController,
                             currPageValue: currPageValue,
-                            title: group![index]!.address!,
+                            subtitle: group![index]!.subtitle!,
                             image: group![index]!.image,
-                            shopName: group![index]!.name!,
+                            title: group![index]!.title!,
                           ),
                         );
                       }),

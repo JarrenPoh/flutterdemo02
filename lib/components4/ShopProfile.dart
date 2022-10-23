@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterdemo02/API/MenuModel.dart';
 import 'package:flutterdemo02/models/ColorSettings.dart';
 
 import '../models/MiddleText.dart';
@@ -6,26 +7,31 @@ import '../models/SmallText.dart';
 import '../models/TabsText.dart';
 
 class ShopProfile extends StatefulWidget {
-  ShopProfile({Key? key, required this.arguments}) : super(key: key);
-  Map arguments;
+  ShopProfile({Key? key, required this.data3}) : super(key: key);
+  Result3 data3;
   @override
-  State<ShopProfile> createState() => ShopProfileState(arguments: arguments);
+  State<ShopProfile> createState() => ShopProfileState(data3: data3);
 }
 
 class ShopProfileState extends State<ShopProfile> {
-  ShopProfileState({required this.arguments});
+  ShopProfileState({required this.data3});
   get kBodyTextColor => null;
-  Map arguments;
-
+  Result3 data3;
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
-    List discount = arguments['discount'];
-    String shopname = arguments['shopname'];
-    String describe = arguments['describe'];
-    String? timeEstimate = arguments['timeEstimate'];
+    List? discount = data3.discount;
+    String shopname = data3.name!;
+    String? describe = data3.describe;
+    String? timeEstimate = data3.timeEstimate;
+    print('object3');
     bool businessTime;
     int selectedHour = TimeOfDay.now().hour;
-    if ( arguments['businessTime'][selectedHour] == true) {
+    if ( data3.businessTime![selectedHour] == true) {
       print('營業中');
       businessTime = true;
     } else {
@@ -124,7 +130,7 @@ class ShopProfileState extends State<ShopProfile> {
           //     height: Dimensions.height10,
           //   ),
 
-          if (discount.isNotEmpty)
+          if (discount!=null)
             Column(
               children: [
                 Row(

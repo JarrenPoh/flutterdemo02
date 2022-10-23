@@ -11,25 +11,25 @@ import 'package:flutterdemo02/pages/Tabs.dart';
 import '../models/MiddleText.dart';
 
 class RappiProductItem extends StatefulWidget {
-  Map arguments;
-  RappiProductItem(this.product, this.arguments);
+  Result3 data3;
+  RappiProductItem(this.product, this.data3);
   final Result product;
 
   @override
   State<RappiProductItem> createState() =>
-      _RappiProductItemState(arguments: arguments);
+      _RappiProductItemState(data3: data3);
 }
 
 class _RappiProductItemState extends State<RappiProductItem> {
-  Map arguments;
-  _RappiProductItemState({required this.arguments});
+  Result3 data3;
+  _RappiProductItemState({required this.data3});
   List options = [];
 
   bool? businessTime;
   int selectedHour = TimeOfDay.now().hour;
   @override
   void initState() {
-    if (arguments['businessTime'][selectedHour] == true) {
+    if (data3.timeEstimate![selectedHour] == true) {
       print('營業中');
       businessTime = true;
     } else {
@@ -64,7 +64,7 @@ class _RappiProductItemState extends State<RappiProductItem> {
                   'textprice': widget.product.price,
                   'description': widget.product.describe,
                   'image': widget.product.image,
-                  'shopname': widget.arguments['shopname'],
+                  'shopname':data3.name,
                   'ToCart': '加入購物車',
                   'firstNumber': 1,
                   'options': options,

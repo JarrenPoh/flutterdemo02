@@ -31,9 +31,9 @@ dependencies:
   json_annotation:
   flutter:
     sdk: flutter
-  font_awesome_flutter: ^10.1.0
+  font_awesome_flutter: ^9.0.0
   convert: ^3.0.1
-  url_launcher: ^6.0.12
+  url_launcher: ^6.0.17
   # flutter_localization:
   #   sdk: flutter
   http: ^0.13.4
@@ -43,7 +43,7 @@ dependencies:
   container_tab_indicator: ^0.3.0
   tab_indicator_styler: ^2.0.0
   dots_indicator: ^2.1.0
-  google_sign_in: ^5.0.3
+  google_sign_in: ^5.4.2
   firebase_auth: ^3.5.0
   firebase_analytics: ^9.3.0
   shared_preferences: ^2.0.15
@@ -77,6 +77,10 @@ dependencies:
   package_info_plus: ^1.4.3+1
   rename: ^2.0.1
   firebase_core: ^1.24.0
+
+  flutter_signin_button: ^2.0.0
+  sign_button: ^2.0.2
+
 
 
 

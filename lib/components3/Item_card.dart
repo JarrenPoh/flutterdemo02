@@ -4,7 +4,7 @@ import 'package:flutterdemo02/models/ColorSettings.dart';
 import 'package:flutterdemo02/models/TabsText.dart';
 
 class ItemCard extends StatelessWidget {
-  final String title, shopName; //,image
+  final String title, subtitle; //,image
   final String? image;
   var index = 0, currPageValue = 0.0;
   double height = Dimensions.form3ItemCardContainer;
@@ -17,7 +17,7 @@ class ItemCard extends StatelessWidget {
     required this.index,
     required this.currPageValue,
     required this.image,
-    required this.shopName,
+    required this.subtitle,
     required this.pageController,
   }) : super(key: key);
 
@@ -122,13 +122,13 @@ class ItemCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TabText(
-                      text: shopName,
+                      text: title,
                       color: kBodyTextColor,
                       fontFamily: 'NotoSansMedium'),
                   SizedBox(
                     height: Dimensions.height10,
                   ),
-                  TabText(color: kTextLightColor, text: title)
+                  TabText(color: kTextLightColor, text: subtitle)
                 ],
               ),
             ),

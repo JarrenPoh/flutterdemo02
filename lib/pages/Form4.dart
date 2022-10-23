@@ -8,7 +8,7 @@ import 'package:flutterdemo02/components4/ShopProfile.dart';
 import 'package:flutterdemo02/components4/rappic_bloc.dart';
 import 'package:flutterdemo02/models/ColorSettings.dart';
 import 'package:flutterdemo02/models/MiddleText.dart';
-import 'package:flutterdemo02/provider/globals.dart'as globals;
+import 'package:flutterdemo02/provider/globals.dart' as globals;
 import 'package:get/get.dart';
 import '../API/MenuModel.dart';
 import '../components4/CategoryItem.dart';
@@ -34,16 +34,17 @@ class FormPage4State extends State<FormPage4>
   });
   Map arguments;
   late final _bloc = RappiBLoC();
-  late Future<List<Result?>?>? stores;
+  late Future<Result3?>? stores;
   double profileHeight = 0;
   void getHeight() {
     _bloc.scrollController.addListener(_bloc.onScrollListener);
   }
 
   late List<List<Result>> data2 = [];
-void ssss(){
-  debugPrint('dsfffffffffffffffffffffffdgaaaaaaaaaaaaaaaaaa');
-}
+  void ssss() {
+    debugPrint('dsfffffffffffffffffffffffdgaaaaaaaaaaaaaaaaaa');
+  }
+
   ////////////
   void inspect() async {
     var ss = await spectator();
@@ -58,8 +59,9 @@ void ssss(){
   }
 
   Future spectator() async {
-    stores =
-        MenuApi.getMenus(arguments['id'], UserSimplePreferences.getToken());
+
+     stores =
+          MenuApi.getMenus(arguments['id'], UserSimplePreferences.getToken());
     return await stores;
   }
 
@@ -101,13 +103,14 @@ void ssss(){
           child: SafeArea(
             child: Scaffold(
               backgroundColor: Colors.white,
-              body: FutureBuilder<List<Result?>?>(
+              body: FutureBuilder<Result3?>(
                 future: stores,
                 builder: (context, AsyncSnapshot snapshot) {
                   if (!snapshot.hasData) {
                     return const Center(child: CircularProgressIndicator());
                   } else {
-                    List<Result> data = snapshot.data;
+                    Result3 data3 = snapshot.data;
+                    List<Result> data = data3.product!;
                     var typeSet = <String>{};
                     for (var i = 0; i < data.length; i++) {
                       typeSet.add(data[i].type);
@@ -122,7 +125,7 @@ void ssss(){
                               (product) => product.type.contains(typeArray[i]))
                           .toList());
                     }
-                    print(data.last.options);
+
                     _bloc.init(
                       this,
                       profileHeight,
@@ -148,7 +151,7 @@ void ssss(){
                                     return FlexibleSpaceBar(
                                       background: Column(
                                         children: [
-                                          arguments['shopimage'] != null
+                                         data3.image != null
                                               ? Container(
                                                   decoration: BoxDecoration(
                                                     borderRadius:
@@ -160,15 +163,17 @@ void ssss(){
                                                     ),
                                                     image: DecorationImage(
                                                       image: NetworkImage(
-                                                        arguments['shopimage'],
+                                                        data3.image!,
                                                       ),
                                                       fit: BoxFit.cover,
                                                     ),
                                                   ),
                                                 )
                                               : Container(
-                                                width: Dimensions.screenWidth,
-                                                height: Dimensions.screenHeigt / 4.85,
+                                                  width: Dimensions.screenWidth,
+                                                  height:
+                                                      Dimensions.screenHeigt /
+                                                          4.85,
                                                   decoration: BoxDecoration(
                                                     borderRadius:
                                                         BorderRadius.vertical(
@@ -193,7 +198,7 @@ void ssss(){
                                           children: [
                                             MiddleText(
                                               color: kBodyTextColor,
-                                              text: arguments['shopname'],
+                                              text: data3.name!,
                                               fontFamily: 'NotoSansMedium',
                                             ),
                                           ],
@@ -242,9 +247,9 @@ void ssss(){
                                             context,
                                             '/shopcar',
                                             arguments: {
-                                              'shopname': arguments['shopname'],
+                                              'shopname':data3.name,
                                               'shopimage':
-                                                  arguments['shopimage'],
+                                                  data3.image,
                                               'delivertime':
                                                   arguments['delivertime'],
                                               'businessTime':
@@ -309,7 +314,7 @@ void ssss(){
                               ),
                               SliverToBoxAdapter(
                                   child: ShopProfile(
-                                arguments: arguments,
+                                data3: data3,
                                 key: _bloc.profilekey,
                               )),
                               SliverPersistentHeader(
@@ -357,7 +362,7 @@ void ssss(){
                                               } else {
                                                 return RappiProductItem(
                                                   item.product!,
-                                                  arguments,
+                                                  data3,
                                                 );
                                               }
                                             },
