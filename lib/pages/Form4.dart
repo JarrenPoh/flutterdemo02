@@ -119,10 +119,6 @@ bool? businessTime;
                           .where(
                               (product) => product.type.contains(typeArray[i]))
                           .toList());
-                      print('typeArray is ${typeArray[i]}');
-                      for (var j = 0; j < data2[i].length; j++) {
-                        print('data2 is ${data2[i][j].name}');
-                      }
                     }
 
                     int selectedHour = TimeOfDay.now().hour;

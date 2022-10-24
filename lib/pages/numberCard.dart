@@ -44,49 +44,7 @@ class numberCardState extends State<numberCard> {
     return await stores;
   }
 
-  ////////////
-
-  // void oneSignalInit() {
-  //   globals.appNavigator = GlobalKey<NavigatorState>();
-  //   globals.globalToNumCard2 = GlobalKey<numberCardSecondState>();
-  //   globals.globalToNumCard = GlobalKey<numberCardState>();
-  //   OneSignal.shared.setNotificationOpenedHandler((openedResult) async {
-  //     print('openedResult.action!.type; is ${openedResult.action!.type}');
-      
-  //     await globals.appNavigator?.currentState?.push(
-  //       MaterialPageRoute(
-  //         builder: (context) => numberCardSecond(
-  //           arguments: {},
-  //         ),
-  //       ),
-  //     );
-  //     print('navigator to orderCard2 is successful');
-
-  //     await globals.globalToNumCard2?.currentState?.inspect2();
-  //     print('start numCard2 inspect2 is successful');
-
-  //     await globals.globalToNumCard?.currentState?.inspect();
-  //     print('start numCard inspect2 is successful');
-  //   });
-
-  //   OneSignal.shared.setNotificationWillShowInForegroundHandler(
-  //     (OSNotificationReceivedEvent event) async {
-        
-  //       event.complete(event.notification);
-  //       print('FOREGROUND HANDLER CALLED WITH: ${event}');
-  //       //  /// Display Notification, send null to not display
-  //       print('看這這這這看這這這這看這這這這看這這這這${event.notification.title}');
-  //       print('看這這這這看這這這這看這這這這看這這這這${event.notification.body}');
-  //       print('看這這這這看這這這這看這這這這看這這這這${event.notification.subtitle}');
-
-  //       await globals.globalToNumCard2?.currentState?.inspect2();
-  //       print('start numCard2 inspect2 is successful');
-
-  //       await globals.globalToNumCard?.currentState?.inspect();
-  //     print('start numCard inspect2 is successful');
-  //     },
-  //   );
-  // }
+  
   
 
   void initState() {
@@ -116,8 +74,10 @@ class numberCardState extends State<numberCard> {
           for (var i = 0; i < data.length; i++) {
             if (data[i].complete != true) {
               data2.add(data[i]);
-              print('data[i] is ${data[i]}');
             }
+          }     
+          for(var i = 0 ; i <data2.length;i++){
+            print('data2 is ${data2[i].sequence}');
           }
           var status = '';
 
