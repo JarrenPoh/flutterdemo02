@@ -58,13 +58,7 @@ class _mainListState extends State<mainList> {
                     context,
                     '/form4',
                     arguments: {
-                      'shopname': data[index].name,
-                      'shopimage': data[index].image,
-                      'discount': jsonDecode(data[index].discount!),
                       'id': data[index].id,
-                      'businessTime': data[index].businessTime,
-                      'timeEstimate': data[index].timeEstimate,
-                      'describe': data[index].describe,
                     },
                   );
                   cartController.deleteAll();
@@ -74,13 +68,7 @@ class _mainListState extends State<mainList> {
                   context,
                   '/form4',
                   arguments: {
-                    'shopname': data[index].name,
-                    'shopimage': data[index].image,
-                    'discount': jsonDecode(data[index].discount!),
                     'id': data[index].id,
-                    'businessTime':  data[index].businessTime,
-                    'timeEstimate': data[index].timeEstimate,
-                    'describe': data[index].describe,
                   },
                 );
               }

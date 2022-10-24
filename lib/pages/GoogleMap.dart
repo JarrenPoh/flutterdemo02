@@ -1184,33 +1184,15 @@ class _googleMapState extends ConsumerState<googleMap> {
                             context,
                             '/form4',
                             arguments: {
-                              'shopname': originbooks![index]?.name,
-                              'shopimage': originbooks![index]?.image,
-                              'discount':
-                                  jsonDecode(originbooks![index]!.discount!),
                               'id': originbooks![index]?.id,
-                              'businessTime': originbooks![index]?.businessTime,
-                              'timeEstimate': originbooks![index]?.timeEstimate,
-                              'describe': originbooks![index]?.describe,
                             },
                           );
                           cartController.deleteAll();
                         }
                       } else {
-                        Navigator.pushNamed(
-                          context,
-                          '/form4',
-                          arguments: {
-                            'shopname': originbooks![index]?.name,
-                            'shopimage': originbooks![index]?.image,
-                            'discount':
-                                jsonDecode(originbooks![index]!.discount!),
-                            'id': originbooks![index]?.id,
-                            'businessTime': originbooks![index]?.businessTime,
-                            'timeEstimate': originbooks![index]?.timeEstimate,
-                            'describe': originbooks![index]?.describe,
-                          },
-                        );
+                        Navigator.pushNamed(context, '/form4', arguments: {
+                          'id': originbooks![index]?.id,
+                        });
                       }
                     },
                     child: Icon(

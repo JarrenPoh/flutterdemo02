@@ -63,16 +63,7 @@ class _HistoryPage2State extends State<HistoryPage2> {
                               context,
                               '/form4',
                               arguments: {
-                                'shopname': arguments['shopname'],
-                                'shopimage': arguments['image'],
-                                'discount':
-                                    arguments['discount'],
                                 'id': arguments['id'],
-                                'businessTime':
-                                    arguments['businessTime'],
-                                'timeEstimate':
-                                    arguments['timeEstimate'],
-                                'describe': arguments['describe'],
                               },
                             );
                           },
