@@ -41,9 +41,6 @@ class FormPage4State extends State<FormPage4>
   }
 
   late List<List<Result>> data2 = [];
-  void ssss() {
-    debugPrint('dsfffffffffffffffffffffffdgaaaaaaaaaaaaaaaaaa');
-  }
 
   ////////////
   void inspect() async {
@@ -59,12 +56,11 @@ class FormPage4State extends State<FormPage4>
   }
 
   Future spectator() async {
-
-     stores =
-          MenuApi.getMenus(arguments['id'], UserSimplePreferences.getToken());
+    stores =
+        MenuApi.getMenus(arguments['id'], UserSimplePreferences.getToken());
     return await stores;
   }
-
+bool? businessTime;
   ////////////
   @override
   void initState() {
@@ -115,7 +111,6 @@ class FormPage4State extends State<FormPage4>
                     for (var i = 0; i < data.length; i++) {
                       typeSet.add(data[i].type);
                     }
-
                     final List<String> typeArray = typeSet.toList();
 
                     for (var i = 0; i < typeArray.length; i++) {
@@ -124,6 +119,19 @@ class FormPage4State extends State<FormPage4>
                           .where(
                               (product) => product.type.contains(typeArray[i]))
                           .toList());
+                      print('typeArray is ${typeArray[i]}');
+                      for (var j = 0; j < data2[i].length; j++) {
+                        print('data2 is ${data2[i][j].name}');
+                      }
+                    }
+
+                    int selectedHour = TimeOfDay.now().hour;
+                    if (data3.businessTime![selectedHour] == true) {
+                      print('營業中');
+                      businessTime = true;
+                    } else {
+                      print('尚未營業');
+                      businessTime = false;
                     }
 
                     _bloc.init(
@@ -132,7 +140,6 @@ class FormPage4State extends State<FormPage4>
                       data2,
                       typeArray,
                     );
-
                     return AnimatedBuilder(
                       animation: _bloc,
                       builder: (_, __) => Builder(
@@ -151,7 +158,7 @@ class FormPage4State extends State<FormPage4>
                                     return FlexibleSpaceBar(
                                       background: Column(
                                         children: [
-                                         data3.image != null
+                                          data3.image != null
                                               ? Container(
                                                   decoration: BoxDecoration(
                                                     borderRadius:
@@ -247,13 +254,12 @@ class FormPage4State extends State<FormPage4>
                                             context,
                                             '/shopcar',
                                             arguments: {
-                                              'shopname':data3.name,
-                                              'shopimage':
-                                                  data3.image,
-                                              'delivertime':
-                                                  arguments['delivertime'],
+                                              'shopname': data3.name,
+                                              'shopimage': data3.image,
+                                              // 'delivertime':
+                                              //     arguments['delivertime'],
                                               'businessTime':
-                                                  arguments['businessTime'],
+                                                  data3.businessTime,
                                             },
                                           );
                                         }
@@ -313,10 +319,12 @@ class FormPage4State extends State<FormPage4>
                                 ],
                               ),
                               SliverToBoxAdapter(
-                                  child: ShopProfile(
-                                data3: data3,
-                                key: _bloc.profilekey,
-                              )),
+                                child: ShopProfile(
+                                  businessTime: businessTime!,
+                                  data3: data3,
+                                  key: _bloc.profilekey,
+                                ),
+                              ),
                               SliverPersistentHeader(
                                 pinned: true,
                                 delegate: MySliverDelegate(
@@ -335,8 +343,6 @@ class FormPage4State extends State<FormPage4>
                                       tabs: _bloc.tabs
                                           .map((e) => RappidTabWidget(e))
                                           .toList(),
-                                      // _bloc.tabs.map((e) => _RappidTabWidget(e)).toList(),
-                                      // List.generate(_bloc.tabs.length, (index) => _RappidTabWidget(_bloc.tabs[index]))
                                     ),
                                   ),
                                 ),
@@ -363,6 +369,7 @@ class FormPage4State extends State<FormPage4>
                                                 return RappiProductItem(
                                                   item.product!,
                                                   data3,
+                                                  businessTime!,
                                                 );
                                               }
                                             },
@@ -370,19 +377,6 @@ class FormPage4State extends State<FormPage4>
                                         ),
                                       ),
                                     ),
-                                    // children: ListView.builder(
-                                    //   controller: _bloc.scrollController,
-                                    //   padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-                                    //   itemCount: _bloc.items.length,
-                                    //   itemBuilder: (BuildContext context, int index) {
-                                    //     final item = _bloc.items[index];
-                                    //   if (item.isCategory) {
-                                    //     return _RappiCategoryItem(item.category!);
-                                    //   } else {
-                                    //     return _RappiProductItem(item.product!);
-                                    //   }
-                                    // },
-                                    // ),
                                   ],
                                 ),
                               ),

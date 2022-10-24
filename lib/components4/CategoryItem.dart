@@ -3,10 +3,23 @@ import 'package:flutterdemo02/models/BigText.dart';
 
 import '../models/ColorSettings.dart';
 
-class RappiCategoryItem extends StatelessWidget {
+class RappiCategoryItem extends StatefulWidget {
   const RappiCategoryItem(this.category);
   final category;
 
+  @override
+  State<RappiCategoryItem> createState() => _RappiCategoryItemState(category:category);
+}
+
+class _RappiCategoryItemState extends State<RappiCategoryItem> {
+  _RappiCategoryItemState({required this.category});
+  final category;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -25,7 +38,7 @@ class RappiCategoryItem extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: BigText(
               color: kBodyTextColor,
-              text: category,
+              text: widget.category,
               weight: FontWeight.w700,
             ),
           ),

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutterdemo02/API/MenuModel.dart';
 import 'package:flutterdemo02/models/ColorSettings.dart';
@@ -7,37 +9,34 @@ import '../models/SmallText.dart';
 import '../models/TabsText.dart';
 
 class ShopProfile extends StatefulWidget {
-  ShopProfile({Key? key, required this.data3}) : super(key: key);
+  ShopProfile({Key? key, required this.data3, required this.businessTime}) : super(key: key);
   Result3 data3;
+  bool businessTime;
   @override
-  State<ShopProfile> createState() => ShopProfileState(data3: data3);
+  State<ShopProfile> createState() => ShopProfileState(data3: data3,businessTime:businessTime);
 }
 
 class ShopProfileState extends State<ShopProfile> {
-  ShopProfileState({required this.data3});
+  ShopProfileState({required this.data3,required this.businessTime});
   get kBodyTextColor => null;
   Result3 data3;
-@override
+  bool businessTime;
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    List? discount = data3.discount;
+    List? discount;
+    if (data3.discount != null) {
+      discount = jsonDecode(data3.discount!);
+    }
+    print('discount is $discount');
     String shopname = data3.name!;
     String? describe = data3.describe;
     String? timeEstimate = data3.timeEstimate;
-    print('object3');
-    bool businessTime;
-    int selectedHour = TimeOfDay.now().hour;
-    if ( data3.businessTime![selectedHour] == true) {
-      print('營業中');
-      businessTime = true;
-    } else {
-      print('尚未營業');
-      businessTime = false;
-    }
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: Dimensions.height5,
@@ -84,7 +83,7 @@ class ShopProfileState extends State<ShopProfile> {
               ),
             ],
           ),
-          if (describe != '')
+          if (describe != ''||describe != null)
             Column(
               children: [
                 TabText(
@@ -130,7 +129,7 @@ class ShopProfileState extends State<ShopProfile> {
           //     height: Dimensions.height10,
           //   ),
 
-          if (discount!=null)
+          if (discount!.isNotEmpty)
             Column(
               children: [
                 Row(

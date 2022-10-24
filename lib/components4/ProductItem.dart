@@ -12,32 +12,20 @@ import '../models/MiddleText.dart';
 
 class RappiProductItem extends StatefulWidget {
   Result3 data3;
-  RappiProductItem(this.product, this.data3);
+  bool businessTime;
+  RappiProductItem(this.product, this.data3,this.businessTime,);
   final Result product;
 
   @override
-  State<RappiProductItem> createState() =>
-      _RappiProductItemState(data3: data3);
+  State<RappiProductItem> createState() => _RappiProductItemState(data3: data3,businessTime:businessTime);
 }
 
 class _RappiProductItemState extends State<RappiProductItem> {
   Result3 data3;
-  _RappiProductItemState({required this.data3});
+  _RappiProductItemState({required this.data3,required this.businessTime});
   List options = [];
+  bool businessTime;
 
-  bool? businessTime;
-  int selectedHour = TimeOfDay.now().hour;
-  @override
-  void initState() {
-    if (data3.timeEstimate![selectedHour] == true) {
-      print('營業中');
-      businessTime = true;
-    } else {
-      print('尚未營業');
-      businessTime = false;
-    }
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +52,7 @@ class _RappiProductItemState extends State<RappiProductItem> {
                   'textprice': widget.product.price,
                   'description': widget.product.describe,
                   'image': widget.product.image,
-                  'shopname':data3.name,
+                  'shopname': data3.name,
                   'ToCart': '加入購物車',
                   'firstNumber': 1,
                   'options': options,
