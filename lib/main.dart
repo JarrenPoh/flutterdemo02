@@ -31,11 +31,7 @@ Future main() async {
       DeviceOrientation.portraitDown,
     ],
   );
-  // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-  //   statusBarBrightness: Brightness.dark, //ios icon white
-  //   statusBarIconBrightness: Brightness.light, //android icon white
-  //   // statusBarColor: Colors.red  //android backgroungColor
-  // ));
+
   await UserSimplePreferences.init();
 
   runApp(ProviderScope(child: MyApp()));

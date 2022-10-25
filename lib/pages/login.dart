@@ -36,16 +36,14 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    // _checkVersion();
+    _checkVersion();
     // TODO: implement initState
     super.initState();
   }
 
   void _checkVersion() async {
-    // final newVersion = NewVersion(androidId: 'com.FORDON.flutterdemo02');
-    final newVersion = NewVersion(
-      androidId: 'com.snapchat.android',
-    );
+    final newVersion = NewVersion(androidId: 'com.FORDON.flutterdemo02');
+    
 
     final status = await newVersion.getVersionStatus();
     if (status != null) {
