@@ -3,7 +3,7 @@ import 'package:google_geocoding/google_geocoding.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutterdemo02/API/getTokenApi.dart';
 import '../API/StoreModel.dart';
-import '../GoogleMap/googleMapKey.dart';
+import 'package:flutterdemo02/provider/googleMapKey.dart';
 import '../GoogleMap/map_services.dart';
 import '../provider/Shared_Preference.dart';
 

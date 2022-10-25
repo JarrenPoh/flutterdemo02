@@ -6,7 +6,7 @@ import 'package:location/location.dart';
 import 'dart:async';
 
 import '../API/StoreModel.dart';
-import 'googleMapKey.dart';
+import 'package:flutterdemo02/provider/googleMapKey.dart';
 
 class MapServices {
   static Future<List<Result?>?> searchPlaces(String query, token) async {
