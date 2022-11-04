@@ -1,49 +1,49 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:the_apple_sign_in/the_apple_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutterdemo02/API/loginApi.dart';
 import 'package:flutterdemo02/models/ColorSettings.dart';
-import 'package:flutterdemo02/models/TabsText.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:new_version/new_version.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutterdemo02/provider/globals.dart' as globals;
-import '../API/oneSignalApi.dart';
+
 import '../provider/Shared_Preference.dart';
-import '../provider/local_notification_service.dart';
-import 'Form4.dart';
-import 'numberCarSecond.dart';
-import 'package:sign_button/sign_button.dart';
+
+import 'package:sign_button/sign_button.dart' as button;
+
+import '../provider/authentication_viewmodel.dart';
 
 // import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 
 // import 'package:flutter_pro';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends ConsumerState<LoginPage> {
   bool isLoading = false;
+  final _firebaseAuth = FirebaseAuth.instance;
 
   @override
   void initState() {
-    _checkVersion();
+    // _checkVersion();
     // TODO: implement initState
     super.initState();
   }
 
   void _checkVersion() async {
     final newVersion = NewVersion(androidId: 'com.FORDON.flutterdemo02');
-    
 
     final status = await newVersion.getVersionStatus();
     if (status != null) {
@@ -62,8 +62,8 @@ class _LoginPageState extends State<LoginPage> {
       }
     }
 
-    debugPrint('device version : ${status!.localVersion}');
-    debugPrint('store version : ${status.storeVersion}');
+    debugPrint('device version : ${status?.localVersion}');
+    debugPrint('store version : ${status?.storeVersion}');
   }
 
   @override
@@ -117,9 +117,9 @@ class _LoginPageState extends State<LoginPage> {
                                     Expanded(
                                       child: Container(
                                         height: Dimensions.height15 * 3,
-                                        child: SignInButton(
-                                          buttonType: ButtonType.google,
-                                          buttonSize: ButtonSize
+                                        child: button.SignInButton(
+                                          buttonType: button.ButtonType.google,
+                                          buttonSize: button.ButtonSize
                                               .medium, // small(default), medium, large
                                           onPressed: signIn,
                                         ),
@@ -135,11 +135,11 @@ class _LoginPageState extends State<LoginPage> {
                                     Expanded(
                                       child: Container(
                                         height: Dimensions.height15 * 3,
-                                        child: SignInButton(
-                                          buttonType: ButtonType.apple,
-                                          buttonSize: ButtonSize
+                                        child: button.SignInButton(
+                                          buttonType: button.ButtonType.apple,
+                                          buttonSize: button.ButtonSize
                                               .medium, // small(default), medium, large
-                                          onPressed: signIn,
+                                          onPressed: AppleSignIn,
                                         ),
                                       ),
                                     ),
@@ -150,14 +150,14 @@ class _LoginPageState extends State<LoginPage> {
                             const Positioned(
                               bottom: 50,
                               right: 15,
-                              child:  Text(
-                                 'Foodone - 福團團',
-                                 style: TextStyle(
-                                   color: Colors.white,
-                                   fontWeight: FontWeight.bold,
-                                   fontSize: 15,
-                                 ),
-                               ),
+                              child: Text(
+                                'Foodone - 福團團',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -229,6 +229,25 @@ class _LoginPageState extends State<LoginPage> {
     }).catchError((err) {
       print('error occured');
     });
+  }
+
+// AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
+  Future<void> AppleSignIn() async {
+    try {
+      
+    final authService = ref.watch(authappleService);
+    final user = await authService.signInWithApple(
+        scopes: [Scope.email, Scope.fullName]);
+    print('uid: ${user.uid}');
+    print('name: ${user.displayName}');
+    print('uid: ${user.email}');
+
+  
+
+  } catch (e) {
+    // TODO: Show alert here
+    print(e);
+  }
   }
 }
 

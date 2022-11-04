@@ -9,6 +9,7 @@ import 'package:flutterdemo02/pages/Form4.dart';
 import 'package:flutterdemo02/pages/SplashScreen.dart';
 import 'package:flutterdemo02/pages/login.dart';
 import 'package:flutterdemo02/provider/Shared_Preference.dart';
+import 'package:flutterdemo02/provider/googleMapKey.dart';
 import 'package:flutterdemo02/provider/local_notification_service.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
@@ -19,12 +20,14 @@ import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutterdemo02/provider/globals.dart' as globals;
+import 'package:flutterdemo02/provider/authentication_viewmodel.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await AppleSignInAvailable.check();
   await SystemChrome.setPreferredOrientations(
     [
       DeviceOrientation.portraitUp,
@@ -38,7 +41,7 @@ Future main() async {
 
   OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
 
-  await OneSignal.shared.setAppId("ec271f5c-c5ee-4465-8f82-9e5be14bd308");
+  await OneSignal.shared.setAppId(OnesignalAppID);
 
   OneSignal.shared
       .promptUserForPushNotificationPermission()
