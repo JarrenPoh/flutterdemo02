@@ -59,7 +59,7 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
     globals.globalToNumCard = GlobalKey<numberCardState>();
     OneSignal.shared.setNotificationOpenedHandler((openedResult) async {
       print('openedResult.action!.type; is ${openedResult.action!.type}');
-      
+
       await globals.appNavigator?.currentState?.push(
         MaterialPageRoute(
           builder: (context) => numberCardSecond(
@@ -78,7 +78,6 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
 
     OneSignal.shared.setNotificationWillShowInForegroundHandler(
       (OSNotificationReceivedEvent event) async {
-        
         event.complete(event.notification);
         print('FOREGROUND HANDLER CALLED WITH: ${event}');
         //  /// Display Notification, send null to not display
@@ -90,7 +89,7 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
         print('start numCard2 inspect2 is successful');
 
         await globals.globalToNumCard?.currentState?.inspect();
-      print('start numCard inspect2 is successful');
+        print('start numCard inspect2 is successful');
       },
     );
   }
@@ -516,28 +515,37 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
                   ),
                 BigText(
                   color: kBodyTextColor,
-                  text: '     ' + body['title'],
+                  text: '    ' + body['title'],
                   fontFamily: 'NotoSansMedium',
                 ),
                 SizedBox(height: Dimensions.height15),
                 if (body['image'] != null)
-                  AspectRatio(
-                    aspectRatio: 20 / 9,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(Dimensions.radius15),
-                      child: Image.network(
-                        body['image']!,
-                        fit: BoxFit.cover,
+                  Container(
+                    child: Image.network(
+                      body['image']!,
+                      fit: BoxFit.cover,
+                    ),
+                    height: Dimensions.screenHeigt/4.85,
+                    width: Dimensions.screenWidth,
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(
+                          Dimensions.radius15,
+                        ),
                       ),
                     ),
                   ),
                 if (body['image'] == null)
-                  AspectRatio(
-                    aspectRatio: 20 / 9,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(Dimensions.radius15),
-                      child: Container(
-                        color: Colors.grey,
+                  Container(
+                    height: Dimensions.screenHeigt/4.85,
+                    width: Dimensions.screenWidth,
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(
+                          Dimensions.radius15,
+                        ),
                       ),
                     ),
                   ),

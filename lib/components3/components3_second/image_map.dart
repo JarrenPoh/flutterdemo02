@@ -1,3 +1,4 @@
+import 'package:convert/convert.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutterdemo02/models/ColorSettings.dart';
@@ -42,25 +43,29 @@ class imageItems extends StatelessWidget {
               child: Stack(
                 children: [
                   if (image != null)
-                    AspectRatio(
-                      aspectRatio: 20 / 9,
-                      child: ClipRRect(
-                        borderRadius:
-                            BorderRadius.circular(Dimensions.radius15),
-                        child: Image.network(
-                          image!,
-                          fit: BoxFit.cover,
+                    Container(
+                      child: Image.network(image!,fit: BoxFit.cover,),
+                      height: Dimensions.screenHeigt/4.85,
+                      width: Dimensions.screenWidth,
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(
+                            Dimensions.radius15,
+                          ),
                         ),
                       ),
                     ),
                   if (image == null)
-                    AspectRatio(
-                      aspectRatio: 20 / 9,
-                      child: ClipRRect(
-                        borderRadius:
-                            BorderRadius.circular(Dimensions.radius15),
-                        child: Container(
-                          color: Colors.grey,
+                    Container(
+                      height: Dimensions.screenHeigt/4.85,
+                      width: Dimensions.screenWidth,
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(
+                            Dimensions.radius15,
+                          ),
                         ),
                       ),
                     ),
@@ -110,9 +115,10 @@ class imageItems extends StatelessWidget {
                         height: Dimensions.screenHeigt / 27.5,
                         width: Dimensions.screenWidth / 5.6,
                         padding: EdgeInsets.only(
-                            top: Dimensions.height5,
-                            bottom: Dimensions.height5,
-                            left: Dimensions.height10,),
+                          top: Dimensions.height5,
+                          bottom: Dimensions.height5,
+                          left: Dimensions.height10,
+                        ),
                         child: SmallText(
                           color: kBodyTextColor,
                           text: '$timeEstimate 分鐘',
@@ -135,24 +141,24 @@ class imageItems extends StatelessWidget {
                         Container(
                           height: Dimensions.screenHeigt / 27.5,
                           padding: EdgeInsets.only(
-                            top: Dimensions.height5,
-                            bottom: Dimensions.height5,
-                            left: Dimensions.height10,
-                            right: Dimensions.height10
-                          ),
+                              top: Dimensions.height5,
+                              bottom: Dimensions.height5,
+                              left: Dimensions.height10,
+                              right: Dimensions.height10),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Container(
-                                margin:
-                                    EdgeInsets.only(right: Dimensions.width10 / 2),
+                                margin: EdgeInsets.only(
+                                    right: Dimensions.width10 / 2),
                                 width: Dimensions.width15 / 2,
                                 height: Dimensions.width15 / 2,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(
                                     Dimensions.radius20,
                                   ),
-                                  color: businessTime ? Colors.green : kMaimColor,
+                                  color:
+                                      businessTime ? Colors.green : kMaimColor,
                                 ),
                               ),
                               SmallText(
@@ -221,7 +227,7 @@ class imageItems extends StatelessWidget {
                     currentLocation = location;
                     Navigator.pushNamed(context, '/mapsplash', arguments: {
                       'currentLocation': currentLocation,
-                      'initialid':id,
+                      'initialid': id,
                     });
                   });
                   print('currentLocation');

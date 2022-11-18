@@ -13,19 +13,23 @@ import '../models/MiddleText.dart';
 class RappiProductItem extends StatefulWidget {
   Result3 data3;
   bool businessTime;
-  RappiProductItem(this.product, this.data3,this.businessTime,);
+  RappiProductItem(
+    this.product,
+    this.data3,
+    this.businessTime,
+  );
   final Result product;
 
   @override
-  State<RappiProductItem> createState() => _RappiProductItemState(data3: data3,businessTime:businessTime);
+  State<RappiProductItem> createState() =>
+      _RappiProductItemState(data3: data3, businessTime: businessTime);
 }
 
 class _RappiProductItemState extends State<RappiProductItem> {
   Result3 data3;
-  _RappiProductItemState({required this.data3,required this.businessTime});
+  _RappiProductItemState({required this.data3, required this.businessTime});
   List options = [];
   bool businessTime;
-
 
   @override
   Widget build(BuildContext context) {
@@ -150,16 +154,35 @@ class _RappiProductItemState extends State<RappiProductItem> {
                       child: Column(
                         children: [
                           if (widget.product.image != null)
-                            Image.asset(
-                              widget.product.image!,
-                              fit: BoxFit.cover,
+                            Container(
+                              child: Image.network(
+                                widget.product.image!,
+                                fit: BoxFit.cover,
+                              ),
+                              height: Dimensions.screenHeigt / 9.17,
+                              width: Dimensions.screenWidth / 4.36,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(
+                                    Dimensions.radius15,
+                                  ),
+                                ),
+                              ),
                             ),
                           if (widget.product.image == null)
                             Container(
-                              color: Colors.grey,
-                              width: Dimensions.screenWidth / 4.36,
                               height: Dimensions.screenHeigt / 9.17,
-                            )
+                              width: Dimensions.screenWidth/4.36,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(
+                                    Dimensions.radius15,
+                                  ),
+                                ),
+                              ),
+                            ),
                         ],
                       ),
                     ),
