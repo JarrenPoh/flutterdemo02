@@ -43,7 +43,7 @@ Future main() async {
 
   await OneSignal.shared.setAppId(OnesignalAppID);
 
-  OneSignal.shared
+  await OneSignal.shared
       .promptUserForPushNotificationPermission()
       .then((accept) => print('accept permision $accept'));
   var appid;

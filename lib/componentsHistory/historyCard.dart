@@ -59,7 +59,7 @@ class _historyCardState extends State<historyCard> {
                 'Data': Data,
                 'numbering': Data.sId,
                 'order': jsonDecode(Data.order!),
-                'id':Data.store,
+                'id': Data.store,
 
                 // 'orderSet':orderSet,
               });
@@ -102,28 +102,35 @@ class _historyCardState extends State<historyCard> {
                                     child: Column(
                                       children: [
                                         if (Data.image != null)
-                                          AspectRatio(
-                                            aspectRatio: 10 / 10,
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                Dimensions.radius15,
-                                              ),
-                                              child: Image.asset(
-                                                Data.image!,
-                                                fit: BoxFit.cover,
+                                          Container(
+                                            child: Image.network(
+                                              Data.image!,
+                                              fit: BoxFit.cover,
+                                            ),
+                                            height:
+                                                Dimensions.screenHeigt / 9.17,
+                                            width:
+                                                Dimensions.screenWidth / 4.36,
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey,
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(
+                                                  Dimensions.radius15,
+                                                ),
                                               ),
                                             ),
                                           ),
                                         if (Data.image == null)
-                                          AspectRatio(
-                                            aspectRatio: 10 / 10,
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      Dimensions.radius15),
-                                              child: Container(
-                                                color: Colors.grey,
+                                          Container(
+                                            height:
+                                                Dimensions.screenHeigt / 9.17,
+                                            width: Dimensions.screenWidth/4.36,
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey,
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(
+                                                  Dimensions.radius15,
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -168,8 +175,7 @@ class _historyCardState extends State<historyCard> {
                                               children: [
                                                 TabText(
                                                   color: kTextLightColor,
-                                                  text:
-                                                      '${totalNames()}',
+                                                  text: '${totalNames()}',
                                                   fontFamily:
                                                       ' NotoSansRegular',
                                                   maxLines: 2,
@@ -180,7 +186,9 @@ class _historyCardState extends State<historyCard> {
                                         ],
                                       ),
                                     ),
-                                    SizedBox(width:Dimensions.width15,),
+                                    SizedBox(
+                                      width: Dimensions.width15,
+                                    ),
                                     Expanded(
                                       flex: 0,
                                       child: Column(
