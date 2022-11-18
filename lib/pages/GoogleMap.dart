@@ -271,7 +271,8 @@ class _googleMapState extends ConsumerState<googleMap> {
                       icon: Icon(Icons.west_outlined),
                       color: Colors.black,
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, '/form3', (route) => false);
                       },
                     ),
                   ),
@@ -279,10 +280,11 @@ class _googleMapState extends ConsumerState<googleMap> {
                 searchToggle
                     ? Padding(
                         padding: EdgeInsets.fromLTRB(
-                            Dimensions.width15,
-                            Dimensions.height20 * 2,
-                            Dimensions.width15,
-                            Dimensions.height5),
+                          Dimensions.width15,
+                          Dimensions.height20 * 2,
+                          Dimensions.width15,
+                          Dimensions.height5,
+                        ),
                         child: Column(
                           children: [
                             Container(
