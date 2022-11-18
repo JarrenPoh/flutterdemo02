@@ -1,7 +1,9 @@
 import 'package:convert/convert.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterdemo02/models/BigText.dart';
 
 import 'package:flutterdemo02/models/ColorSettings.dart';
+import 'package:flutterdemo02/models/MiddleText.dart';
 import 'package:flutterdemo02/models/SmallText.dart';
 import 'package:flutterdemo02/models/TabsText.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -19,6 +21,7 @@ class imageItems extends StatelessWidget {
     required this.timeEstimate,
     required this.businessTime,
     required this.id,
+    required this.businessStartTime,
   }) : super(key: key);
 
   final String name;
@@ -26,6 +29,7 @@ class imageItems extends StatelessWidget {
   final String? image;
   final String? timeEstimate;
   final bool businessTime;
+  final int? businessStartTime;
   final VoidCallback press;
   final String id;
   List? discount = [];
@@ -44,8 +48,11 @@ class imageItems extends StatelessWidget {
                 children: [
                   if (image != null)
                     Container(
-                      child: Image.network(image!,fit: BoxFit.cover,),
-                      height: Dimensions.screenHeigt/4.85,
+                      child: Image.network(
+                        image!,
+                        fit: BoxFit.cover,
+                      ),
+                      height: Dimensions.screenHeigt / 4.85,
                       width: Dimensions.screenWidth,
                       decoration: BoxDecoration(
                         color: Colors.grey,
@@ -58,7 +65,7 @@ class imageItems extends StatelessWidget {
                     ),
                   if (image == null)
                     Container(
-                      height: Dimensions.screenHeigt/4.85,
+                      height: Dimensions.screenHeigt / 4.85,
                       width: Dimensions.screenWidth,
                       decoration: BoxDecoration(
                         color: Colors.grey,
@@ -141,10 +148,11 @@ class imageItems extends StatelessWidget {
                         Container(
                           height: Dimensions.screenHeigt / 27.5,
                           padding: EdgeInsets.only(
-                              top: Dimensions.height5,
-                              bottom: Dimensions.height5,
-                              left: Dimensions.height10,
-                              right: Dimensions.height10),
+                            top: Dimensions.height5,
+                            bottom: Dimensions.height5,
+                            left: Dimensions.height10,
+                            right: Dimensions.height10,
+                          ),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
@@ -177,6 +185,32 @@ class imageItems extends StatelessWidget {
                       ],
                     ),
                   ),
+                  if (businessTime == false)
+                    Container(
+                      height: Dimensions.screenHeigt / 4.85,
+                      width: Dimensions.screenWidth,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            Colors.white.withOpacity(0.5),
+                            Colors.white.withOpacity(0.5),
+                          ],
+                        ),
+                      ),
+                      child: Center(
+                        child: BigText(
+                          color: Colors.white,
+                          text: businessStartTime != null
+                              ? businessStartTime == 0
+                                  ? '00:00 開始營業'
+                                  : '$businessStartTime:00 開始營業'
+                              : '店家今天已不營業了!',
+                          fontFamily: 'NotoSansMedium',
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),

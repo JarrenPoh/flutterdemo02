@@ -83,8 +83,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       width: double.infinity,
                       decoration: const BoxDecoration(
                         gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                           colors: [
                             Color(0x66ED1C24),
                             Color(0x99ED1C24),

@@ -33,6 +33,7 @@ class _mainListState extends State<mainList> {
       child: Column(
         children: List.generate(data.length, (index) {
           bool businessTime;
+          int? businessStartTime ;
           int selectedHour = TimeOfDay.now().hour;
           if (data[index].businessTime![selectedHour]==true) {
             print('營業中');
@@ -40,10 +41,18 @@ class _mainListState extends State<mainList> {
           } else {
             print('尚未營業');
             businessTime = false;
+            for(int i = selectedHour ;i < data[index].businessTime!.length;i++){
+              if(data[index].businessTime![i]==true){
+                businessStartTime = i;
+                break;
+              }
+            }
+            print('下一個營業時間為 $businessStartTime');
           }
           return imageItems(
             timeEstimate: data[index].timeEstimate,
             businessTime: businessTime,
+            businessStartTime:businessStartTime,
             discount: jsonDecode(data[index].discount!),
             name: data[index].name!,
             address: data[index].address,
