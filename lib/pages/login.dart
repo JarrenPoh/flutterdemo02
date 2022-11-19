@@ -37,13 +37,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   void initState() {
-    // _checkVersion();
+    _checkVersion();
     // TODO: implement initState
     super.initState();
   }
 
   void _checkVersion() async {
-    final newVersion = NewVersion(androidId: 'com.FORDON.flutterdemo02');
+    final newVersion = NewVersion(androidId: 'com.FORDON.flutterdemo02' ,iOSId: 'com.FORDON.flutterdemo02',);
 
     final status = await newVersion.getVersionStatus();
     if (status != null) {
