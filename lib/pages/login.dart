@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-
+import 'dart:io' show Platform;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -37,13 +37,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   void initState() {
-    // _checkVersion();
+    _checkVersion();
     // TODO: implement initState
     super.initState();
   }
 
   void _checkVersion() async {
-    final newVersion = NewVersion(androidId: 'com.FORDON.flutterdemo02');
+    final newVersion = NewVersion(androidId: 'com.FORDON.flutterdemo02' ,iOSId: 'com.FORDON.flutterdemo02',);
 
     final status = await newVersion.getVersionStatus();
     if (status != null) {
@@ -83,8 +83,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       width: double.infinity,
                       decoration: const BoxDecoration(
                         gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                           colors: [
                             Color(0x66ED1C24),
                             Color(0x99ED1C24),
@@ -130,21 +130,22 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 SizedBox(
                                   height: Dimensions.height20,
                                 ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                        height: Dimensions.height15 * 3,
-                                        child: button.SignInButton(
-                                          buttonType: button.ButtonType.apple,
-                                          buttonSize: button.ButtonSize
-                                              .medium, // small(default), medium, large
-                                          onPressed: AppleSignIn,
+                                if (Platform.isIOS)
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          height: Dimensions.height15 * 3,
+                                          child: button.SignInButton(
+                                            buttonType: button.ButtonType.apple,
+                                            buttonSize: button.ButtonSize
+                                                .medium, // small(default), medium, large
+                                            onPressed: AppleSignIn,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
+                                    ],
+                                  ),
                               ],
                             ),
                             const Positioned(
@@ -234,20 +235,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 // AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
   Future<void> AppleSignIn() async {
     try {
-      
-    final authService = ref.watch(authappleService);
-    final user = await authService.signInWithApple(
-        scopes: [Scope.email, Scope.fullName]);
-    print('uid: ${user.uid}');
-    print('name: ${user.displayName}');
-    print('uid: ${user.email}');
-
-  
-
-  } catch (e) {
-    // TODO: Show alert here
-    print(e);
-  }
+      final authService = ref.watch(authappleService);
+      final user = await authService
+          .signInWithApple(scopes: [Scope.email, Scope.fullName]);
+      print('uid: ${user.uid}');
+      print('name: ${user.displayName}');
+      print('uid: ${user.email}');
+    } catch (e) {
+      // TODO: Show alert here
+      print(e);
+    }
   }
 }
 

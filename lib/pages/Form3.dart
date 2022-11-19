@@ -150,6 +150,7 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    
     super.initState();
     inspect().then(
       (value) {
@@ -181,7 +182,7 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
 /////firebase
   @override
   void dispose() {
-    // _tabController.dispose();
+    _tabController.dispose();
     super.dispose();
   }
 

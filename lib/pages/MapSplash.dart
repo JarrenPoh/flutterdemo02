@@ -46,25 +46,10 @@ class _MapSplashState extends State<MapSplash> {
           await MapServices.searchPlaces('', UserSimplePreferences.getToken());
     }
 
-    // //////
-    // originbooks!.add(Result(
-    //   name: '帥哥海底撈',
-    //   address: '中壢區協同街53號',
-    //   place: '女宿',
-    // ));
-    // originbooks!.add(Result(
-    //   name: '馬辣',
-    //   address: '中壢區協同街25號',
-    //   place: '女宿',
-    // ));
-    // originbooks!.add(Result(
-    //   name: '帥哥海底撈',
-    //   address: '中壢區新中北路291號',
-    //   place: '女宿',
-    // ));
-    // ///////
 
     for (var i = 0; i < originbooks!.length; i++) {
+      //if ( originbooks![i]!.placeID && Lat && Lng ) UsersimplePreference is null || ( originbooks![i]!.address != UersimplePreference )? run
+      //就是硬體沒有(新店家) 或 店家更換地址(ADDRESS 跟 硬碟的不一樣) 才跑
       var placeID = await convertToPlaceID(originbooks![i]!.address!);
       var place = await MapServices.getPlace(originbooks![i]!.address!);
 

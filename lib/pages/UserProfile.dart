@@ -24,8 +24,8 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
-  void close() {
-    Navigator.pop(context);
+  void close() async {
+    Navigator.pushNamedAndRemoveUntil(context, '/form3', (route) => false);
   }
 
   bool? a = true;
@@ -79,6 +79,7 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   deleteAccount(key, name) async {
+    debugPrint('正在用 "$name" 刪除帳號');
     var response = await http.delete(
       Uri.parse('https://hello-cycu-delivery-service.herokuapp.com/member'),
       headers: {
@@ -105,35 +106,34 @@ class _UserProfileState extends State<UserProfile> {
     }
   }
 
-  
   @override
   Widget build(BuildContext context) {
     final userdata = [
-    User(
-      name: '姓名',
-      userName: UserSimplePreferences.getUserName(),
-      edit: true,
-      correct: true,
-    ),
-    User(
-      name: 'Email',
-      userName: UserSimplePreferences.getUserEmail(),
-      edit: false,
-    ),
-    User(
-      name: '生日',
-      userName: UserSimplePreferences.getUserBirthday() ?? '尚未設定',
-      edit: true,
-      correct: false,
-    ),
-    User(
-      name: '手機號碼',
-      userName: UserSimplePreferences.getUserPhone() ?? '尚未設定',
-      edit: true,
-      correct: true,
-      verify: UserSimplePreferences.getPhoneVerify() ?? false,
-    ),
-  ];
+      User(
+        name: '姓名',
+        userName: UserSimplePreferences.getUserName(),
+        edit: true,
+        correct: true,
+      ),
+      User(
+        name: 'Email',
+        userName: UserSimplePreferences.getUserEmail(),
+        edit: false,
+      ),
+      User(
+        name: '生日',
+        userName: UserSimplePreferences.getUserBirthday() ?? '尚未設定',
+        edit: true,
+        correct: false,
+      ),
+      User(
+        name: '手機號碼',
+        userName: UserSimplePreferences.getUserPhone() ?? '尚未設定',
+        edit: true,
+        correct: true,
+        verify: UserSimplePreferences.getPhoneVerify() ?? false,
+      ),
+    ];
     return Scaffold(
       backgroundColor: Colors.white,
       bottomNavigationBar: Container(

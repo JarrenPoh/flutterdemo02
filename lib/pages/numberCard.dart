@@ -15,7 +15,7 @@ import '../provider/Shared_Preference.dart';
 import 'numberCarSecond.dart';
 
 class numberCard extends StatefulWidget {
-  numberCard({Key? key}) : super(key: globals.globalToNumCard??key);
+  numberCard({Key? key}) : super(key: globals.globalToNumCard ?? key);
 
   @override
   State<numberCard> createState() => numberCardState();
@@ -44,14 +44,10 @@ class numberCardState extends State<numberCard> {
     return await stores;
   }
 
-  
-  
-
   void initState() {
     // TODO: implement initState
     super.initState();
     inspect();
-    
   }
 
   @override
@@ -75,8 +71,9 @@ class numberCardState extends State<numberCard> {
             if (data[i].complete != true) {
               data2.add(data[i]);
             }
-          }     
-          for(var i = 0 ; i <data2.length;i++){
+          }
+
+          for (var i = 0; i < data2.length; i++) {
             print('data2 is ${data2[i].sequence}');
           }
           var status = '';
@@ -167,8 +164,9 @@ class numberCardState extends State<numberCard> {
                               ),
                             ),
                             SmallText(
-                              color:
-                                  status == '備餐中'|| status =='審核中' ? kMaimColor : Colors.green,
+                              color: status == '備餐中' || status == '審核中'
+                                  ? kMaimColor
+                                  : Colors.green,
                               text: '$status',
                               fontFamily: 'NotoSansMedium',
                             ),
