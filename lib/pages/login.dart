@@ -200,34 +200,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           list['result']['picture'],
         );
 
-        OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-
-        await OneSignal.shared.setAppId("ec271f5c-c5ee-4465-8f82-9e5be14bd308");
-        print('object7');
-        OneSignal.shared.getDeviceState().then(
-          (value) async{
-            userID = value!.userId;
-            print('userID0 is $userID');
-            if (userID != null ||
-                userID != UserSimplePreferences.getOneSignalAppID()) {
-              print('object0');
-              await UserSimplePreferences.setOneSignalAppID(userID);
-              await UserSimplePreferences.setOneSignalApiDone(false);
-
-              print('object1');
-              if (UserSimplePreferences.getOneSignalApiDone() != true &&
-                  UserSimplePreferences.getOneSignalAppID() != null &&
-                  UserSimplePreferences.getToken() != null) {
-                await OneSignalapi.getOneSignal(
-                    UserSimplePreferences.getOneSignalAppID()!,
-                    UserSimplePreferences.getToken());
-                print(
-                  '這台手機尚未訂閱oneSinal帳號或手機裝置不同, 更改為 ${UserSimplePreferences.getOneSignalApiDone()}',
-                );
-              }
-            }
-          },
-        );
+        
 
         setState(() {
           isLoading = false;
