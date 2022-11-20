@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:flutterdemo02/models/BetweenSM.dart';
 import 'package:flutterdemo02/models/BigText.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
@@ -147,7 +148,6 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    
     super.initState();
     inspect().then(
       (value) {
@@ -183,6 +183,28 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  Future<bool> onWillPop() async {
+    final shouldPop = await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: BetweenSM(color: kBodyTextColor, text: '退出按確定',fontFamily: 'NotoSansBold'),
+        content: TabText(color: kBodyTextColor, text: '你確定要退出嗎，點擊確認立即退出'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: TabText(color: Colors.blue, text: '取消',fontFamily: 'NotoSansBold',),
+          ),
+          TextButton(
+            onPressed: () => SystemNavigator.pop(),
+            child: TabText(color: Colors.blue, text: '確定',fontFamily: 'NotoSansBold'),
+          ),
+        ],
+      ),
+    );
+
+    return shouldPop ?? false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion(
@@ -191,275 +213,283 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
         statusBarIconBrightness: Brightness.light, //android icon white
         // statusBarColor: Colors.red  //android backgroungColor
       ),
-      child: Scaffold(
-        body: Container(
-          color: kMaim3Color,
-          child: SafeArea(
-            child: Scaffold(
-              backgroundColor: Colors.white,
-              drawer: NavigationDrawer(),
-              appBar: const form3AppBar(),
-              body: ok == true
-                  ? FutureBuilder<List<Result?>?>(
-                      future: stores,
-                      builder: (context, AsyncSnapshot snapshot) {
-                        if (!snapshot.hasData) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        } else {
-                          List<Result> data = snapshot.data;
-                          var typeSet = <String>{};
-                          print('object2');
-                          print(data.length);
+      child: WillPopScope(
+        onWillPop: onWillPop,
+        child: Scaffold(
+          body: Container(
+            color: kMaim3Color,
+            child: SafeArea(
+              child: Scaffold(
+                backgroundColor: Colors.white,
+                drawer: NavigationDrawer(),
+                appBar: const form3AppBar(),
+                body: ok == true
+                    ? FutureBuilder<List<Result?>?>(
+                        future: stores,
+                        builder: (context, AsyncSnapshot snapshot) {
+                          if (!snapshot.hasData) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else {
+                            List<Result> data = snapshot.data;
+                            var typeSet = <String>{};
+                            print('object2');
+                            print(data.length);
 
-                          for (var i = 0; i < data.length; i++) {
-                            if (data[i].place != null) {
-                              typeSet.add(data[i].place!);
-                            } else {
-                              data[i].place = '其它';
-                              typeSet.add(data[i].place!);
+                            for (var i = 0; i < data.length; i++) {
+                              if (data[i].place != null) {
+                                typeSet.add(data[i].place!);
+                              } else {
+                                data[i].place = '其它';
+                                typeSet.add(data[i].place!);
+                              }
                             }
-                          }
-                          final List<String> typeArray = typeSet.toList();
-                          for (var i = 0; i < typeArray.length; i++) {
-                            // data2.add(typeArray[i]);
-                            data2.add(
-                              data
-                                  .where((product) =>
-                                      product.place!.contains(typeArray[i]))
-                                  .toList(),
+                            final List<String> typeArray = typeSet.toList();
+                            for (var i = 0; i < typeArray.length; i++) {
+                              // data2.add(typeArray[i]);
+                              data2.add(
+                                data
+                                    .where((product) =>
+                                        product.place!.contains(typeArray[i]))
+                                    .toList(),
+                              );
+                            }
+
+                            _tabController = TabController(
+                              length: typeArray.length,
+                              vsync: this,
                             );
-                          }
 
-                          _tabController = TabController(
-                            length: typeArray.length,
-                            vsync: this,
-                          );
-
-                          return NestedScrollView(
-                            headerSliverBuilder: (context, innerBoxIsScrolled) {
-                              return <Widget>[
-                                SliverappbarForP3(),
-                                SliverPadding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: Dimensions.width15),
-                                  sliver: SliverToBoxAdapter(
-                                    child: Container(
-                                      color: Colors.white,
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              MiddleText(
-                                                text: '公告',
-                                                color: kBodyTextColor,
-                                                fontFamily: 'NotoSansMedium',
-                                              ),
-                                              TabText(
-                                                color: kMaimColor,
-                                                text: '右滑',
-                                              )
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: Dimensions.height10,
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SliverToBoxAdapter(
-                                  child: ItemList(
-                                    BodyCallBack: (value) {
-                                      setState(() {
-                                        body = value;
-                                      });
-                                    },
-                                    group: SS,
-                                    press: () {
-                                      showModalBottomSheet(
-                                        isScrollControlled: true,
-                                        backgroundColor: Colors.transparent,
-                                        context: context,
-                                        builder: (context) => buildSheet(),
-                                      );
-                                    },
-                                  ),
-                                ),
-                                SliverPadding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: Dimensions.width15),
-                                  sliver: SliverToBoxAdapter(
-                                    child: Container(
-                                      color: Colors.white,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          MiddleText(
-                                            text: '所有餐廳',
-                                            color: kBodyTextColor,
-                                            fontFamily: 'NotoSansMedium',
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SliverPersistentHeader(
-                                  pinned: true,
-                                  delegate: MySliverDelegate(
-                                    minHeight: Dimensions.height50,
-                                    maxHeight: Dimensions.height50,
-                                    child: Container(
-                                      color: Colors.white,
-                                      child: TabBar(
-                                        controller: _tabController,
-                                        isScrollable: true,
-                                        labelColor: kMaimColor,
-                                        labelStyle: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: Dimensions.fontsize14),
-                                        unselectedLabelColor: kTextLightColor,
-                                        unselectedLabelStyle:
-                                            const TextStyle(fontSize: 13),
-                                        indicatorSize: TabBarIndicatorSize.tab,
-                                        indicatorColor: kMaimColor,
-                                        indicator: MaterialIndicator(
-                                          height: Dimensions.height15 / 5,
-                                          color: kMaimColor,
-                                          topLeftRadius: 5,
-                                          topRightRadius: 5,
-                                          bottomLeftRadius: 5,
-                                          bottomRightRadius: 5,
+                            return NestedScrollView(
+                              headerSliverBuilder:
+                                  (context, innerBoxIsScrolled) {
+                                return <Widget>[
+                                  SliverappbarForP3(),
+                                  SliverPadding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: Dimensions.width15),
+                                    sliver: SliverToBoxAdapter(
+                                      child: Container(
+                                        color: Colors.white,
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                MiddleText(
+                                                  text: '公告',
+                                                  color: kBodyTextColor,
+                                                  fontFamily: 'NotoSansMedium',
+                                                ),
+                                                TabText(
+                                                  color: kMaimColor,
+                                                  text: '右滑',
+                                                )
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: Dimensions.height10,
+                                            )
+                                          ],
                                         ),
-                                        indicatorPadding: EdgeInsets.only(
-                                            bottom: Dimensions.height15 / 2,
-                                            left: Dimensions.width15,
-                                            right: Dimensions.width15),
-                                        tabs: List.generate(
-                                          typeArray.length,
-                                          (index) => Tab(
-                                            child: Text(
-                                              typeArray[index],
-                                              style: const TextStyle(
-                                                fontFamily: 'NotoSansMedium',
+                                      ),
+                                    ),
+                                  ),
+                                  SliverToBoxAdapter(
+                                    child: ItemList(
+                                      BodyCallBack: (value) {
+                                        setState(() {
+                                          body = value;
+                                        });
+                                      },
+                                      group: SS,
+                                      press: () {
+                                        showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          backgroundColor: Colors.transparent,
+                                          context: context,
+                                          builder: (context) => buildSheet(),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  SliverPadding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: Dimensions.width15),
+                                    sliver: SliverToBoxAdapter(
+                                      child: Container(
+                                        color: Colors.white,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            MiddleText(
+                                              text: '所有餐廳',
+                                              color: kBodyTextColor,
+                                              fontFamily: 'NotoSansMedium',
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SliverPersistentHeader(
+                                    pinned: true,
+                                    delegate: MySliverDelegate(
+                                      minHeight: Dimensions.height50,
+                                      maxHeight: Dimensions.height50,
+                                      child: Container(
+                                        color: Colors.white,
+                                        child: TabBar(
+                                          controller: _tabController,
+                                          isScrollable: true,
+                                          labelColor: kMaimColor,
+                                          labelStyle: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: Dimensions.fontsize14),
+                                          unselectedLabelColor: kTextLightColor,
+                                          unselectedLabelStyle:
+                                              const TextStyle(fontSize: 13),
+                                          indicatorSize:
+                                              TabBarIndicatorSize.tab,
+                                          indicatorColor: kMaimColor,
+                                          indicator: MaterialIndicator(
+                                            height: Dimensions.height15 / 5,
+                                            color: kMaimColor,
+                                            topLeftRadius: 5,
+                                            topRightRadius: 5,
+                                            bottomLeftRadius: 5,
+                                            bottomRightRadius: 5,
+                                          ),
+                                          indicatorPadding: EdgeInsets.only(
+                                              bottom: Dimensions.height15 / 2,
+                                              left: Dimensions.width15,
+                                              right: Dimensions.width15),
+                                          tabs: List.generate(
+                                            typeArray.length,
+                                            (index) => Tab(
+                                              child: Text(
+                                                typeArray[index],
+                                                style: const TextStyle(
+                                                  fontFamily: 'NotoSansMedium',
+                                                ),
                                               ),
                                             ),
                                           ),
+                                          //點擊就將index傳到上面scrollTo的index
                                         ),
-                                        //點擊就將index傳到上面scrollTo的index
                                       ),
                                     ),
                                   ),
+                                ];
+                              },
+                              body: TabBarView(
+                                controller: _tabController,
+                                children: List.generate(
+                                  typeArray.length,
+                                  (index) {
+                                    return mainList(
+                                      data: data2[index],
+                                    );
+                                  },
                                 ),
-                              ];
-                            },
-                            body: TabBarView(
-                              controller: _tabController,
-                              children: List.generate(
-                                typeArray.length,
-                                (index) {
-                                  return mainList(
-                                    data: data2[index],
-                                  );
-                                },
                               ),
-                            ),
-                          );
-                        }
-                      },
-                    )
-                  : Center(child: CircularProgressIndicator()),
-              floatingActionButton: FabCircularMenu(
-                alignment: Alignment.bottomRight,
-                // fabChild: Container(
-                //   child: Image.asset('images/foodone_logo_pink_1000.png',fit: BoxFit.cover,),
-                // ),
-                fabColor: Colors.blue.shade50,
-                fabOpenColor: Colors.red.shade100,
-                ringDiameter: 250.0,
-                ringWidth: 60.0,
-                ringColor: Colors.blue.shade50,
-                fabSize: 60.0,
-                animationDuration: Duration(milliseconds: 400),
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return numberCard();
+                            );
+                          }
                         },
-                      );
-                    },
-                    child: Container(
-                      width: Dimensions.width20,
-                      height: Dimensions.height20 * 2 + Dimensions.height10,
-                      child: Image.asset(
-                        'images/number2.png',
-                        fit: BoxFit.fitWidth,
+                      )
+                    : Center(child: CircularProgressIndicator()),
+                floatingActionButton: FabCircularMenu(
+                  alignment: Alignment.bottomRight,
+                  // fabChild: Container(
+                  //   child: Image.asset('images/foodone_logo_pink_1000.png',fit: BoxFit.cover,),
+                  // ),
+                  fabColor: Colors.blue.shade50,
+                  fabOpenColor: Colors.red.shade100,
+                  ringDiameter: 250.0,
+                  ringWidth: 60.0,
+                  ringColor: Colors.blue.shade50,
+                  fabSize: 60.0,
+                  animationDuration: Duration(milliseconds: 400),
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return numberCard();
+                          },
+                        );
+                      },
+                      child: Container(
+                        width: Dimensions.width20,
+                        height: Dimensions.height20 * 2 + Dimensions.height10,
+                        child: Image.asset(
+                          'images/number2.png',
+                          fit: BoxFit.fitWidth,
+                        ),
                       ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.white,
-                      onPrimary: Colors.black,
-                      minimumSize: Size(15, 30),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(3000.0),
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      LocationData? currentLocation;
-                      Location location = Location();
-                      bool _serviceEnabled;
-                      PermissionStatus _permissionGranted;
-
-                      _serviceEnabled = await location.serviceEnabled();
-                      if (!_serviceEnabled) {
-                        _serviceEnabled = await location.requestService();
-                        if (!_serviceEnabled) {
-                          return;
-                        }
-                      }
-
-                      _permissionGranted = await location.hasPermission();
-                      if (_permissionGranted == PermissionStatus.denied) {
-                        _permissionGranted = await location.requestPermission();
-                        if (_permissionGranted != PermissionStatus.granted) {
-                          return;
-                        }
-                      }
-
-                      await location.getLocation().then((location) {
-                        currentLocation = location;
-                        Navigator.pushNamed(context, '/mapsplash', arguments: {
-                          'currentLocation': currentLocation,
-                        });
-                      });
-                      print('currentLocation');
-                    },
-                    child: Container(
-                      width: Dimensions.width20,
-                      height: Dimensions.height20 * 2 + Dimensions.height10,
-                      child: Image.asset(
-                        'images/google-maps.png',
-                        fit: BoxFit.fitWidth,
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
+                      style: ElevatedButton.styleFrom(
                         primary: Colors.white,
                         onPrimary: Colors.black,
                         minimumSize: Size(15, 30),
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(3000.0))),
-                  ),
-                ],
+                          borderRadius: BorderRadius.circular(3000.0),
+                        ),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        LocationData? currentLocation;
+                        Location location = Location();
+                        bool _serviceEnabled;
+                        PermissionStatus _permissionGranted;
+
+                        _serviceEnabled = await location.serviceEnabled();
+                        if (!_serviceEnabled) {
+                          _serviceEnabled = await location.requestService();
+                          if (!_serviceEnabled) {
+                            return;
+                          }
+                        }
+
+                        _permissionGranted = await location.hasPermission();
+                        if (_permissionGranted == PermissionStatus.denied) {
+                          _permissionGranted =
+                              await location.requestPermission();
+                          if (_permissionGranted != PermissionStatus.granted) {
+                            return;
+                          }
+                        }
+
+                        await location.getLocation().then((location) {
+                          currentLocation = location;
+                          Navigator.pushNamed(context, '/mapsplash',
+                              arguments: {
+                                'currentLocation': currentLocation,
+                              });
+                        });
+                        print('currentLocation');
+                      },
+                      child: Container(
+                        width: Dimensions.width20,
+                        height: Dimensions.height20 * 2 + Dimensions.height10,
+                        child: Image.asset(
+                          'images/google-maps.png',
+                          fit: BoxFit.fitWidth,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                          primary: Colors.white,
+                          onPrimary: Colors.black,
+                          minimumSize: Size(15, 30),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(3000.0))),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -522,7 +552,7 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
                       body['image']!,
                       fit: BoxFit.cover,
                     ),
-                    height: Dimensions.screenHeigt/4.85,
+                    height: Dimensions.screenHeigt / 4.85,
                     width: Dimensions.screenWidth,
                     decoration: BoxDecoration(
                       color: Colors.grey,
@@ -535,7 +565,7 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
                   ),
                 if (body['image'] == null)
                   Container(
-                    height: Dimensions.screenHeigt/4.85,
+                    height: Dimensions.screenHeigt / 4.85,
                     width: Dimensions.screenWidth,
                     decoration: BoxDecoration(
                       color: Colors.grey,
