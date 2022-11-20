@@ -60,7 +60,7 @@ Future main() async {
           UserSimplePreferences.getToken() != null) {
         await OneSignalapi.getOneSignal(UserSimplePreferences.getOneSignalAppID()!,
             UserSimplePreferences.getToken());
-        print(
+        debugPrint(
           '這台手機尚未訂閱oneSinal帳號或手機裝置不同, 完成為 ${UserSimplePreferences.getOneSignalApiDone()}',
         );
       }
