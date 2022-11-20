@@ -47,24 +47,25 @@ Future main() async {
       .promptUserForPushNotificationPermission()
       .then((accept) => print('accept permision $accept'));
   var appid;
-  OneSignal.shared.getDeviceState().then((value) {
+  OneSignal.shared.getDeviceState().then((value) async{
     appid = value!.userId!;
     print('userid2 is $appid');
-    if (appid != null) {
-      print('object is ${UserSimplePreferences.getToken()}');
-      UserSimplePreferences.setOneSignalAppID(appid);
+    if (appid != null || appid != UserSimplePreferences.getOneSignalAppID()) {
+      print('object0');
+      await UserSimplePreferences.setOneSignalAppID(appid);
+      await UserSimplePreferences.setOneSignalApiDone(false);
+      print('object1');
+      if (UserSimplePreferences.getOneSignalApiDone() != true &&
+          UserSimplePreferences.getOneSignalAppID() != null &&
+          UserSimplePreferences.getToken() != null) {
+        await OneSignalapi.getOneSignal(UserSimplePreferences.getOneSignalAppID()!,
+            UserSimplePreferences.getToken());
+        print(
+          '這台手機尚未訂閱oneSinal帳號或手機裝置不同, 完成為 ${UserSimplePreferences.getOneSignalApiDone()}',
+        );
+      }
     }
   });
-  if (appid != null) {
-    await UserSimplePreferences.setOneSignalAppID(appid);
-  }
-
-  if (UserSimplePreferences.getOneSignalApiDone() == null &&
-      UserSimplePreferences.getOneSignalAppID() != null &&
-      UserSimplePreferences.getToken() != null) {
-    OneSignalapi.getOneSignal(UserSimplePreferences.getOneSignalAppID()!,
-        UserSimplePreferences.getToken());
-  }
 }
 
 // ignore: use_key_in_widget_constructors

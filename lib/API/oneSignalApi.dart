@@ -21,7 +21,6 @@ class OneSignalapi {
     );
     print('statusCode in getOneSignal is${response.statusCode}');
     print('response body in getOneSignal is ${response.body}');
-    print('appID is $appID');
     if (response.statusCode == 200) {
       UserSimplePreferences.setOneSignalApiDone(true);
       return response.body[2];

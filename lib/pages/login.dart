@@ -14,6 +14,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:new_version/new_version.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
+import '../API/oneSignalApi.dart';
 import '../provider/Shared_Preference.dart';
 
 import 'package:sign_button/sign_button.dart' as button;
@@ -43,7 +44,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   }
 
   void _checkVersion() async {
-    final newVersion = NewVersion(androidId: 'com.FORDON.flutterdemo02' ,iOSId: 'com.FORDON.flutterdemo02',);
+    final newVersion = NewVersion(
+      androidId: 'com.FORDON.flutterdemo02',
+      iOSId: 'com.FORDON.flutterdemo02',
+    );
 
     final status = await newVersion.getVersionStatus();
     if (status != null) {
@@ -201,21 +205,30 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         await OneSignal.shared.setAppId("ec271f5c-c5ee-4465-8f82-9e5be14bd308");
         print('object7');
         OneSignal.shared.getDeviceState().then(
-          (value) {
+          (value) async{
             userID = value!.userId;
             print('userID0 is $userID');
-            if (userID != null) {
-              UserSimplePreferences.setOneSignalAppID(userID);
+            if (userID != null ||
+                userID != UserSimplePreferences.getOneSignalAppID()) {
+              print('object0');
+              await UserSimplePreferences.setOneSignalAppID(userID);
+              await UserSimplePreferences.setOneSignalApiDone(false);
+
+              print('object1');
+              if (UserSimplePreferences.getOneSignalApiDone() != true &&
+                  UserSimplePreferences.getOneSignalAppID() != null &&
+                  UserSimplePreferences.getToken() != null) {
+                await OneSignalapi.getOneSignal(
+                    UserSimplePreferences.getOneSignalAppID()!,
+                    UserSimplePreferences.getToken());
+                print(
+                  '這台手機尚未訂閱oneSinal帳號或手機裝置不同, 更改為 ${UserSimplePreferences.getOneSignalApiDone()}',
+                );
+              }
             }
           },
         );
-        if (userID != null) {
-          await UserSimplePreferences.setOneSignalAppID(userID);
-        }
 
-        print('object8');
-        print('第二個${users.headers}');
-        print('第二個${users.body}');
         setState(() {
           isLoading = false;
         });
