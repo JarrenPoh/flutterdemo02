@@ -46,26 +46,7 @@ Future main() async {
   await OneSignal.shared
       .promptUserForPushNotificationPermission()
       .then((accept) => print('accept permision $accept'));
-  var appid;
-  OneSignal.shared.getDeviceState().then((value) async{
-    appid = value!.userId!;
-    print('userid2 is $appid');
-    if (appid != null || appid != UserSimplePreferences.getOneSignalAppID()) {
-      print('object0');
-      await UserSimplePreferences.setOneSignalAppID(appid);
-      await UserSimplePreferences.setOneSignalApiDone(false);
-      print('object1');
-      if (UserSimplePreferences.getOneSignalApiDone() != true &&
-          UserSimplePreferences.getOneSignalAppID() != null &&
-          UserSimplePreferences.getToken() != null) {
-        await OneSignalapi.getOneSignal(UserSimplePreferences.getOneSignalAppID()!,
-            UserSimplePreferences.getToken());
-        print(
-          '這台手機尚未訂閱oneSinal帳號或手機裝置不同, 完成為 ${UserSimplePreferences.getOneSignalApiDone()}',
-        );
-      }
-    }
-  });
+  
 }
 
 // ignore: use_key_in_widget_constructors

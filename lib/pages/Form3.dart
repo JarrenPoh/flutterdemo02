@@ -81,9 +81,6 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
         event.complete(event.notification);
         print('FOREGROUND HANDLER CALLED WITH: ${event}');
         //  /// Display Notification, send null to not display
-        print('看這這這這看這這這這看這這這這看這這這這${event.notification.title}');
-        print('看這這這這看這這這這看這這這這看這這這這${event.notification.body}');
-        print('看這這這這看這這這這看這這這這看這這這這${event.notification.subtitle}');
 
         await globals.globalToNumCard2?.currentState?.inspect2();
         print('start numCard2 inspect2 is successful');

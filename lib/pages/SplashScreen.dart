@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterdemo02/provider/Shared_Preference.dart';
 import 'package:flutterdemo02/API/loginApi.dart';
@@ -45,14 +45,26 @@ class _SplashScreenState extends State<SplashScreen> {
         },
       );
       ////////////////
-      ////oneSinal/////
-      // print(
-      //     'getOneSignalAppID is ${UserSimplePreferences.getOneSignalAppID()}');
-      if (UserSimplePreferences.getOneSignalApiDone() == null&&UserSimplePreferences.getOneSignalAppID() != null&&
-      UserSimplePreferences.getToken() != null) {
-        OneSignalapi.getOneSignal(UserSimplePreferences.getOneSignalAppID()!,
+      var appid;
+  OneSignal.shared.getDeviceState().then((value) async{
+    appid = value!.userId!;
+    print('userid2 is $appid');
+    if (appid != null || appid != UserSimplePreferences.getOneSignalAppID()) {
+      print('object0');
+      await UserSimplePreferences.setOneSignalAppID(appid);
+      await UserSimplePreferences.setOneSignalApiDone(false);
+      print('object1');
+      if (UserSimplePreferences.getOneSignalApiDone() != true &&
+          UserSimplePreferences.getOneSignalAppID() != null &&
+          UserSimplePreferences.getToken() != null) {
+        await OneSignalapi.getOneSignal(UserSimplePreferences.getOneSignalAppID()!,
             UserSimplePreferences.getToken());
+        print(
+          '這台手機尚未訂閱oneSinal帳號或手機裝置不同, 完成為 ${UserSimplePreferences.getOneSignalApiDone()}',
+        );
       }
+    }
+  });
       ////////////////
       print(
           'UserSimplePreferences is ${UserSimplePreferences.getUserBirthday()}');
