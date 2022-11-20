@@ -74,7 +74,8 @@ class numberCardState extends State<numberCard> {
           }
 
           for (var i = 0; i < data2.length; i++) {
-            print('data2 is ${data2[i].sequence}');
+            print('data2 accept is ${data2[i].accept}');
+            print('data2 finish is ${data2[i].finish}');
           }
           var status = '';
 
@@ -96,7 +97,7 @@ class numberCardState extends State<numberCard> {
                 if (data2[index].accept == true &&
                     data2[index].finish == null) {
                   status = '備餐中';
-                } else if (data2[index].accept == null &&
+                } else if (data2[index].accept == false &&
                     data2[index].finish == null) {
                   status = '審核中';
                 } else if (data2[index].accept == true &&

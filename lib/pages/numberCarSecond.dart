@@ -42,7 +42,7 @@ class numberCardSecondState extends State<numberCardSecond> {
     Icons.restaurant
   ];
 
-  var _curStep = 0;
+  var _curStep = 1;
   List<Widget> _iconViews() {
     var list = <Widget>[];
 
@@ -378,7 +378,7 @@ class numberCardSecondState extends State<numberCardSecond> {
         });
 
     debugPrint(
-        'response statusCode in order_successful.dart is ${response.statusCode}');
+        'response statusCode in numberCard.dart is ${response.statusCode}');
     var obj = (jsonDecode(response.body));
 
     debugPrint('obj is ${obj}');
@@ -464,44 +464,48 @@ class numberCardSecondState extends State<numberCardSecond> {
                             Column(
                               children: [
                                 SizedBox(height: Dimensions.height15 * 1),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SmallText(
-                                      color: kTextLightColor,
-                                      text: '我想請求撤單  ->',
-                                      fontFamily: 'NotoSansMedium',
-                                    ),
-                                    SizedBox(
-                                      width: Dimensions.width10,
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () async {
-                                        if (SId != '') {
-                                          await inspect3();
-                                        }
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        primary: Colors.white,
+                                if (_curStep < 2)
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SmallText(
+                                        color: kTextLightColor,
+                                        text: '我想請求撤單  ->',
+                                        fontFamily: 'NotoSansMedium',
                                       ),
-                                      child: SId != ''
-                                          ? TabText(
-                                              text: '撤單',
-                                              color: kMaim3Color,
-                                              fontFamily: 'NotoSansMedium',
-                                            )
-                                          : Container(
-                                              width: Dimensions.fontsize24 / 2,
-                                              height: Dimensions.fontsize24 / 2,
-                                              child: CircularProgressIndicator(
-                                                color: Colors.white,
+                                      SizedBox(
+                                        width: Dimensions.width10,
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () async {
+                                          if (SId != '') {
+                                            await inspect3();
+                                          }
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Colors.white,
+                                        ),
+                                        child: SId != ''
+                                            ? TabText(
+                                                text: '撤單',
+                                                color: kMaim3Color,
+                                                fontFamily: 'NotoSansMedium',
+                                              )
+                                            : Container(
+                                                width:
+                                                    Dimensions.fontsize24 / 2,
+                                                height:
+                                                    Dimensions.fontsize24 / 2,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  color: Colors.white,
+                                                ),
                                               ),
-                                            ),
-                                    ),
-                                  ],
-                                ),
+                                      ),
+                                    ],
+                                  ),
                                 // SizedBox(height: Dimensions.height15 * 1),
-                                if (comments != null)
+                                if (comments != 'null' && comments != null)
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
