@@ -29,34 +29,18 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
   }
 
-  String? onesignalSuscribe() {
-    var appid;
-    String? result='';
-    OneSignal.shared.getDeviceState().then(
-      (value) async {
-        appid = value!.userId!;
-        print('userid2 is $appid');
-        if (appid != null ||
-            appid != UserSimplePreferences.getOneSignalAppID()) {
-          print('object0');
-          await UserSimplePreferences.setOneSignalAppID(appid);
-          await UserSimplePreferences.setOneSignalApiDone(false);
-          print('object1');
-          if (UserSimplePreferences.getOneSignalApiDone() != true &&
-              UserSimplePreferences.getOneSignalAppID() != null &&
-              UserSimplePreferences.getToken() != null) {
-             result = await OneSignalapi.getOneSignal(
-                UserSimplePreferences.getOneSignalAppID()!,
-                UserSimplePreferences.getToken());
-            print(
-              '這台手機尚未訂閱oneSinal帳號或手機裝置不同, 完成為 ${UserSimplePreferences.getOneSignalApiDone()}',
-            );
-            print('result in onesignal api is $result');
-          }
-        }
-      },
+  Future<String?> onesignalSuscribe() async {
+    String? result = '';
+    result = await OneSignalapi.getOneSignal(
+        UserSimplePreferences.getOneSignalAppID()!,
+        UserSimplePreferences.getToken());
+    print(
+      '這台手機尚未訂閱oneSinal帳號或手機裝置不同, 完成為 ${UserSimplePreferences.getOneSignalApiDone()}',
     );
-    
+    if (result == 'failed') {
+      onesignalSuscribe();
+    }
+
     return result;
   }
 
@@ -75,7 +59,27 @@ class _SplashScreenState extends State<SplashScreen> {
         },
       );
       ////////////////
-      onesignalSuscribe();
+
+      var appid;
+
+      OneSignal.shared.getDeviceState().then(
+        (value) async {
+          appid = value!.userId!;
+          print('userid2 is $appid');
+          if (appid != null ||
+              appid != UserSimplePreferences.getOneSignalAppID()) {
+            print('object0');
+            await UserSimplePreferences.setOneSignalAppID(appid);
+            await UserSimplePreferences.setOneSignalApiDone(false);
+            print('object1');
+            if (UserSimplePreferences.getOneSignalApiDone() != true &&
+                UserSimplePreferences.getOneSignalAppID() != null &&
+                UserSimplePreferences.getToken() != null) {
+              onesignalSuscribe();
+            }
+          }
+        },
+      );
       ////////////////
       print(
           'UserSimplePreferences is ${UserSimplePreferences.getUserBirthday()}');

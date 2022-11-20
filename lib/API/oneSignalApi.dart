@@ -23,11 +23,11 @@ class OneSignalapi {
     print('response body in getOneSignal is ${response.body}');
     if (response.statusCode == 200) {
       UserSimplePreferences.setOneSignalApiDone(true);
-      return response.body[2];
+      return 'success';
     } else if (response.statusCode == 403) {
-      return null;
+      return 'failed';
     } else {
-      throw Exception('Failed to load store');
+      return 'failed';
     }
   }
 }
