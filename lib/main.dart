@@ -46,9 +46,6 @@ Future main() async {
   await OneSignal.shared
       .promptUserForPushNotificationPermission()
       .then((accept) => print('accept permision $accept'));
-
-  
-
 }
 
 // ignore: use_key_in_widget_constructors
