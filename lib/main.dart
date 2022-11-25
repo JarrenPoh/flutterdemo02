@@ -3,7 +3,9 @@ import 'package:flutterdemo02/API/getTokenApi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutterdemo02/models/BetweenSM.dart';
 import 'package:flutterdemo02/models/ColorSettings.dart';
+import 'package:flutterdemo02/models/TabsText.dart';
 import 'package:flutterdemo02/pages/Form3.dart';
 import 'package:flutterdemo02/pages/Form4.dart';
 import 'package:flutterdemo02/pages/SplashScreen.dart';
@@ -36,6 +38,29 @@ Future main() async {
   );
 
   await UserSimplePreferences.init();
+
+  ErrorWidget.builder = (FlutterErrorDetails details) => Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              alignment: Alignment.center,
+              child: BetweenSM(
+                color: Colors.orangeAccent,
+                text: '發生錯誤\n請立即通知我們改善此情況!\n\n官方Gmail: hellofoodone@gmail.com',
+                fontFamily: 'NotoSansBold',
+              ),
+            ),
+            SizedBox(height: Dimensions.height20),
+            ElevatedButton(
+              onPressed: () {
+                SystemNavigator.pop();
+              },
+              child: TabText(color: Colors.white, text: '離開'),
+            ),
+          ],
+        ),
+      );
 
   runApp(ProviderScope(child: MyApp()));
 

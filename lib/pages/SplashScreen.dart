@@ -18,6 +18,7 @@ class SplashScreen extends StatefulWidget {
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
+  
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
@@ -26,6 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     spectator();
+    FirebaseAnalytics.instance.logAppOpen();
     super.initState();
   }
 
@@ -51,11 +53,11 @@ class _SplashScreenState extends State<SplashScreen> {
       await UserSimplePreferences.setToken(getToken.headers['token']!);
       ////FIrebase/////
       await FirebaseAnalytics.instance.logEvent(
-        name: 'login_success',
+        name: 'login_success_detail',
         parameters: {
           'name': UserSimplePreferences.getUserName(),
           'gmail': UserSimplePreferences.getUserEmail(),
-          'picture': UserSimplePreferences.getUserPicture(),
+          'phone': UserSimplePreferences.getUserPhone(),
         },
       );
       ////////////////

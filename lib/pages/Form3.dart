@@ -187,16 +187,22 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
     final shouldPop = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: BetweenSM(color: kBodyTextColor, text: '退出按確定',fontFamily: 'NotoSansBold'),
+        title: BetweenSM(
+            color: kBodyTextColor, text: '退出按確定', fontFamily: 'NotoSansBold'),
         content: TabText(color: kBodyTextColor, text: '你確定要退出嗎，點擊確認立即退出'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: TabText(color: Colors.blue, text: '取消',fontFamily: 'NotoSansBold',),
+            child: TabText(
+              color: Colors.blue,
+              text: '取消',
+              fontFamily: 'NotoSansBold',
+            ),
           ),
           TextButton(
             onPressed: () => SystemNavigator.pop(),
-            child: TabText(color: Colors.blue, text: '確定',fontFamily: 'NotoSansBold'),
+            child: TabText(
+                color: Colors.blue, text: '確定', fontFamily: 'NotoSansBold'),
           ),
         ],
       ),
