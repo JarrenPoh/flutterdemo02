@@ -9,7 +9,7 @@ class getTokenApi {
   static Future<http.Response> getToken(key) async {
     var response = await http.get(
         Uri.parse(
-            "https://hello-cycu-delivery-service.herokuapp.com/member/user/token"),
+            "https://www.foodone.tw/member/user/token"),
         headers: {
           "refresh_token": key,
           "Content-Type": "application/x-www-form-urlencoded"

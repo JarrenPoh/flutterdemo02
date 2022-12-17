@@ -81,7 +81,7 @@ class _UserProfileState extends State<UserProfile> {
   deleteAccount(key, name) async {
     debugPrint('正在用 "$name" 刪除帳號');
     var response = await http.delete(
-      Uri.parse('https://hello-cycu-delivery-service.herokuapp.com/member'),
+      Uri.parse('https://www.foodone.tw/member'),
       headers: {
         "token": key,
         "Content-Type": "application/x-www-form-urlencoded",

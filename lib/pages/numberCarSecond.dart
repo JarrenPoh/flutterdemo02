@@ -343,7 +343,7 @@ class numberCardSecondState extends State<numberCardSecond> {
   historyApi(key) async {
     var response = await http.get(
         Uri.parse(
-            'https://hello-cycu-delivery-service.herokuapp.com/member/user/order'),
+            'https://www.foodone.tw/member/user/order'),
         headers: {
           "token": '$key',
           "Content-Type": "application/x-www-form-urlencoded"
@@ -368,7 +368,7 @@ class numberCardSecondState extends State<numberCardSecond> {
     print('SId SId is $SId');
     var response = await http.delete(
         Uri.parse(
-            'https://hello-cycu-delivery-service.herokuapp.com/member/user/order'),
+            'https://www.foodone.tw/member/user/order'),
         headers: {
           "token": key,
           "Content-Type": "application/x-www-form-urlencoded",

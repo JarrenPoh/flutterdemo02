@@ -11,7 +11,7 @@ class BooksApi {
   static Future<List<Result?>?> getStores(token) async {
     final http.Response? response = await http.get(
         Uri.parse(
-            'https://hello-cycu-delivery-service.herokuapp.com/member/store'),
+            'https://www.foodone.tw/member/store'),
         headers: {
           "token": '$token',
           "Content-Type": "application/x-www-form-urlencoded"

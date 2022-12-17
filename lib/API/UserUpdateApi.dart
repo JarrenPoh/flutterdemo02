@@ -18,7 +18,7 @@ class UserUpdateApi {
     
 
     var response = await http.put(
-      Uri.parse("https://hello-cycu-delivery-service.herokuapp.com/member"),
+      Uri.parse("https://www.foodone.tw/member"),
       headers: ({
         "token": token,
         "Content-Type": "application/x-www-form-urlencoded"
@@ -45,7 +45,7 @@ class UserUpdateApi {
   static Future<http.Response?> getUsers(token) async {
     var response = await http.get(
       Uri.parse(
-          "https://hello-cycu-delivery-service.herokuapp.com/member/user/info"),
+          "https://www.foodone.tw/member/user/info"),
       headers: ({
         "token": token,
         "Content-Type": "application/x-www-form-urlencoded"

@@ -11,7 +11,7 @@ class HistoryApi {
   static Future<List<Result2?>?> getStores(token) async {
     final response = await http.get(
         Uri.parse(
-            'https://hello-cycu-delivery-service.herokuapp.com/member/user/order'),
+            'https://www.foodone.tw/member/user/order'),
         headers: {
           "token": '$token',
           "Content-Type": "application/x-www-form-urlencoded"

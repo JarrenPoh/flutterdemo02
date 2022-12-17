@@ -120,7 +120,7 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
 
   spectator2(key) async {
     var response = await http.get(
-      Uri.parse("https://hello-cycu-delivery-service.herokuapp.com/member/ad"),
+      Uri.parse("https://www.foodone.tw/member/ad"),
       headers: {
         "token": key,
         "Content-Type": "application/x-www-form-urlencoded",

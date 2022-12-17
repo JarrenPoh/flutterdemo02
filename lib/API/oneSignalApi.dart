@@ -10,7 +10,7 @@ class OneSignalapi {
   static Future<String?> getOneSignal(String appID, token) async {
     final response = await http.post(
       Uri.parse(
-          'https://hello-cycu-delivery-service.herokuapp.com/member/onesignal/subscribe'),
+          'https://www.foodone.tw/member/onesignal/subscribe'),
       headers: {
         "token": token,
         "Content-Type": "application/x-www-form-urlencoded"

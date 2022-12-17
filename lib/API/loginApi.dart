@@ -9,7 +9,7 @@ class loginApi {
   static Future<http.Response?> getUsers(key) async {
     var response = await http.post(
         Uri.parse(
-            "https://hello-cycu-delivery-service.herokuapp.com/member/google/mlogin"),
+            "https://www.foodone.tw/member/google/mlogin"),
         headers: {
           "google_token": key,
           "Content-Type": "application/x-www-form-urlencoded"

@@ -54,7 +54,7 @@ class _shopCarState extends State<shopCar> {
   spectator(key) async {
     var response = await http.post(
       Uri.parse(
-          "https://hello-cycu-delivery-service.herokuapp.com/member/user/order/preview"),
+          "https://www.foodone.tw/member/user/order/preview"),
       headers: {
         "token": key,
         "Content-Type": "application/json",

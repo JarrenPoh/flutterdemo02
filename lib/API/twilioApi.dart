@@ -7,7 +7,7 @@ class twilioApi {
   static Future<String?> getSMS(key) async {
     var response = await http.post(
         Uri.parse(
-            "https://hello-cycu-delivery-service.herokuapp.com/member/twilio/send"),
+            "https://www.foodone.tw/member/twilio/send"),
         headers: {
           "token": key,
           "Content-Type": "application/x-www-form-urlencoded"
@@ -30,7 +30,7 @@ class twilioApi {
   static Future<String?> getVerify(key, code) async {
     var response = await http.post(
         Uri.parse(
-            "https://hello-cycu-delivery-service.herokuapp.com/member/twilio/verify"),
+            "https://www.foodone.tw/member/twilio/verify"),
         headers: {
           "token": key,
           "Content-Type": "application/x-www-form-urlencoded"

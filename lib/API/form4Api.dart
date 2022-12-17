@@ -11,7 +11,7 @@ class MenuApi {
   static Future<Result3?> getMenus(id, token) async {
     final response = await http.post(
         Uri.parse(
-            'https://hello-cycu-delivery-service.herokuapp.com/member/store/detail'),
+            'https://www.foodone.tw/member/store/detail'),
         headers: {
           "token": token,
           "Content-Type": "application/x-www-form-urlencoded",
