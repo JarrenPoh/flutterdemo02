@@ -173,8 +173,14 @@ class _RappiProductItemState extends State<RappiProductItem> {
                           if (widget.product.image == null)
                             Container(
                               height: Dimensions.screenHeigt / 9.17,
-                              width: Dimensions.screenWidth/4.36,
+                              width: Dimensions.screenWidth / 4.36,
                               decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                    'https://images.unsplash.com/photo-1626082929543-5bab0f090c42?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8RlJJRUQlMjBDSElDS0VOfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60',
+                                  ),
+                                  fit: BoxFit.cover,
+                                ),
                                 color: Colors.grey,
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(

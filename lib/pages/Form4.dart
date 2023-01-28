@@ -60,7 +60,8 @@ class FormPage4State extends State<FormPage4>
         MenuApi.getMenus(arguments['id'], UserSimplePreferences.getToken());
     return await stores;
   }
-bool? businessTime;
+
+  bool? businessTime;
   ////////////
   @override
   void initState() {
@@ -122,7 +123,9 @@ bool? businessTime;
                     }
 
                     int selectedHour = TimeOfDay.now().hour;
-                    if (data3.businessTime![selectedHour] == true) {
+                    int selectedDay = DateTime.now().weekday;
+                    print('here is $selectedDay');
+                    if (data3.businessTime?[selectedHour][selectedDay] == true) {
                       print('營業中');
                       businessTime = true;
                     } else {
@@ -178,6 +181,11 @@ bool? businessTime;
                                                       Dimensions.screenHeigt /
                                                           4.85,
                                                   decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                        image: NetworkImage(
+                                                          'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8UkVTVEFVUkFOVHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
+                                                        ),
+                                                        fit: BoxFit.cover),
                                                     borderRadius:
                                                         BorderRadius.vertical(
                                                       bottom: Radius.elliptical(

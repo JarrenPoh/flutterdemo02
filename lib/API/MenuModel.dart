@@ -29,7 +29,7 @@ class Result3 {
   String? url;
   String? image;
   String? timeEstimate;
-  List<bool>? businessTime;
+  List<List<dynamic>>? businessTime;
   String? place;
   String? describe;
   List<Result>? product;

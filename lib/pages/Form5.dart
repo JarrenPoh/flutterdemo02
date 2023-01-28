@@ -514,25 +514,25 @@ class _FormPage5State extends State<FormPage5> {
                                     radiobool = value;
                                   });
                                 },
-                                  PricesCallBack: (value) {
-                                    setState(() {
-                                      Radiopricesnum = value;
-                                    });
-                                  },
-                                  arguments: arguments,
-                                  addCheckBool: addCheckBool,
-                                  addCheckPrices: addCheckPrices,
-                                  addList: addList()[index]['option'],
-                                  addTitle: addList()[index]['title'],
-                                  multipleBool: addList()[index]['multiple'],
-                                  max: addList()[index]['max'],
-                                  min: addList()[index]['min'],
-                                  RadioTitleList: RadioTitleList,
-                                  RadioMultiple: RadioMultiple,
-                                  Radiolist: Radiolist,
-                                  Radioprices: Radioprices,
-                                  lindex: index,
-                                  Radiopricesnum: Radiopricesnum);
+                                PricesCallBack: (value) {
+                                  setState(() {
+                                    Radiopricesnum = value;
+                                  });
+                                },
+                                arguments: arguments,
+                                addCheckBool: addCheckBool,
+                                addCheckPrices: addCheckPrices,
+                                addList: addList()[index]['option'],
+                                addTitle: addList()[index]['title'],
+                                multipleBool: addList()[index]['multiple'],
+                                max: addList()[index]['max'],
+                                min: addList()[index]['min'],
+                                RadioTitleList: RadioTitleList,
+                                RadioMultiple: RadioMultiple,
+                                Radiolist: Radiolist,
+                                Radioprices: Radioprices,
+                                lindex: index,
+                                Radiopricesnum: Radiopricesnum);
                             }),
                           ),
                         ),

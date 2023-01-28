@@ -19,7 +19,7 @@ class Reservation extends StatefulWidget {
     required this.BoolCallBack,
   }) : super(key: key);
   Function() notifyParent;
-  List businessTime;
+  List<List<bool>> businessTime;
   bool selectTime = false;
   final ValueChanged<bool> BoolCallBack;
   @override
@@ -38,7 +38,7 @@ class _ReservationState extends State<Reservation> {
     required this.selectTime,
     required this.BoolCallBack,
   });
-  List businessTime;
+  List<List<bool>> businessTime;
   CartController cartController = Get.find();
   Function() notifyParent;
   int nowHour = 0;
