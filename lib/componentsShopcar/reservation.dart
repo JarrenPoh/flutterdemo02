@@ -19,7 +19,7 @@ class Reservation extends StatefulWidget {
     required this.BoolCallBack,
   }) : super(key: key);
   Function() notifyParent;
-  List<List<bool>> businessTime;
+  List<List<dynamic>> businessTime;
   bool selectTime = false;
   final ValueChanged<bool> BoolCallBack;
   @override
@@ -38,7 +38,7 @@ class _ReservationState extends State<Reservation> {
     required this.selectTime,
     required this.BoolCallBack,
   });
-  List<List<bool>> businessTime;
+  List<List<dynamic>> businessTime;
   CartController cartController = Get.find();
   Function() notifyParent;
   int nowHour = 0;
@@ -88,6 +88,7 @@ class _ReservationState extends State<Reservation> {
       hour: TimeOfDay.now().hour,
       minute: TimeOfDay.now().minute,
     );
+    int selectedDay = DateTime.now().weekday;
     nowMin = nowTime.minute;
     for (nowMin = nowTime.minute; nowMin % 5 != 0; nowMin++) {}
     nowTime = TimeOfDay(
@@ -97,7 +98,7 @@ class _ReservationState extends State<Reservation> {
     availableHours = [];
     for (var i = 0; i < businessTime.length; i++) {
       print('now time is $nowTime');
-      if (businessTime[i] == true && i >= nowTime.hour.toInt() + 1) {
+      if (businessTime[i][selectedDay] == true && i >= nowTime.hour.toInt() + 1) {
         availableHours.add(i);
       }
     }
@@ -111,10 +112,11 @@ class _ReservationState extends State<Reservation> {
   @override
   void initState() {
     setHour();
-    if (businessTime[nowTime.hour] == true) {
+    int selectedDay = DateTime.now().weekday;
+    if (businessTime[nowTime.hour][selectedDay] == true) {
       print('營業中');
       businessNow = true;
-    } else if(businessTime[nowTime.hour] == false){
+    } else if(businessTime[nowTime.hour][selectedDay] == false){
       print('尚未營業');
       businessNow = false;
     };
