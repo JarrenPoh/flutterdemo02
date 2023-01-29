@@ -19,11 +19,11 @@ class _MapSplashState extends State<MapSplash> {
   Map arguments;
   @override
   List<Result?>? originbooks = [];
-  void addPosition(double lat, double lng, int i, String placeID) {
-    originbooks![i]!.lat = lat;
-    originbooks![i]!.lng = lng;
-    originbooks![i]!.placeID = placeID;
-  }
+  // void addPosition(double lat, double lng, int i, String placeID) {
+  //   originbooks![i]!.lat = lat;
+  //   originbooks![i]!.lng = lng;
+  //   originbooks![i]!.placeID = placeID;
+  // }
 
   Future convertToPlaceID(String address) async {
     var googleGeocoding = GoogleGeocoding(GoogleMapKey);
@@ -46,43 +46,25 @@ class _MapSplashState extends State<MapSplash> {
           await MapServices.searchPlaces('', UserSimplePreferences.getToken());
     }
 
-
-    for (var i = 0; i < originbooks!.length; i++) {
-      //if ( originbooks![i]!.placeID && Lat && Lng ) UsersimplePreference is null || ( originbooks![i]!.address != UersimplePreference )? run
-      //就是硬體沒有(新店家) 或 店家更換地址(ADDRESS 跟 硬碟的不一樣) 才跑
-      var placeID = await convertToPlaceID(originbooks![i]!.address!);
-      var place = await MapServices.getPlace(originbooks![i]!.address!);
-
-      addPosition(
-        place!['candidates'][0]['geometry']['location']['lat'],
-        place['candidates'][0]['geometry']['location']['lng'],
-        i,
-        placeID,
-      );
-    }
-
     return originbooks;
   }
 
   void initState() {
-    // TODO: implement initState
     super.initState();
-    init();
     init().then((value) {
       if (value != null) {
         print('object is ${arguments['initialpage']}');
         Navigator.pushReplacementNamed(
-        context,
-        '/googlemap',
-        arguments: {
-          'currentLocation': arguments['currentLocation'],
-          'originbooks': originbooks,
-          'initialid':arguments['initialid'],
-        },
-      );
+          context,
+          '/googlemap',
+          arguments: {
+            'currentLocation': arguments['currentLocation'],
+            'originbooks': originbooks,
+            'initialid': arguments['initialid'],
+          },
+        );
       }
     });
-    
   }
 
   @override

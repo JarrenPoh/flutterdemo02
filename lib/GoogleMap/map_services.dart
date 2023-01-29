@@ -21,6 +21,7 @@ class MapServices {
     if (response.statusCode == 200) {
       var obj = Store.fromJson(jsonDecode(response.body));
       var myaddress = (obj.result as List<Result?>);
+      print('response.body.result in map_services is ${myaddress}');
       return myaddress.map((json) => json).where((element) {
         //name
         final titleLower = element!.name.toString().toLowerCase();
@@ -40,18 +41,18 @@ class MapServices {
     }
   }
 
-  static Future<Map<String, dynamic>?>? getPlace(String? input) async {
-    final String url =
-        'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=geometry&input=$input&inputtype=textquery&key=$GoogleMapKey';
+  // static Future<Map<String, dynamic>?>? getPlace(String? input) async {
+  //   final String url =
+  //       'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=geometry&input=$input&inputtype=textquery&key=$GoogleMapKey';
 
-    var response = await http.get(Uri.parse(url));
-    debugPrint('response statuscode in MapgetPlace is ${response.statusCode}');
+  //   var response = await http.get(Uri.parse(url));
+  //   debugPrint('response statuscode in MapgetPlace is ${response.statusCode}');
 
-    var json = jsonDecode(response.body);
-    print('json is$json');
+  //   var json = jsonDecode(response.body);
+  //   print('json is$json');
 
-    return json;
-  }
+  //   return json;
+  // }
 
   static Future<Map<String, dynamic>?>? getDirections(
       LocationData? origin, String destination) async {

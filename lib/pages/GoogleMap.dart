@@ -103,7 +103,10 @@ class _googleMapState extends ConsumerState<googleMap> {
       var counter = markerIdCounter++;
       final Marker marker = Marker(
         markerId: MarkerId('marker_$counter'),
-        position: LatLng(originbooks![i]!.lat!, originbooks![i]!.lng!),
+        position: LatLng(
+          double.parse(originbooks![i]!.location!.lat!),
+          double.parse(originbooks![i]!.location!.lng!),
+        ),
         onTap: () async {
           _polylines = {};
           _pageController.jumpToPage(
@@ -639,6 +642,12 @@ class _googleMapState extends ConsumerState<googleMap> {
         endTime.add(i);
       }
     }
+    if(startTime.isEmpty){
+      startTime.add(0);
+    }
+    if (endTime.isEmpty) {
+      endTime.add(0);
+    }
     debugPrint('${originbooks![index]!.name!}startTime is $startTime');
     debugPrint('endTime is $endTime');
     return Column(
@@ -853,8 +862,13 @@ class _googleMapState extends ConsumerState<googleMap> {
                                       children: [
                                         TabText(
                                           color: kBodyTextColor,
-                                          text:
-                                              '$startNoon $startText ~ $endNoon $endText',
+                                          text: startTime[index] == 0 &&
+                                                  endTime[index] == 23
+                                              ? '全天供應'
+                                              : startTime[index] == 0 &&
+                                                      endTime[index] == 0
+                                                  ? '今日不營業'
+                                                  : '$startNoon $startText ~ $endNoon $endText',
                                           fontFamily: 'NotoSansMedium',
                                         ),
                                       ],
@@ -1026,7 +1040,8 @@ class _googleMapState extends ConsumerState<googleMap> {
       ),
     );
 
-    _setMarker(LatLng(originbooks![lindex]!.lat!, originbooks![lindex]!.lng!));
+    _setMarker(LatLng(double.parse(originbooks![lindex]!.location!.lat!),
+        double.parse(originbooks![lindex]!.location!.lng!)));
   }
 
   _placesList(List<Result?>? placeItem, index, SearchToggle searchFlag) {
@@ -1216,7 +1231,7 @@ class _googleMapState extends ConsumerState<googleMap> {
                       FocusManager.instance.primaryFocus?.unfocus();
                       var directions = await MapServices.getDirections(
                         currentLocation,
-                        originbooks![index!]!.placeID!,
+                        originbooks![index]!.location!.googlePlaceId!,
                       );
                       finishDirections = true;
                       _polylines = {};
@@ -1351,12 +1366,20 @@ class _googleMapState extends ConsumerState<googleMap> {
 
     var selectPlace = originbooks![_pageController.page!.toInt()];
 
-    _setMarker(LatLng(selectPlace!.lat!, selectPlace.lng!));
+    _setMarker(
+      LatLng(
+        double.parse(selectPlace!.location!.lat!),
+        double.parse(selectPlace.location!.lng!),
+      ),
+    );
 
     controller.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
-          target: LatLng(selectPlace.lat!, selectPlace.lng!),
+          target: LatLng(
+            double.parse(selectPlace.location!.lat!),
+            double.parse(selectPlace.location!.lng!),
+          ),
           zoom: 16.0,
         ),
       ),
@@ -1395,7 +1418,7 @@ class _googleMapState extends ConsumerState<googleMap> {
             FocusManager.instance.primaryFocus?.unfocus();
             var directions = await MapServices.getDirections(
               currentLocation,
-              originbooks![lindex!]!.placeID!,
+              originbooks![lindex!]!.location!.googlePlaceId!,
             );
             finishDirections = true;
             _polylines = {};

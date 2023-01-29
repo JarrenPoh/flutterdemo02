@@ -24,12 +24,10 @@ class Result {
   String? id;
   String? image;
   String? discount;
-  double? lat;
-  double? lng;
-  String? placeID;
   List? businessTime;
   String? timeEstimate;
   String? describe;
+  Locationss? location;
 
   Result({
     this.name,
@@ -38,12 +36,10 @@ class Result {
     this.id,
     this.discount,
     this.image,
-    this.lat,
-    this.lng,
-    this.placeID,
     this.businessTime,
     this.timeEstimate,
     this.describe,
+    this.location,
   });
 
   Result.fromJson(Map<String, dynamic> json) {
@@ -56,5 +52,30 @@ class Result {
     businessTime=json['businessTime'];
     timeEstimate=json['timeEstimate'];
     describe = json['describe'];
+     location = json['location'] != null
+        ? new Locationss.fromJson(json['location'])
+        : null;
+  }
+}
+
+class Locationss {
+  String? lat;
+  String? lng;
+  String? googlePlaceId;
+
+  Locationss({this.lat, this.lng, this.googlePlaceId});
+
+  Locationss.fromJson(Map<String, dynamic> json) {
+    lat = json['lat'];
+    lng = json['lng'];
+    googlePlaceId = json['googlePlaceId'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['lat'] = this.lat;
+    data['lng'] = this.lng;
+    data['googlePlaceId'] = this.googlePlaceId;
+    return data;
   }
 }
