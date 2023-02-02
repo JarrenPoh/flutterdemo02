@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutterdemo02/API/form4Api.dart';
@@ -125,7 +126,8 @@ class FormPage4State extends State<FormPage4>
                     int selectedHour = TimeOfDay.now().hour;
                     int selectedDay = DateTime.now().weekday;
                     print('here is $selectedDay');
-                    if (data3.businessTime?[selectedHour][selectedDay] == true) {
+                    if (data3.businessTime?[selectedHour][selectedDay - 1] ==
+                        true) {
                       print('營業中');
                       businessTime = true;
                     } else {
@@ -157,45 +159,64 @@ class FormPage4State extends State<FormPage4>
                                     return FlexibleSpaceBar(
                                       background: Column(
                                         children: [
-                                          data3.image != null
-                                              ? Container(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.vertical(
-                                                      bottom: Radius.elliptical(
-                                                        Dimensions.screenWidth,
-                                                        30,
-                                                      ),
-                                                    ),
-                                                    image: DecorationImage(
-                                                      image: NetworkImage(
-                                                        data3.image!,
-                                                      ),
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-                                                )
-                                              : Container(
-                                                  width: Dimensions.screenWidth,
-                                                  height:
-                                                      Dimensions.screenHeigt /
-                                                          4.85,
-                                                  decoration: BoxDecoration(
-                                                    image: DecorationImage(
-                                                        image: NetworkImage(
-                                                          'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8UkVTVEFVUkFOVHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
-                                                        ),
-                                                        fit: BoxFit.cover),
-                                                    borderRadius:
-                                                        BorderRadius.vertical(
-                                                      bottom: Radius.elliptical(
-                                                        Dimensions.screenWidth,
-                                                        30,
-                                                      ),
-                                                    ),
-                                                    color: Colors.grey,
+                                          CachedNetworkImage(
+                                            imageUrl:
+                                                'https://foodone-s3.s3.amazonaws.com/store/main/${arguments['id']}',
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Container(
+                                              width: Dimensions.screenWidth,
+                                              height:
+                                                  Dimensions.screenHeigt / 4.85,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.vertical(
+                                                  bottom: Radius.elliptical(
+                                                    Dimensions.screenWidth,
+                                                    30,
                                                   ),
                                                 ),
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                            progressIndicatorBuilder:
+                                                (context, url, progress) =>
+                                                    Container(
+                                              width: Dimensions.screenWidth,
+                                              height:
+                                                  Dimensions.screenHeigt / 4.85,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.vertical(
+                                                  bottom: Radius.elliptical(
+                                                    Dimensions.screenWidth,
+                                                    30,
+                                                  ),
+                                                ),
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                            imageBuilder:
+                                                (context, imageProvider) =>
+                                                    Container(
+                                              width: Dimensions.screenWidth,
+                                              height:
+                                                  Dimensions.screenHeigt / 4.85,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.vertical(
+                                                  bottom: Radius.elliptical(
+                                                    Dimensions.screenWidth,
+                                                    30,
+                                                  ),
+                                                ),
+                                                image: DecorationImage(
+                                                  image: imageProvider,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
                                         ],
                                       ),
                                       title: AnimatedOpacity(

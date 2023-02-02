@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterdemo02/API/MenuModel.dart';
 import 'package:flutterdemo02/models/BetweenSM.dart';
@@ -55,7 +56,6 @@ class _RappiProductItemState extends State<RappiProductItem> {
                   'price': int.parse(widget.product.price),
                   'textprice': widget.product.price,
                   'description': widget.product.describe,
-                  'image': widget.product.image,
                   'shopname': data3.name,
                   'ToCart': '加入購物車',
                   'firstNumber': 1,
@@ -153,42 +153,65 @@ class _RappiProductItemState extends State<RappiProductItem> {
                       borderRadius: BorderRadius.circular(Dimensions.radius10),
                       child: Column(
                         children: [
-                          if (widget.product.image != null)
-                            Container(
-                              child: Image.network(
-                                widget.product.image!,
-                                fit: BoxFit.cover,
-                              ),
-                              height: Dimensions.screenHeigt / 9.17,
-                              width: Dimensions.screenWidth / 4.36,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(
+                          if (widget.product.id != null)
+                            CachedNetworkImage(
+                              imageUrl:
+                                  'https://foodone-s3.s3.amazonaws.com/store/product/${widget.product.id}',
+                              errorWidget: (context, url, error) => Container(
+                                height: Dimensions.screenHeigt / 9.17,
+                                width: Dimensions.screenWidth / 4.36,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
                                     Dimensions.radius15,
+                                  ),
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              progressIndicatorBuilder:
+                                  (context, url, progress) => Container(
+                                height: Dimensions.screenHeigt / 9.17,
+                                width: Dimensions.screenWidth / 4.36,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                    Dimensions.radius15,
+                                  ),
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              imageBuilder: (context, imageProvider) =>
+                                  Container(
+                                height: Dimensions.screenHeigt / 9.17,
+                                width: Dimensions.screenWidth / 4.36,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                    Dimensions.radius15,
+                                  ),
+                                  image: DecorationImage(
+                                    image: imageProvider,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
                             ),
-                          if (widget.product.image == null)
-                            Container(
-                              height: Dimensions.screenHeigt / 9.17,
-                              width: Dimensions.screenWidth / 4.36,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: NetworkImage(
-                                    'https://images.unsplash.com/photo-1626082929543-5bab0f090c42?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8RlJJRUQlMjBDSElDS0VOfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60',
-                                  ),
-                                  fit: BoxFit.cover,
-                                ),
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(
-                                    Dimensions.radius15,
-                                  ),
-                                ),
-                              ),
-                            ),
+                          // if (widget.product.image == null)
+                          //   Container(
+                          //     height: Dimensions.screenHeigt / 9.17,
+                          //     width: Dimensions.screenWidth / 4.36,
+                          //     decoration: BoxDecoration(
+                          //       image: DecorationImage(
+                          //         image: NetworkImage(
+                          //           'https://images.unsplash.com/photo-1626082929543-5bab0f090c42?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8RlJJRUQlMjBDSElDS0VOfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60',
+                          //         ),
+                          //         fit: BoxFit.cover,
+                          //       ),
+                          //       color: Colors.grey,
+                          //       borderRadius: BorderRadius.all(
+                          //         Radius.circular(
+                          //           Dimensions.radius15,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ),
                         ],
                       ),
                     ),

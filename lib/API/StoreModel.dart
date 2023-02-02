@@ -28,6 +28,7 @@ class Result {
   String? timeEstimate;
   String? describe;
   Locationss? location;
+  List? product;
 
   Result({
     this.name,
@@ -40,6 +41,7 @@ class Result {
     this.timeEstimate,
     this.describe,
     this.location,
+    this.product,
   });
 
   Result.fromJson(Map<String, dynamic> json) {
@@ -50,6 +52,7 @@ class Result {
     image = json['image'];
     discount = json['discount'];
     businessTime=json['businessTime'];
+    product = json['product'];
     timeEstimate=json['timeEstimate'];
     describe = json['describe'];
      location = json['location'] != null

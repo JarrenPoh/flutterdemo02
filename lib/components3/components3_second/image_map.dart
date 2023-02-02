@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:convert/convert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterdemo02/models/BigText.dart';
@@ -35,6 +36,7 @@ class imageItems extends StatelessWidget {
   List? discount = [];
   @override
   Widget build(BuildContext context) {
+    print('image of store is ${image}');
     return GestureDetector(
       onTap: press,
       child: Container(
@@ -46,36 +48,49 @@ class imageItems extends StatelessWidget {
                   Dimensions.width15, 0, Dimensions.width15, 0),
               child: Stack(
                 children: [
-                  if (image != null)
-                    Container(
-                      child: Image.network(
-                        image!,
-                        fit: BoxFit.cover,
-                      ),
-                      height: Dimensions.screenHeigt / 4.85,
+                  CachedNetworkImage(
+                    imageUrl: image!,
+                    errorWidget: (context, url, error) => Container(
                       width: Dimensions.screenWidth,
+                      height: Dimensions.screenHeigt / 4.85,
                       decoration: BoxDecoration(
-                        color: Colors.grey,
                         borderRadius: BorderRadius.all(
                           Radius.circular(
                             Dimensions.radius15,
                           ),
                         ),
+                        color: Colors.grey,
                       ),
                     ),
-                  if (image == null)
-                    Container(
-                      height: Dimensions.screenHeigt / 4.85,
+                    progressIndicatorBuilder: (context, url, progress) =>
+                        Container(
                       width: Dimensions.screenWidth,
+                      height: Dimensions.screenHeigt / 4.85,
                       decoration: BoxDecoration(
-                        color: Colors.grey,
                         borderRadius: BorderRadius.all(
                           Radius.circular(
                             Dimensions.radius15,
                           ),
                         ),
+                        color: Colors.grey,
                       ),
                     ),
+                    imageBuilder: (context, imageProvider) => Container(
+                      width: Dimensions.screenWidth,
+                      height: Dimensions.screenHeigt / 4.85,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(
+                            Dimensions.radius15,
+                          ),
+                        ),
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
                   if (discount!.isNotEmpty)
                     Padding(
                       padding: EdgeInsets.only(top: Dimensions.height15),

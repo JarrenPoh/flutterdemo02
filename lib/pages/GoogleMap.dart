@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -201,9 +202,10 @@ class _googleMapState extends ConsumerState<googleMap> {
 
 ////Fetch image to place inside the tile in the pageView
   void fetchImage() {
-    if (originbooks![prevPage]!.image != null) {
+    if (originbooks![prevPage]!.id != null) {
       setState(() {
-        placeImg = originbooks![prevPage]!.image!;
+        placeImg =
+            "https://foodone-s3.s3.amazonaws.com/store/main/${originbooks![prevPage]!.id!}";
       });
     } else {
       setState(() {
@@ -294,7 +296,8 @@ class _googleMapState extends ConsumerState<googleMap> {
                               height: Dimensions.height50,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(
-                                      Dimensions.radius10),
+                                    Dimensions.radius10,
+                                  ),
                                   color: Colors.white),
                               child: TextFormField(
                                 focusNode: _focusNode,
@@ -642,7 +645,7 @@ class _googleMapState extends ConsumerState<googleMap> {
         endTime.add(i);
       }
     }
-    if(startTime.isEmpty){
+    if (startTime.isEmpty) {
       startTime.add(0);
     }
     if (endTime.isEmpty) {
@@ -921,7 +924,7 @@ class _googleMapState extends ConsumerState<googleMap> {
     );
   }
 
-  _buildPhotoGallery() {
+  _buildPhotoGallery(index) {
     // if (originbooks![0]!.image == null || originbooks![0]!.image!.length == 0) {
     if (originbooks!.length == 0) {
       showBlankCard = true;
@@ -931,32 +934,63 @@ class _googleMapState extends ConsumerState<googleMap> {
         ),
       );
     } else {
-      var placeImg = originbooks![photoGalleryIndex]!.image;
+      var placeImg = originbooks![index]!.product![photoGalleryIndex];
       var tempDisplayIndex = photoGalleryIndex + 1;
       return Column(
         children: [
           SizedBox(height: Dimensions.height10),
           if (placeImg != null)
-            Container(
-              height: Dimensions.height50 * 4,
-              width: Dimensions.width20 * 10,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Dimensions.radius10),
-                image: DecorationImage(
-                  image: NetworkImage(placeImg),
-                  fit: BoxFit.cover,
+            CachedNetworkImage(
+              imageUrl:
+                  'https://foodone-s3.s3.amazonaws.com/store/product/$placeImg',
+              errorWidget: (context, url, error) => Container(
+                height: Dimensions.height50 * 2,
+                width: Dimensions.width20 * 5,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(Dimensions.radius10),
+                  color: Colors.grey,
+                ),
+              ),
+              progressIndicatorBuilder: (context, url, progress) => Container(
+                height: Dimensions.height50 * 2,
+                width: Dimensions.width20 * 5,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(Dimensions.radius10),
+                  color: Colors.grey,
+                ),
+              ),
+              imageBuilder: (context, imageProvider) => Container(
+                height: Dimensions.height50 * 2,
+                width: Dimensions.width20 * 5,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(Dimensions.radius10),
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
-          if (placeImg == null)
-            Container(
-              height: Dimensions.height50 * 2,
-              width: Dimensions.width20 * 10,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Dimensions.radius10),
-                color: Colors.grey,
-              ),
-            ),
+          // Container(
+          //   height: Dimensions.height50 * 4,
+          //   width: Dimensions.width20 * 10,
+          //   decoration: BoxDecoration(
+          //     borderRadius: BorderRadius.circular(Dimensions.radius10),
+          //     image: DecorationImage(
+          //       image: NetworkImage('https://foodone-s3.s3.amazonaws.com/store/product/$placeImg'),
+          //       fit: BoxFit.cover,
+          //     ),
+          //   ),
+          // ),
+          // if (placeImg == null)
+          //   Container(
+          //     height: Dimensions.height50 * 2,
+          //     width: Dimensions.width20 * 10,
+          //     decoration: BoxDecoration(
+          //       borderRadius: BorderRadius.circular(Dimensions.radius10),
+          //       color: Colors.grey,
+          //     ),
+          //   ),
           SizedBox(height: Dimensions.height10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -990,15 +1024,18 @@ class _googleMapState extends ConsumerState<googleMap> {
               ),
               TabText(
                 color: kBodyTextColor,
-                text: '$tempDisplayIndex/ ' + originbooks!.length.toString(),
+                text: '$tempDisplayIndex/ ' +
+                    originbooks![index]!.product!.length.toString(),
               ),
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    if (photoGalleryIndex != originbooks!.length - 1)
+                    if (photoGalleryIndex !=
+                        originbooks![index]!.product!.length - 1)
                       photoGalleryIndex = photoGalleryIndex + 1;
                     else
-                      photoGalleryIndex = originbooks!.length - 1;
+                      photoGalleryIndex =
+                          originbooks![index]!.product!.length - 1;
                   });
                 },
                 child: Container(
@@ -1006,7 +1043,8 @@ class _googleMapState extends ConsumerState<googleMap> {
                   height: Dimensions.height20 / 10 * 11,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(9.0),
-                    color: photoGalleryIndex != originbooks!.length - 1
+                    color: photoGalleryIndex !=
+                            originbooks![index]!.product!.length - 1
                         ? kMaim3Color
                         : Colors.grey.shade500,
                   ),
@@ -1100,36 +1138,58 @@ class _googleMapState extends ConsumerState<googleMap> {
                   child: Column(
                     children: [
                       _pageController.position.haveDimensions
-                          ? _pageController.page!.toInt() == index ||
-                                  _pageController.page!.toInt() == index + 1 ||
-                                  _pageController.page!.toInt() == index - 1
-                              ? placeImg != ''
-                                  ? Container(
-                                      height: Dimensions.height10 * 13,
-                                      width: Dimensions.width10 * 35,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(
-                                              Dimensions.radius10),
-                                          topRight: Radius.circular(
-                                              Dimensions.radius10),
-                                        ),
+                          ? _pageController.page!.toInt() == index 
+                          // ||
+                                  // _pageController.page!.toInt() == index + 1 ||
+                                  // _pageController.page!.toInt() == index - 1
+                              ? CachedNetworkImage(
+                                  imageUrl: placeImg,
+                                  errorWidget: (context, url, error) =>
+                                      Container(
+                                    height: Dimensions.height10 * 13,
+                                    width: Dimensions.width10 * 35,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(
+                                            Dimensions.radius10),
+                                        topRight: Radius.circular(
+                                            Dimensions.radius10),
                                       ),
-                                      child: Image.network(placeImg),
-                                    )
-                                  : Container(
-                                      height: Dimensions.height10 * 13,
-                                      width: Dimensions.width10 * 35,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(
-                                              Dimensions.radius10),
-                                          topRight: Radius.circular(
-                                              Dimensions.radius10),
-                                        ),
-                                        color: Colors.grey,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  progressIndicatorBuilder:
+                                      (context, url, progress) => Container(
+                                    height: Dimensions.height10 * 13,
+                                    width: Dimensions.width10 * 35,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(
+                                            Dimensions.radius10),
+                                        topRight: Radius.circular(
+                                            Dimensions.radius10),
                                       ),
-                                    )
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    height: Dimensions.height10 * 13,
+                                    width: Dimensions.width10 * 35,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(
+                                            Dimensions.radius10),
+                                        topRight: Radius.circular(
+                                            Dimensions.radius10),
+                                      ),
+                                      image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                )
                               : Container(
                                   height: Dimensions.height10 * 13,
                                   width: Dimensions.width20,
@@ -1350,7 +1410,7 @@ class _googleMapState extends ConsumerState<googleMap> {
                   Container(
                     child: isReviews
                         ? _buildReviewItem(index)
-                        : _buildPhotoGallery(),
+                        : _buildPhotoGallery(index),
                   )
                 ],
               ),

@@ -77,7 +77,7 @@ dependencies:
   rename: ^2.0.1
   firebase_core: ^2.1.1
   firebase_auth: ^4.1.0
-
+  cached_network_image: ^3.2.3
   the_apple_sign_in: ^1.1.1
   flutter_signin_button: ^2.0.0
   sign_button: ^2.0.2

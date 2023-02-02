@@ -96,7 +96,6 @@ class Result {
   String? min;
   String? max;
   String? options;
-  String? image;
   String? id;
 
   Result({
@@ -104,7 +103,6 @@ class Result {
     required this.price,
     required this.describe,
     required this.type,
-    required this.image,
     required this.discount,
     required this.options,
     required this.id,
@@ -117,7 +115,6 @@ class Result {
     price = json['price'];
     describe = json['describe'];
     type = json['type'];
-    image = json['image'];
     discount = json['discount'];
     options = json['options'];
     id = json['id'];

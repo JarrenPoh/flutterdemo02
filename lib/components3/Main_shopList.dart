@@ -56,7 +56,7 @@ class _mainListState extends State<mainList> {
             discount: jsonDecode(data[index].discount!),
             name: data[index].name!,
             address: data[index].address,
-            image: data[index].image,
+            image: 'https://foodone-s3.s3.amazonaws.com/store/main/${data[index].id!}',
             id:data[index].id!,
             press: () async {
               if (cartController.cartlist.isNotEmpty &&
