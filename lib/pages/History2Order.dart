@@ -107,7 +107,7 @@ class _HistoryPage2State extends State<HistoryPage2> {
                   children: [
                     CachedNetworkImage(
                       imageUrl:
-                          'https://foodone-s3.s3.amazonaws.com/store/main/${arguments['store']}',
+                          'https://foodone-s3.s3.amazonaws.com/store/main/${arguments['id']}',
                       errorWidget: (context, url, error) => Container(
                         width: Dimensions.screenWidth,
                         height: Dimensions.screenHeigt / 4.85,
@@ -199,6 +199,24 @@ class _HistoryPage2State extends State<HistoryPage2> {
                       shopname: arguments['shopname'],
                       address: arguments['address'],
                       numbering: arguments['numbering'],
+                    ),
+                    SizedBox(height: Dimensions.height15),
+                    BetweenSM(
+                      color: kBodyTextColor,
+                      text: '店家留言',
+                      fontFamily: 'NotoSansMedium',
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TabText(
+                          color: Colors.black87,
+                          text: arguments['comments'] == null ||
+                                  arguments['comments'] == 'null'
+                              ? '無'
+                              : arguments['comments'],
+                        ),
+                      ],
                     ),
                     const Divider(),
                     Padding(

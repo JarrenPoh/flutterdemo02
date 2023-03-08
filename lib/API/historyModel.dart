@@ -34,7 +34,6 @@ class Result2 {
   StoreInfo? storeInfo;
   int? total;
   String? discount;
-  String? image;
   bool? complete;
   bool? accept;
   bool? finish;
@@ -54,7 +53,6 @@ class Result2 {
     this.complete,
     this.finish,
     this.accept,
-    this.image,
     this.tableWare,
     this.sequence,
     this.comments,
@@ -74,7 +72,6 @@ class Result2 {
     complete = json['complete'];
     accept = json['accept'];
     finish = json['finish'];
-    image = json['image'];
     tableWare = json['tableware'];
     sequence = json['sequence'];
     comments = json['comments'];
@@ -95,7 +92,6 @@ class Result2 {
     data['complete'] = this.complete;
     data['accept'] = this.accept;
     data['finish'] = this.finish;
-    data['image'] = this.image;
     data['sequence'] = this.sequence;
     data['comments'] = this.comments;
     data['reservation'] = this.reservation;

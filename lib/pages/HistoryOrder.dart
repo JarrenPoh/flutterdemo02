@@ -116,9 +116,17 @@ class _HistoryPageState extends State<HistoryPage> {
                     children: List.generate(
                       data.length,
                       (index) {
+                        bool? refused;
+                        if (data[index].accept == false &&
+                            data[index].complete == true) {
+                          refused = true;
+                        } else if (data[index].accept == true &&
+                            data[index].complete == true) {
+                          refused = false;
+                        }
                         return historyCard(
                           Data: data[index],
-                          // orderSet:orderSet,
+                          refused: refused!,
                         );
                       },
                     ),

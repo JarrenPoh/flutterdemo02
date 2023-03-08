@@ -113,11 +113,11 @@ class numberCardSecondState extends State<numberCardSecond> {
   }
 
   bool refused = false;
-  void refreshInformation() {
-    if (data2 != null) {
-      //
 
-//
+  void refreshInformation() {
+    print('data2 is null ${data2 == null}');
+    if (data2 != null) {
+      print(' pass here 01');
       if (accept == true && finish == null) {
         _curStep = 2; //接受餐點
       } else if (accept == true && finish == true) {
@@ -125,11 +125,9 @@ class numberCardSecondState extends State<numberCardSecond> {
       } else if (accept == null) {
         _curStep = 1; //尚未接受餐點
       } else if (accept == false && complete == true) {
-        setState(() {
-          refused = true;
-        });
+        print(' pass here 02');
+        refused = true;
       }
-//
     }
     setState(
       () {
@@ -139,6 +137,7 @@ class numberCardSecondState extends State<numberCardSecond> {
         print('accept is $accept}');
         print('$comments}');
         print('complete is$complete}');
+        print('refused is$refused}');
       },
     );
   }
@@ -171,7 +170,7 @@ class numberCardSecondState extends State<numberCardSecond> {
   bool? complete;
 
   Future inspect2() async {
-    Result2? data2 = await historyApi(UserSimplePreferences.getToken());
+    data2 = await historyApi(UserSimplePreferences.getToken());
 
     if (data2 == null) {
       String? refresh_token = await UserSimplePreferences.getRefreshToken();
@@ -186,17 +185,17 @@ class numberCardSecondState extends State<numberCardSecond> {
       totalprice += inin;
       print('totalprice1 is $totalprice');
     }
-    shopname = data2.storeInfo!.name;
-    address = data2.storeInfo!.address;
-    numbering = data2.sId;
-    sequence = data2.sequence;
-    finalprice = data2.total;
-    reservation = data2.reservation;
-    SId = data2.sId!;
-    finish = data2.finish;
-    accept = data2.accept;
-    comments = data2.comments;
-    complete = data2.complete;
+    shopname = data2!.storeInfo!.name;
+    address = data2!.storeInfo!.address;
+    numbering = data2!.sId;
+    sequence = data2!.sequence;
+    finalprice = data2!.total;
+    reservation = data2!.reservation;
+    SId = data2!.sId!;
+    finish = data2!.finish;
+    accept = data2!.accept;
+    comments = data2!.comments;
+    complete = data2!.complete;
     refreshInformation();
     oneSignalInit();
   }
@@ -474,17 +473,21 @@ class numberCardSecondState extends State<numberCardSecond> {
                       ? Center(
                           child: Column(
                             children: [
+                              SizedBox(
+                                height: Dimensions.height50,
+                              ),
                               BigText(
                                 color: Colors.blueGrey,
                                 text: '非常抱歉，店家拒絕了您的訂單',
                                 fontFamily: 'NotoSansMedium',
                               ),
-                              Container(
-                                color: Colors.white,
-                                child: Image.asset(
-                                  'images/foodone_page-0001_4-removebg-preview.png',
-                                ),
-                              ),
+                              // Container(
+                              //   color: Colors.white,
+                              //   child: Image.asset(
+                              //     'images/foodone_page-0001_4-removebg-preview.png',
+                              //   ),
+                              // ),
+                              SizedBox(height: Dimensions.height15),
                               if (comments != 'null' && comments != null)
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -500,6 +503,8 @@ class numberCardSecondState extends State<numberCardSecond> {
                                     commentButton(),
                                   ],
                                 ),
+                                SizedBox(height: Dimensions.height15),
+                                
                             ],
                           ),
                         )
@@ -523,7 +528,7 @@ class numberCardSecondState extends State<numberCardSecond> {
                                     children: _iconViews(),
                                   ),
                                 ),
-                                const SizedBox(height: 10),
+                                SizedBox(height: Dimensions.height10),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,

@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterdemo02/models/MiddleText.dart';
 
 import '../API/historyModel.dart';
 import '../models/BetweenSM.dart';
@@ -12,8 +14,10 @@ class historyCard extends StatefulWidget {
   historyCard({
     Key? key,
     required this.Data,
+    required this.refused,
   }) : super(key: key);
   Result2 Data;
+  bool refused;
   @override
   State<historyCard> createState() => _historyCardState(
         Data: Data,
@@ -51,6 +55,7 @@ class _historyCardState extends State<historyCard> {
           GestureDetector(
             onTap: () {
               Navigator.pushNamed(context, '/history2', arguments: {
+                'refused': widget.refused,
                 'shopname': Data.storeInfo!.name,
                 'address': Data.storeInfo!.address,
                 'discount': Data.discount,
@@ -59,203 +64,264 @@ class _historyCardState extends State<historyCard> {
                 'numbering': Data.sId,
                 'order': jsonDecode(Data.order!),
                 'id': Data.store,
+                'comments': Data.comments,
 
                 // 'orderSet':orderSet,
               });
             },
-            child: Card(
-              elevation: Dimensions.height5,
-              shadowColor: Colors.black54,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(Dimensions.radius5),
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: Dimensions.width15,
-                  vertical: Dimensions.height5,
-                ),
-                child: SizedBox(
-                  height:
-                      Dimensions.screenHeigt / 4.4 - Dimensions.height15 * 2,
-                  child: Flex(
-                    direction: Axis.vertical,
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: Dimensions.height10),
-                          child: Flex(
-                            direction: Axis.horizontal,
-                            children: [
-                              Expanded(
-                                flex: 3,
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                    right: Dimensions.width15,
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(
-                                      Dimensions.radius10,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Card(
+                  elevation: Dimensions.height5,
+                  shadowColor: Colors.black54,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(Dimensions.radius5),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: Dimensions.width15,
+                      vertical: Dimensions.height5,
+                    ),
+                    child: SizedBox(
+                      height: Dimensions.screenHeigt / 4.4 -
+                          Dimensions.height15 * 2,
+                      child: Flex(
+                        direction: Axis.vertical,
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: Dimensions.height10),
+                              child: Flex(
+                                direction: Axis.horizontal,
+                                children: [
+                                  Expanded(
+                                    flex: 3,
+                                    child: Container(
+                                      margin: EdgeInsets.only(
+                                        right: Dimensions.width15,
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                          Dimensions.radius10,
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            CachedNetworkImage(
+                                              imageUrl:
+                                                  'https://foodone-s3.s3.amazonaws.com/store/main/${Data.store}',
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      Container(
+                                                height: Dimensions.screenHeigt /
+                                                    9.17,
+                                                width: Dimensions.screenWidth /
+                                                    4.36,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(
+                                                      Dimensions.radius15,
+                                                    ),
+                                                  ),
+                                                  color: Colors.grey,
+                                                  image: const DecorationImage(
+                                                    image: AssetImage(
+                                                      'images/preImage.jpg',
+                                                    ),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                              progressIndicatorBuilder:
+                                                  (context, url, progress) =>
+                                                      Container(
+                                                height: Dimensions.screenHeigt /
+                                                    9.17,
+                                                width: Dimensions.screenWidth /
+                                                    4.36,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(
+                                                      Dimensions.radius15,
+                                                    ),
+                                                  ),
+                                                  color: Colors.grey,
+                                                  image: const DecorationImage(
+                                                    image: AssetImage(
+                                                      'images/preImage.jpg',
+                                                    ),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                              imageBuilder:
+                                                  (context, imageProvider) =>
+                                                      Container(
+                                                height: Dimensions.screenHeigt /
+                                                    9.17,
+                                                width: Dimensions.screenWidth /
+                                                    4.36,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(
+                                                      Dimensions.radius15,
+                                                    ),
+                                                  ),
+                                                  image: DecorationImage(
+                                                    image: imageProvider,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ),
-                                    child: Column(
+                                  ),
+                                  Expanded(
+                                    flex: 7,
+                                    child: Flex(
+                                      direction: Axis.horizontal,
                                       children: [
-                                        if (Data.image != null)
-                                          Container(
-                                            child: Image.network(
-                                              Data.image!,
-                                              fit: BoxFit.cover,
-                                            ),
-                                            height:
-                                                Dimensions.screenHeigt / 9.17,
-                                            width:
-                                                Dimensions.screenWidth / 4.36,
-                                            decoration: BoxDecoration(
-                                              color: Colors.grey,
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(
-                                                  Dimensions.radius15,
+                                        Expanded(
+                                          flex: 5,
+                                          child: Flex(
+                                            direction: Axis.vertical,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Expanded(
+                                                flex: 0,
+                                                child: Column(
+                                                  children: [
+                                                    BetweenSM(
+                                                      color: kBodyTextColor,
+                                                      text:
+                                                          '${Data.storeInfo!.name}',
+                                                      maxLines: 2,
+                                                      fontFamily:
+                                                          'NotoSansMedium',
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
-                                            ),
-                                          ),
-                                        if (Data.image == null)
-                                          Container(
-                                            height:
-                                                Dimensions.screenHeigt / 9.17,
-                                            width: Dimensions.screenWidth/4.36,
-                                            decoration: BoxDecoration(
-                                              color: Colors.grey,
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(
-                                                  Dimensions.radius15,
+                                              Expanded(
+                                                flex: 1,
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    TabText(
+                                                      color: kTextLightColor,
+                                                      text: '${totalNames()}',
+                                                      fontFamily:
+                                                          ' NotoSansRegular',
+                                                      maxLines: 2,
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
-                                            ),
+                                            ],
                                           ),
+                                        ),
+                                        SizedBox(
+                                          width: Dimensions.width15,
+                                        ),
+                                        Expanded(
+                                          flex: 0,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              BetweenSM(
+                                                color: kBodyTextColor,
+                                                text: '\$ ${Data.total}',
+                                                maxLines: 2,
+                                                fontFamily: 'NotoSansMedium',
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
-                                ),
+                                ],
                               ),
-                              Expanded(
-                                flex: 7,
-                                child: Flex(
-                                  direction: Axis.horizontal,
-                                  children: [
-                                    Expanded(
-                                      flex: 5,
-                                      child: Flex(
-                                        direction: Axis.vertical,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Expanded(
-                                            flex: 0,
-                                            child: Column(
-                                              children: [
-                                                BetweenSM(
-                                                  color: kBodyTextColor,
-                                                  text:
-                                                      '${Data.storeInfo!.name}',
-                                                  maxLines: 2,
-                                                  fontFamily: 'NotoSansMedium',
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                TabText(
-                                                  color: kTextLightColor,
-                                                  text: '${totalNames()}',
-                                                  fontFamily:
-                                                      ' NotoSansRegular',
-                                                  maxLines: 2,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: Dimensions.width15,
-                                    ),
-                                    Expanded(
-                                      flex: 0,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          BetweenSM(
-                                            color: kBodyTextColor,
-                                            text: '\$ ${Data.total}',
-                                            maxLines: 2,
-                                            fontFamily: 'NotoSansMedium',
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: Dimensions.height5,
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Flex(
-                          direction: Axis.horizontal,
-                          children: [
-                            Expanded(
-                              flex: 5,
-                              child: Container(
-                                margin: EdgeInsets.only(
-                                    bottom: Dimensions.height15),
-                                child: SmallText(
-                                  color: kTextLightColor,
-                                  text: Data.dATE!.substring(0, 10),
+                          SizedBox(
+                            height: Dimensions.height5,
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Flex(
+                              direction: Axis.horizontal,
+                              children: [
+                                Expanded(
+                                  flex: 5,
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        bottom: Dimensions.height15),
+                                    child: SmallText(
+                                      color: kTextLightColor,
+                                      text: Data.dATE!.substring(0, 10),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                Expanded(
+                                  flex: 0,
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        bottom: Dimensions.height5 / 2),
+                                    height: Dimensions.screenHeigt / 26.45,
+                                    width: Dimensions.screenWidth / 4.35,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          Dimensions.radius5),
+                                      color: kMaimColor,
+                                    ),
+                                    child: TabText(
+                                      color: Colors.white,
+                                      text: '前往店家',
+                                      fontFamily: 'NotoSansMedium',
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            Expanded(
-                              flex: 0,
-                              child: Container(
-                                margin: EdgeInsets.only(
-                                    bottom: Dimensions.height5 / 2),
-                                height: Dimensions.screenHeigt / 26.45,
-                                width: Dimensions.screenWidth / 4.35,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.circular(Dimensions.radius5),
-                                  color: kMaimColor,
-                                ),
-                                child: TabText(
-                                  color: Colors.white,
-                                  text: '前往店家',
-                                  fontFamily: 'NotoSansMedium',
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
+                if (widget.refused)
+                  Container(
+                    padding: EdgeInsets.all(Dimensions.height10),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: kMaimColor,
+                      ),
+                      borderRadius: BorderRadius.circular(
+                        Dimensions.radius20,
+                      ),
+                    ),
+                    child: MiddleText(
+                      color: kMaimColor,
+                      text: '店家拒單',
+                      fontFamily: 'NotoSansMedium',
+                    ),
+                  ),
+              ],
             ),
           ),
         ],
