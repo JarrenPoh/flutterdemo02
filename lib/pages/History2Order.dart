@@ -6,6 +6,8 @@ import 'package:flutterdemo02/componentsHistory/history21st.dart';
 import 'package:flutterdemo02/componentsHistory/history3rd.dart';
 import 'package:flutterdemo02/models/BetweenSM.dart';
 import 'package:flutterdemo02/models/TabsText.dart';
+import 'package:flutterdemo02/pages/Form4.dart';
+import 'package:flutterdemo02/provider/custom_page_route.dart';
 
 import '../componentsHistory/history2nd.dart';
 import '../models/BigText.dart';
@@ -60,13 +62,16 @@ class _HistoryPage2State extends State<HistoryPage2> {
                         padding: const EdgeInsets.all(0),
                         child: TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              '/form4',
-                              arguments: {
-                                'id': arguments['id'],
-                              },
-                            );
+                            Navigator.push(
+                            context,
+                            CustomPageRoute(
+                              child: FormPage4(
+                                arguments: {
+                                  'id': arguments['id'],
+                                },
+                              ),
+                            ),
+                          );
                           },
                           child: TabText(
                             color: Colors.white,

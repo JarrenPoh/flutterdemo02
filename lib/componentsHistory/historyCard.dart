@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterdemo02/models/MiddleText.dart';
+import 'package:flutterdemo02/pages/History2Order.dart';
+import 'package:flutterdemo02/provider/custom_page_route.dart';
 
 import '../API/historyModel.dart';
 import '../models/BetweenSM.dart';
@@ -54,20 +56,25 @@ class _historyCardState extends State<historyCard> {
         children: [
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, '/history2', arguments: {
-                'refused': widget.refused,
-                'shopname': Data.storeInfo!.name,
-                'address': Data.storeInfo!.address,
-                'discount': Data.discount,
-                'finalprice': Data.total,
-                'Data': Data,
-                'numbering': Data.sId,
-                'order': jsonDecode(Data.order!),
-                'id': Data.store,
-                'comments': Data.comments,
-
-                // 'orderSet':orderSet,
-              });
+              Navigator.push(
+                context,
+                CustomPageRoute(
+                  child: HistoryPage2(
+                    arguments: {
+                      'refused': widget.refused,
+                      'shopname': Data.storeInfo!.name,
+                      'address': Data.storeInfo!.address,
+                      'discount': Data.discount,
+                      'finalprice': Data.total,
+                      'Data': Data,
+                      'numbering': Data.sId,
+                      'order': jsonDecode(Data.order!),
+                      'id': Data.store,
+                      'comments': Data.comments,
+                    },
+                  ),
+                ),
+              );
             },
             child: Stack(
               alignment: Alignment.center,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterdemo02/components3/components3_second/Search_Box.dart';
+import 'package:flutterdemo02/pages/SearchingPage.dart';
+import 'package:flutterdemo02/provider/custom_page_route.dart';
 
 class SliverappbarForP3 extends StatelessWidget {
   SliverappbarForP3({
@@ -16,9 +18,11 @@ class SliverappbarForP3 extends StatelessWidget {
         centerTitle: true,
         background: SearchBox(
           onTap: (() {
-            Navigator.pushNamed(
+            Navigator.push(
               context,
-              '/searchingpage',
+              CustomPageRoute(
+                child: SearchingPage(),
+              ),
             );
           }),
         ),

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutterdemo02/API/UserUpdateApi.dart';
 import 'package:flutterdemo02/models/BetweenSM.dart';
 import 'package:flutterdemo02/API/getTokenApi.dart';
+import 'package:flutterdemo02/pages/UserCorrect.dart';
+import 'package:flutterdemo02/provider/custom_page_route.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import '../models/ColorSettings.dart';
@@ -104,8 +106,14 @@ class _UserCardState extends State<UserCard> {
         onTap: () async {
           ////手機或名字////
           if (edit && correct!) {
-            var later = await Navigator.pushNamed(context, '/usercorrect',
-                arguments: {'name': name, 'username': username});
+            var later = await Navigator.push(
+              context,
+              CustomPageRoute(
+                child: UserCorrect(
+                  arguments: {'name': name, 'username': username},
+                ),
+              ),
+            );
             if (later == null) {
               return;
             } else {
@@ -143,7 +151,7 @@ class _UserCardState extends State<UserCard> {
                 return Theme(
                     data: Theme.of(context).copyWith(
                       colorScheme: ColorScheme.light(
-                        primary:kMaim3Color,
+                        primary: kMaim3Color,
                         onPrimary: Colors.white,
                         onSurface: Colors.blueAccent,
                       ),

@@ -6,6 +6,8 @@ import 'package:flutterdemo02/API/StoreModel.dart';
 import 'package:flutterdemo02/models/BetweenSM.dart';
 import 'package:flutterdemo02/models/ColorSettings.dart';
 import 'package:flutterdemo02/models/TabsText.dart';
+import 'package:flutterdemo02/pages/Form4.dart';
+import 'package:flutterdemo02/provider/custom_page_route.dart';
 import 'package:get/get.dart';
 import 'package:flutterdemo02/API/getTokenApi.dart';
 import '../API/searchApi.dart';
@@ -146,26 +148,40 @@ class _SearchingPageState extends State<SearchingPage> {
           bool? delete = await showDeleteDialod();
           if (delete == false) {
             cartController.deleteAll();
-            Navigator.pushNamed(context, '/form4', arguments: {
-              'shopname': book.name,
-              'shopimage': book.image,
-              'discount': jsonDecode(book.discount!),
-              'id': book.id,
-              'businessTime': book.businessTime,
-              'timeEstimate': book.timeEstimate,
-              'describe': book.describe,
-            });
+            Navigator.push(
+              context,
+              CustomPageRoute(
+                child: FormPage4(
+                  arguments: {
+                    'shopname': book.name,
+                    'shopimage': book.image,
+                    'discount': jsonDecode(book.discount!),
+                    'id': book.id,
+                    'businessTime': book.businessTime,
+                    'timeEstimate': book.timeEstimate,
+                    'describe': book.describe,
+                  },
+                ),
+              ),
+            );
           }
         } else {
-          Navigator.pushNamed(context, '/form4', arguments: {
-            'shopname': book.name,
-            'shopimage': book.image,
-            'discount': jsonDecode(book.discount!),
-            'id': book.id,
-            'businessTime': book.businessTime,
-            'timeEstimate': book.timeEstimate,
-            'describe': book.describe,
-          });
+          Navigator.push(
+            context,
+            CustomPageRoute(
+              child: FormPage4(
+                arguments: {
+                  'shopname': book.name,
+                  'shopimage': book.image,
+                  'discount': jsonDecode(book.discount!),
+                  'id': book.id,
+                  'businessTime': book.businessTime,
+                  'timeEstimate': book.timeEstimate,
+                  'describe': book.describe,
+                },
+              ),
+            ),
+          );
         }
       },
     );

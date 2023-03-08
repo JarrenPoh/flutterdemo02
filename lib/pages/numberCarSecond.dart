@@ -7,7 +7,9 @@ import 'package:flutterdemo02/API/shopCarApi.dart';
 import 'package:flutterdemo02/models/BetweenSM.dart';
 import 'package:flutterdemo02/models/SmallText.dart';
 import 'package:flutterdemo02/models/TabsText.dart';
+import 'package:flutterdemo02/pages/Form3.dart';
 import 'package:flutterdemo02/provider/Shared_Preference.dart';
+import 'package:flutterdemo02/provider/custom_page_route.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
@@ -181,8 +183,7 @@ class numberCardSecondState extends State<numberCardSecond> {
     }
     order = jsonDecode(data2!.order!);
     for (var i = 0; i < order!.length; i++) {
-      int inin = order![i]['price'];
-      totalprice += inin;
+      totalprice += order![i]['price'];
       print('totalprice1 is $totalprice');
     }
     shopname = data2!.storeInfo!.name;
@@ -244,7 +245,7 @@ class numberCardSecondState extends State<numberCardSecond> {
   List? order;
   List options = [];
   String optionsString = '';
-  int totalprice = 0;
+  num totalprice = 0;
   String? shopname, address, numbering, reservation;
   int? sequence, finalprice;
   String SId = '';
@@ -258,7 +259,12 @@ class numberCardSecondState extends State<numberCardSecond> {
 
   void onNotificationListener(payload) {
     if (payload != null) {
-      Navigator.pushNamed(context, '/form3');
+      Navigator.push(
+        context,
+        CustomPageRoute(
+          child: FormPage3(),
+        ),
+      );
     }
   }
 
@@ -441,7 +447,10 @@ class numberCardSecondState extends State<numberCardSecond> {
                     size: Dimensions.icon25,
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/form3');
+                    Navigator.push(
+                      context,
+                      CustomPageRoute(child: FormPage3()),
+                    );
                     cartController.deleteAll();
                   },
                 ),
@@ -503,8 +512,7 @@ class numberCardSecondState extends State<numberCardSecond> {
                                     commentButton(),
                                   ],
                                 ),
-                                SizedBox(height: Dimensions.height15),
-                                
+                              SizedBox(height: Dimensions.height15),
                             ],
                           ),
                         )
@@ -556,8 +564,11 @@ class numberCardSecondState extends State<numberCardSecond> {
                                               if (SId != '') {
                                                 bool code = await inspect3();
                                                 if (code == true) {
-                                                  Navigator.pushNamed(
-                                                      context, '/form3');
+                                                  Navigator.push(
+                                                    context,
+                                                    CustomPageRoute(
+                                                        child: FormPage3()),
+                                                  );
                                                   cartController.deleteAll();
                                                 }
                                               }
@@ -645,7 +656,7 @@ class numberCardSecondState extends State<numberCardSecond> {
                                     ),
                                     const Divider(),
                                     history3rd(
-                                      totalprice: totalprice,
+                                      totalprice: totalprice.toInt(),
                                       finalprice: finalprice!,
                                     ),
                                   ],

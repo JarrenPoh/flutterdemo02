@@ -86,7 +86,7 @@ class _HistoryPageState extends State<HistoryPage> {
             if (!snapshot.hasData) {
               return const Center(child: CircularProgressIndicator());
             } else {
-              List<Result2> data2 = snapshot.data;
+              List<Result2> data2 = (snapshot.data as List<Result2>).reversed.toList();
               List<Result2> data = [];
               for (var i = 0; i < data2.length; i++) {
                 if (data2[i].complete == true) {

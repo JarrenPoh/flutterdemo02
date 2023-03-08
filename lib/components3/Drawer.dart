@@ -3,8 +3,13 @@ import 'package:flutterdemo02/components3/components3_second/image_map.dart';
 import 'package:flutterdemo02/models/BetweenSM.dart';
 import 'package:flutterdemo02/models/ColorSettings.dart';
 import 'package:flutterdemo02/models/TabsText.dart';
+import 'package:flutterdemo02/pages/Email.dart';
+import 'package:flutterdemo02/pages/HistoryOrder.dart';
+import 'package:flutterdemo02/pages/Privacy.dart';
+import 'package:flutterdemo02/pages/UserProfile.dart' as prefix;
 import 'package:flutterdemo02/pages/login.dart';
 import 'package:flutterdemo02/provider/Shared_Preference.dart';
+import 'package:flutterdemo02/provider/custom_page_route.dart';
 
 class NavigationDrawer extends StatelessWidget {
   NavigationDrawer({
@@ -45,9 +50,11 @@ class NavigationDrawer extends StatelessWidget {
           ),
           ListTile(
               onTap: () {
-                Navigator.pushNamed(
+                Navigator.push(
                   context,
-                  '/history',
+                  CustomPageRoute(
+                    child: HistoryPage(),
+                  ),
                 );
               },
               leading: Icon(
@@ -60,9 +67,11 @@ class NavigationDrawer extends StatelessWidget {
               )),
           ListTile(
               onTap: () {
-                Navigator.pushNamed(
+                Navigator.push(
                   context,
-                  '/userprofile',
+                  CustomPageRoute(
+                    child:  prefix.UserProfile(),
+                  ),
                 );
               },
               leading: Icon(
@@ -74,9 +83,14 @@ class NavigationDrawer extends StatelessWidget {
                 text: '個人檔案',
               )),
           ListTile(
-
-            onTap: (() => Navigator.pushNamed(context, '/email',)),
-
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CustomPageRoute(
+                    child:  Email(),
+                  ),
+                );
+              },
               leading: Icon(
                 Icons.local_post_office_outlined,
                 size: Dimensions.fontsize24,
@@ -86,8 +100,14 @@ class NavigationDrawer extends StatelessWidget {
                 text: '問題回報',
               )),
           ListTile(
-            onTap: (() => Navigator.pushNamed(context, '/privacy')),
-
+              onTap: () {
+                Navigator.push(
+                  context,
+                 CustomPageRoute(
+                    child: Privacy(),
+                  ),
+                );
+              },
               leading: Icon(
                 Icons.library_books_outlined,
                 size: Dimensions.fontsize24,
@@ -118,9 +138,11 @@ class NavigationDrawer extends StatelessWidget {
                     TextButton(
                       onPressed: () async {
                         await GoogleSignInApi.logout;
-                        Navigator.pushReplacementNamed(
+                        Navigator.pushReplacement(
                           context,
-                          '/login',
+                          MaterialPageRoute(
+                            builder: (context) => LoginPage(),
+                          ),
                         );
                       },
                       child: const Text('確定'),

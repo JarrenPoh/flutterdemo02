@@ -8,6 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutterdemo02/pages/Form3.dart';
+import 'package:flutterdemo02/pages/Form4.dart';
+import 'package:flutterdemo02/provider/custom_page_route.dart';
 import 'package:flutterdemo02/provider/googleMapKey.dart';
 import 'package:flutterdemo02/GoogleMap/map_services.dart';
 import 'package:flutterdemo02/components5/textField.dart';
@@ -276,8 +279,12 @@ class _googleMapState extends ConsumerState<googleMap> {
                       icon: Icon(Icons.west_outlined),
                       color: Colors.black,
                       onPressed: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, '/form3', (route) => false);
+                        Navigator.push(
+                          context,
+                          CustomPageRoute(
+                            child: FormPage3(),
+                          ),
+                        );
                       },
                     ),
                   ),
@@ -1279,19 +1286,29 @@ class _googleMapState extends ConsumerState<googleMap> {
                               originbooks![index]?.name) {
                         bool? delete = await showDeleteDialod();
                         if (delete == false) {
-                          Navigator.pushNamed(
+                          Navigator.push(
                             context,
-                            '/form4',
-                            arguments: {
-                              'id': originbooks![index]?.id,
-                            },
+                            CustomPageRoute(
+                              child: FormPage4(
+                                arguments: {
+                                  'id': originbooks![index]?.id,
+                                },
+                              ),
+                            ),
                           );
                           cartController.deleteAll();
                         }
                       } else {
-                        Navigator.pushNamed(context, '/form4', arguments: {
-                          'id': originbooks![index]?.id,
-                        });
+                        Navigator.push(
+                          context,
+                          CustomPageRoute(
+                            child: FormPage4(
+                              arguments: {
+                                'id': originbooks![index]?.id,
+                              },
+                            ),
+                          ),
+                        );
                       }
                     },
                     child: Icon(

@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutterdemo02/API/StoreModel.dart';
 import 'package:flutterdemo02/components3/components3_second/image_map.dart';
+import 'package:flutterdemo02/pages/Form4.dart';
+import 'package:flutterdemo02/provider/custom_page_route.dart';
 import 'package:get/get.dart';
 
 import '../controllers/cart_controller.dart';
@@ -38,8 +40,10 @@ class _mainListState extends State<mainList> {
           bool businessTime;
           int? businessStartTime;
           int selectedHour = TimeOfDay.now().hour;
-          data[index].businessTime!.forEach((element) {print(element);});
-          
+          data[index].businessTime!.forEach((element) {
+            print(element);
+          });
+
           if (data[index].businessTime![selectedHour] == true ||
               data[index].status! <= 180) {
             print('營業中');
@@ -71,22 +75,28 @@ class _mainListState extends State<mainList> {
                   cartController.cartlist.first.shopname != data[index].name) {
                 bool? delete = await showDeleteDialod();
                 if (delete == false) {
-                  Navigator.pushNamed(
+                  Navigator.push(
                     context,
-                    '/form4',
-                    arguments: {
-                      'id': data[index].id,
-                    },
+                    CustomPageRoute(
+                      child: FormPage4(
+                        arguments: {
+                          'id': data[index].id,
+                        },
+                      ),
+                    ),
                   );
                   cartController.deleteAll();
                 }
               } else {
-                Navigator.pushNamed(
+                Navigator.push(
                   context,
-                  '/form4',
-                  arguments: {
-                    'id': data[index].id,
-                  },
+                  CustomPageRoute(
+                    child: FormPage4(
+                      arguments: {
+                        'id': data[index].id,
+                      },
+                    ),
+                  ),
                 );
               }
             },

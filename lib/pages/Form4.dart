@@ -7,8 +7,11 @@ import 'package:flutterdemo02/API/form4Api.dart';
 import 'package:flutterdemo02/API/getTokenApi.dart';
 import 'package:flutterdemo02/components4/ShopProfile.dart';
 import 'package:flutterdemo02/components4/rappic_bloc.dart';
+import 'package:flutterdemo02/componentsShopcar/emptyshopCar.dart';
 import 'package:flutterdemo02/models/ColorSettings.dart';
 import 'package:flutterdemo02/models/MiddleText.dart';
+import 'package:flutterdemo02/pages/ShopCar.dart';
+import 'package:flutterdemo02/provider/custom_page_route.dart';
 import 'package:flutterdemo02/provider/globals.dart' as globals;
 import 'package:get/get.dart';
 import '../API/MenuModel.dart';
@@ -293,21 +296,28 @@ class FormPage4State extends State<FormPage4>
                                               .getPhoneVerify() ==
                                           true) {
                                         if (cartController.cartlist.isEmpty) {
-                                          Navigator.pushNamed(
-                                              context, '/emptyshopcar');
-                                        } else {
-                                          Navigator.pushNamed(
+                                          Navigator.push(
                                             context,
-                                            '/shopcar',
-                                            arguments: {
-                                              'shopname': data3.name,
-                                              'shopimage': data3.image,
-                                              // 'delivertime':
-                                              //     arguments['delivertime'],
-                                              'businessTime':
-                                                  data3.businessTime,
-                                              'status': data3.status,
-                                            },
+                                            CustomPageRoute(
+                                              child: emptyShopCar(),
+                                            ),
+                                          );
+                                        } else {
+                                          Navigator.push(
+                                            context,
+                                            CustomPageRoute(
+                                              child: shopCar(
+                                                arguments: {
+                                                  'shopname': data3.name,
+                                                  'shopimage': data3.image,
+                                                  // 'delivertime':
+                                                  //     arguments['delivertime'],
+                                                  'businessTime':
+                                                      data3.businessTime,
+                                                  'status': data3.status,
+                                                },
+                                              ),
+                                            ),
                                           );
                                         }
                                       } else {

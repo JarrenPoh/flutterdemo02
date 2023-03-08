@@ -5,6 +5,8 @@ import 'package:flutterdemo02/componentsUserProfile/UserCard.dart';
 import 'package:flutterdemo02/models/ColorSettings.dart';
 import 'package:flutterdemo02/models/MiddleText.dart';
 import 'package:flutterdemo02/models/SmallText.dart';
+import 'package:flutterdemo02/pages/Form3.dart';
+import 'package:flutterdemo02/pages/login.dart';
 import 'package:flutterdemo02/provider/Shared_Preference.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -25,7 +27,12 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   void close() async {
-    Navigator.pushNamedAndRemoveUntil(context, '/form3', (route) => false);
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => FormPage3(),
+        ),
+        (route) => false);
   }
 
   bool? a = true;
@@ -61,7 +68,12 @@ class _UserProfileState extends State<UserProfile> {
         name.text = '';
       });
       await UserSimplePreferences.clearPreference();
-      Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LoginPage(),
+          ),
+          (route) => false);
       await GoogleSignInApi.logout();
     } else {
       setState(() {

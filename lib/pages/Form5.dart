@@ -57,7 +57,7 @@ class _FormPage5State extends State<FormPage5> {
   String textprice='';
   int price = 0;
   String shopname = '';
-  String description = '';
+  String? description ;
   String ToCart = '';
   String? imageUrl = '';
 
@@ -480,7 +480,7 @@ class _FormPage5State extends State<FormPage5> {
                                   child: TabText(
                                     maxLines: 5,
                                     color: kTextLightColor,
-                                    text: description,
+                                    text: description!,
                                   ),
                                 ),
                               ],

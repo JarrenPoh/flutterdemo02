@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutterdemo02/pages/user/RegisterSecond.dart';
+import 'package:flutterdemo02/provider/custom_page_route.dart';
 
 class RegisterFirstPage extends StatelessWidget {
   const RegisterFirstPage({Key? key}) : super(key: key);
@@ -22,7 +24,12 @@ class RegisterFirstPage extends StatelessWidget {
             ElevatedButton(
               child: const Text('下一步'),
               onPressed: () {
-                Navigator.pushNamed(context, '/registersecond');
+                Navigator.push(
+                  context,
+                  CustomPageRoute(
+                    child: RegisterSecondPage(),
+                  ),
+                );
                 //Navigator.pushReplacementNamed(context,'/registersecond');
               },
             )

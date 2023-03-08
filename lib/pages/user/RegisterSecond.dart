@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutterdemo02/pages/user/RegisterThird.dart';
+import 'package:flutterdemo02/provider/custom_page_route.dart';
 
 class RegisterSecondPage extends StatelessWidget {
   const RegisterSecondPage({Key? key}) : super(key: key);
@@ -22,7 +24,12 @@ class RegisterSecondPage extends StatelessWidget {
             ElevatedButton(
               child: const Text('下一步'),
               onPressed: () {
-                Navigator.pushNamed(context, '/registerthird');
+                Navigator.push(
+                  context,
+                  CustomPageRoute(
+                    child: RegisterThirdPage(),
+                  ),
+                );
                 //Navigator.pushReplacementNamed(context,'/registerthird');
               },
             )

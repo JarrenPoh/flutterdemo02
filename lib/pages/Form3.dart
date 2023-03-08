@@ -6,7 +6,9 @@ import 'package:flutterdemo02/models/BigText.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutterdemo02/pages/MapSplash.dart';
 import 'package:flutterdemo02/pages/numberCard.dart';
+import 'package:flutterdemo02/provider/custom_page_route.dart';
 import 'package:flutterdemo02/provider/local_notification_service.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -344,10 +346,12 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
                                                 IconButton(
                                                   iconSize: 32,
                                                   onPressed: () {
-                                                    Navigator
-                                                        .pushReplacementNamed(
+                                                    Navigator.pushReplacement(
                                                       context,
-                                                      '/form3',
+                                                      MaterialPageRoute(
+                                                        builder: ((context) =>
+                                                            FormPage3()),
+                                                      ),
                                                     );
                                                   },
                                                   icon: const Icon(
@@ -493,10 +497,16 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
 
                         await location.getLocation().then((location) {
                           currentLocation = location;
-                          Navigator.pushNamed(context, '/mapsplash',
-                              arguments: {
-                                'currentLocation': currentLocation,
-                              });
+                          Navigator.push(
+                            context,
+                            CustomPageRoute(
+                              child: MapSplash(
+                                arguments: {
+                                  'currentLocation': currentLocation,
+                                },
+                              ),
+                            ),
+                          );
                         });
                         print('currentLocation');
                       },

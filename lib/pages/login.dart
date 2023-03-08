@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io' show Platform;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutterdemo02/pages/SplashScreen.dart';
 import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -200,14 +201,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           list['result']['picture'],
         );
 
-        
-
         setState(() {
           isLoading = false;
         });
-        Navigator.pushReplacementNamed(
+        Navigator.pushReplacement(
           context,
-          '/splash',
+          MaterialPageRoute(
+            builder: (context) => SplashScreen(),
+          ),
         );
       }).catchError((err) {
         print(err);

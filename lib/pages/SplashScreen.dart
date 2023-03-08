@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutterdemo02/pages/Form3.dart';
+import 'package:flutterdemo02/pages/login.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterdemo02/provider/Shared_Preference.dart';
@@ -18,7 +20,7 @@ class SplashScreen extends StatefulWidget {
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
-  
+
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
@@ -107,11 +109,16 @@ class _SplashScreenState extends State<SplashScreen> {
         }
       }
 
-      Navigator.pushNamedAndRemoveUntil(context, '/form3', (route) => false);
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => FormPage3()),
+          (route) => false);
     } else {
-      Navigator.pushReplacementNamed(
+      Navigator.pushReplacement(
         context,
-        '/login',
+        MaterialPageRoute(
+          builder: (context) => LoginPage(),
+        ),
       );
     }
   }
@@ -121,7 +128,12 @@ class _SplashScreenState extends State<SplashScreen> {
     if (UserSimplePreferences.GetGoogleKey() == null) {
       print('object');
       Timer(Duration(seconds: 1), () {
-        Navigator.pushReplacementNamed(context, '/login');
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LoginPage(),
+          ),
+        );
       });
       //沒有refreshToken但有googlekey就去存refreshtoken
     } else if (UserSimplePreferences.GetGoogleKey() != null &&
@@ -137,14 +149,19 @@ class _SplashScreenState extends State<SplashScreen> {
         await UserSimplePreferences.setUserInformation(list['result']['email'],
             list['result']['name'], list['result']['picture']);
         // print('第二個${users.headers}');
-        // print('第二個${users.body}');
+        // print('第二個${users.body}');f
         TokenApiInspect();
         //有refreshToken
       } else if (users == null) {
         Timer(
           Duration(seconds: 1),
           () {
-            Navigator.pushReplacementNamed(context, '/login');
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LoginPage(),
+              ),
+            );
           },
         );
       }

@@ -7,6 +7,8 @@ import 'package:flutterdemo02/models/ColorSettings.dart';
 import 'package:flutterdemo02/models/MiddleText.dart';
 import 'package:flutterdemo02/models/SmallText.dart';
 import 'package:flutterdemo02/models/TabsText.dart';
+import 'package:flutterdemo02/pages/MapSplash.dart';
+import 'package:flutterdemo02/provider/custom_page_route.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
@@ -286,10 +288,17 @@ class imageItems extends StatelessWidget {
 
                   await location.getLocation().then((location) {
                     currentLocation = location;
-                    Navigator.pushNamed(context, '/mapsplash', arguments: {
-                      'currentLocation': currentLocation,
-                      'initialid': id,
-                    });
+                    Navigator.push(
+                      context,
+                      CustomPageRoute(
+                        child: MapSplash(
+                          arguments: {
+                            'currentLocation': currentLocation,
+                            'initialid': id,
+                          },
+                        ),
+                      ),
+                    );
                   });
                   print('currentLocation');
                 },

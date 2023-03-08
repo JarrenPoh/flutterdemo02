@@ -9,8 +9,10 @@ import 'package:flutterdemo02/componentsShopcar/total.dart';
 import 'package:flutterdemo02/models/ColorSettings.dart';
 import 'package:flutterdemo02/models/SmallText.dart';
 import 'package:flutterdemo02/models/TabsText.dart';
+import 'package:flutterdemo02/pages/numberCarSecond.dart';
 import 'package:flutterdemo02/provider/Shared_Preference.dart';
 import 'package:flutterdemo02/provider/Shared_Preference.dart';
+import 'package:flutterdemo02/provider/custom_page_route.dart';
 import 'package:get/get.dart';
 import 'package:flutterdemo02/API/getTokenApi.dart';
 import '../API/shopCarModel.dart';
@@ -53,8 +55,7 @@ class _shopCarState extends State<shopCar> {
 
   spectator(key) async {
     var response = await http.post(
-      Uri.parse(
-          "https://www.foodone.tw/member/user/order/preview"),
+      Uri.parse("https://www.foodone.tw/member/user/order/preview"),
       headers: {
         "token": key,
         "Content-Type": "application/json",
@@ -159,8 +160,14 @@ class _shopCarState extends State<shopCar> {
                                 bool? delete = await showDeleteDialod();
                                 //發送訂單
                                 if (delete == false) {
-                                  Navigator.pushNamedAndRemoveUntil(context,
-                                      '/numbercardsecond', (route) => false,arguments: {});
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      CustomPageRoute(
+                                        child: numberCardSecond(
+                                          arguments: {},
+                                        ),
+                                      ),
+                                      (route) => false);
                                 }
                               } else {
                                 showDialog(

@@ -13,6 +13,7 @@ import 'package:flutterdemo02/pages/login.dart';
 import 'package:flutterdemo02/provider/Shared_Preference.dart';
 import 'package:flutterdemo02/provider/googleMapKey.dart';
 import 'package:flutterdemo02/provider/local_notification_service.dart';
+import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -83,29 +84,30 @@ class MyApp extends StatelessWidget {
     // ignore: todo
     // TODO: implement build
     return GetMaterialApp(
-        // title: "FoodOne 中原大學",
-        theme: ThemeData(
-          unselectedWidgetColor: kMaimColor,
-          primaryColor: kMaimColor,
-          bottomSheetTheme:
-              BottomSheetThemeData(backgroundColor: Colors.transparent),
-          appBarTheme: AppBarTheme(
-            color: Colors.white,
-          ),
-          inputDecorationTheme: InputDecorationTheme(
-            iconColor: kMaimColor,
-          ),
-          errorColor: kMaimColor,
-          indicatorColor: kMaimColor,
+      // title: "FoodOne 中原大學",
+      theme: ThemeData(
+        unselectedWidgetColor: kMaimColor,
+        primaryColor: kMaimColor,
+        bottomSheetTheme:
+            BottomSheetThemeData(backgroundColor: Colors.transparent),
+        appBarTheme: AppBarTheme(
+          color: Colors.white,
         ),
-        navigatorKey: globals.appNavigator,
-        localizationsDelegates: const [],
-        debugShowCheckedModeBanner: false,
-        home: LoginPage(),
-        initialRoute: '/splash', //初始化的時候要加載哪個路由
-        onGenerateRoute:
-            onGenerateRoute //把Routes.dart裡面的onGenerateRoute附值給main.dart的ongenerateRoute
-        );
+        inputDecorationTheme: InputDecorationTheme(
+          iconColor: kMaimColor,
+        ),
+        errorColor: kMaimColor,
+        indicatorColor: kMaimColor,
+      ),
+      navigatorKey: globals.appNavigator,
+      localizationsDelegates: const [],
+      debugShowCheckedModeBanner: false,
+      home: LoginPage(),
+      initialRoute: '/splash', //初始化的時候要加載哪個路由
+      getPages: [
+        GetPage(name: '/splash', page: ()=>SplashScreen())
+      ],
+    );
   }
 
   static const SystemUiOverlayStyle light = SystemUiOverlayStyle(

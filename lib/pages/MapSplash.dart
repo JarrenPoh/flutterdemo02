@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutterdemo02/pages/GoogleMap.dart';
+import 'package:flutterdemo02/provider/custom_page_route.dart';
 import 'package:google_geocoding/google_geocoding.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutterdemo02/API/getTokenApi.dart';
@@ -54,14 +56,17 @@ class _MapSplashState extends State<MapSplash> {
     init().then((value) {
       if (value != null) {
         print('object is ${arguments['initialpage']}');
-        Navigator.pushReplacementNamed(
+        Navigator.pushReplacement(
           context,
-          '/googlemap',
-          arguments: {
-            'currentLocation': arguments['currentLocation'],
-            'originbooks': originbooks,
-            'initialid': arguments['initialid'],
-          },
+          MaterialPageRoute(
+            builder: (context) => googleMap(
+              arguments: {
+                'currentLocation': arguments['currentLocation'],
+                'originbooks': originbooks,
+                'initialid': arguments['initialid'],
+              },
+            ),
+          ),
         );
       }
     });

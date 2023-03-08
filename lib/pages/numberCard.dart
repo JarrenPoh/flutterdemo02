@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutterdemo02/provider/custom_page_route.dart';
 import 'package:flutterdemo02/provider/globals.dart' as globals;
 import 'package:flutter/material.dart';
 import 'package:flutterdemo02/API/getTokenApi.dart';
@@ -104,22 +105,25 @@ class numberCardState extends State<numberCard> {
                   margin: const EdgeInsets.only(top: 10),
                   child: TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(
+                      Navigator.push(
                         context,
-                        '/numbercardsecond',
-                        arguments: {
-                          'data2': data2[index],
-                          'shopname': data2[index].storeInfo!.name,
-                          'address': data2[index].storeInfo!.address,
-                          'numbering': data2[index].sId,
-                          'finalprice': data2[index].total,
-                          'sequence': data2[index].sequence,
-                          'reservation': data2[index].reservation,
-                          'SId': data2[index].sId,
-                          'accept': data2[index].accept,
-                          'finish': data2[index].finish,
-                          'comments': data2[index].comments,
-                        },
+                        CustomPageRoute(
+                          child: numberCardSecond(
+                            arguments: {
+                              'data2': data2[index],
+                              'shopname': data2[index].storeInfo!.name,
+                              'address': data2[index].storeInfo!.address,
+                              'numbering': data2[index].sId,
+                              'finalprice': data2[index].total,
+                              'sequence': data2[index].sequence,
+                              'reservation': data2[index].reservation,
+                              'SId': data2[index].sId,
+                              'accept': data2[index].accept,
+                              'finish': data2[index].finish,
+                              'comments': data2[index].comments,
+                            },
+                          ),
+                        ),
                       );
                     },
                     child: Column(

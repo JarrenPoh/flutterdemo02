@@ -1,5 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:flutterdemo02/componentsShopcar/emptyshopCar.dart';
+import 'package:flutterdemo02/pages/Form5.dart';
+import 'package:flutterdemo02/provider/custom_page_route.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutterdemo02/API/shopCarApi.dart';
 import 'package:flutterdemo02/API/getTokenApi.dart';
@@ -70,35 +73,48 @@ class _shopOrdersState extends State<shopOrders> {
                       cartController.GetupdateDeleteIndex(index);
 
                       ///加await的東西，回來還要再跑一次，或setstate或inspect
-                      await Navigator.pushNamed(context, '/form5', arguments: {
-                        'id': false,
-                        'name': cartController.cartlist[index].name,
-                        'price': cartController.cartlist[index].price,
-                        'textprice': cartController.cartlist[index].textprice,
-                        'description':
-                            cartController.cartlist[index].description,
-                        'shopname': cartController.cartlist[index].shopname,
-                        'ToCart': '更新購物車',
-                        'firstNumber': cartController.cartlist[index].quantity,
-                        'radiolist': cartController.cartlist[index].radiolist,
-                        'addCheckBool':
-                            cartController.cartlist[index].addCheckBool,
-                        'radioprices':
-                            cartController.cartlist[index].radioprices,
-                        'radiopricesnum':
-                            cartController.cartlist[index].radiopricesnum,
-                        'text': cartController.cartlist[index].text,
-                        'options': cartController.cartlist[index].options,
-                        'requiredCheckBool':
-                            cartController.cartlist[index].requiredCheckBool,
-                        'Radiolist': cartController.cartlist[index].Radiolist,
-                        'Radioprices':
-                            cartController.cartlist[index].Radioprices,
-                        'Radiopricesnum':
-                            cartController.cartlist[index].Radiopricesnum,
-                        'Id': cartController.cartlist[index].id,
-                        'imageUrl':cartController.cartlist[index].imageUrl,
-                      });
+                      await Navigator.push(
+                        context,
+                        CustomPageRoute(
+                          child: FormPage5(
+                            arguments: {
+                              'id': false,
+                              'name': cartController.cartlist[index].name,
+                              'price': cartController.cartlist[index].price,
+                              'textprice':
+                                  cartController.cartlist[index].textprice,
+                              'description':
+                                  cartController.cartlist[index].description,
+                              'shopname':
+                                  cartController.cartlist[index].shopname,
+                              'ToCart': '更新購物車',
+                              'firstNumber':
+                                  cartController.cartlist[index].quantity,
+                              'radiolist':
+                                  cartController.cartlist[index].radiolist,
+                              'addCheckBool':
+                                  cartController.cartlist[index].addCheckBool,
+                              'radioprices':
+                                  cartController.cartlist[index].radioprices,
+                              'radiopricesnum':
+                                  cartController.cartlist[index].radiopricesnum,
+                              'text': cartController.cartlist[index].text,
+                              'options': cartController.cartlist[index].options,
+                              'requiredCheckBool': cartController
+                                  .cartlist[index].requiredCheckBool,
+                              'Radiolist':
+                                  cartController.cartlist[index].Radiolist,
+                              'Radioprices':
+                                  cartController.cartlist[index].Radioprices,
+                              'Radiopricesnum':
+                                  cartController.cartlist[index].Radiopricesnum,
+                              'Id': cartController.cartlist[index].id,
+                              'imageUrl':
+                                  cartController.cartlist[index].imageUrl,
+                            },
+                          ),
+                        ),
+                      );
                       widget.notifyParent();
                     },
                     child: Column(
@@ -166,8 +182,13 @@ class _shopOrdersState extends State<shopOrders> {
                                     onPressed: () {
                                       cartController.delete(index);
                                       if (cartController.cartlist.isEmpty) {
-                                        Navigator.pushReplacementNamed(
-                                            context, '/emptyshopcar');
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                emptyShopCar(),
+                                          ),
+                                        );
                                       } else if (cartController
                                           .cartlist.isNotEmpty) {
                                         cartController.ifUpdate(name: true);

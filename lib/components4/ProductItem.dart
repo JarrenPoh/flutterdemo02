@@ -7,7 +7,9 @@ import 'package:flutterdemo02/models/BetweenSM.dart';
 import 'package:flutterdemo02/models/ColorSettings.dart';
 import 'package:flutterdemo02/models/SmallText.dart';
 import 'package:flutterdemo02/models/TabsText.dart';
+import 'package:flutterdemo02/pages/Form5.dart';
 import 'package:flutterdemo02/pages/Tabs.dart';
+import 'package:flutterdemo02/provider/custom_page_route.dart';
 
 import '../models/MiddleText.dart';
 
@@ -28,8 +30,7 @@ class RappiProductItem extends StatefulWidget {
       _RappiProductItemState(data3: data3, businessTime: businessTime);
 }
 
-class _RappiProductItemState extends State<RappiProductItem>{
-
+class _RappiProductItemState extends State<RappiProductItem> {
   Result3 data3;
   _RappiProductItemState({required this.data3, required this.businessTime});
   List options = [];
@@ -53,22 +54,25 @@ class _RappiProductItemState extends State<RappiProductItem>{
           onTap: () async {
             if (businessTime == true) {
               cartController.deleteindex = null;
-              await Navigator.pushNamed(
+              await Navigator.push(
                 context,
-                '/form5',
-                arguments: {
-                  'id': true,
-                  'Id': widget.product.id,
-                  'name': widget.product.name,
-                  'price': int.parse(widget.product.price),
-                  'textprice': widget.product.price,
-                  'description': widget.product.describe,
-                  'shopname': data3.name,
-                  'ToCart': '加入購物車',
-                  'firstNumber': 1,
-                  'options': options,
-                  'imageUrl': imageUrl,
-                },
+                CustomPageRoute(
+                  child: FormPage5(
+                    arguments: {
+                      'id': true,
+                      'Id': widget.product.id,
+                      'name': widget.product.name,
+                      'price': int.parse(widget.product.price),
+                      'textprice': widget.product.price,
+                      'description': widget.product.describe,
+                      'shopname': data3.name,
+                      'ToCart': '加入購物車',
+                      'firstNumber': 1,
+                      'options': options,
+                      'imageUrl': imageUrl,
+                    },
+                  ),
+                ),
               );
             } else if (businessTime == false) {
               showDialog(
@@ -189,7 +193,6 @@ class _RappiProductItemState extends State<RappiProductItem>{
                                     Dimensions.radius15,
                                   ),
                                   color: Colors.grey,
-                                  
                                   image: const DecorationImage(
                                     image: AssetImage(
                                       'images/preImage.jpg',
