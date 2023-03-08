@@ -2,7 +2,7 @@ class CartModel {
   final String id;
   final String name;
   final String shopname;
-  final String? image;
+
   final String? description;
   final String? text; //可選
   final int price;
@@ -21,10 +21,11 @@ class CartModel {
   final List<List>? Radiolist;
   final List? Radioprices;
   final int? Radiopricesnum;
+  final String? imageUrl;
   CartModel({
     this.text,
     this.description,
-    this.image,
+    
     required this.id,
     required this.name,
     required this.shopname,
@@ -44,6 +45,7 @@ class CartModel {
     this.Radiolist,
     this.Radioprices,
     this.Radiopricesnum,
+    this.imageUrl,
   });
 }
 

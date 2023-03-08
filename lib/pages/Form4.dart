@@ -83,12 +83,14 @@ class FormPage4State extends State<FormPage4>
   @override
   void dispose() {
     _bloc.dispose();
+    // _bloc.scrollController.dispose();
     super.dispose();
   }
 
-  final cartController = Get.put(CartController());
   @override
   Widget build(BuildContext context) {
+    final cartController = Get.put(CartController());
+
     return AnnotatedRegion(
       value: const SystemUiOverlayStyle(
         statusBarBrightness: Brightness.dark, //ios icon white
@@ -111,6 +113,7 @@ class FormPage4State extends State<FormPage4>
                     List<Result> data = data3.product!;
                     var typeSet = <String>{};
                     for (var i = 0; i < data.length; i++) {
+                      print('${data[i].type}');
                       typeSet.add(data[i].type);
                     }
                     final List<String> typeArray = typeSet.toList();
@@ -124,14 +127,20 @@ class FormPage4State extends State<FormPage4>
                     }
 
                     int selectedHour = TimeOfDay.now().hour;
-                    int selectedDay = DateTime.now().weekday;
-                    print('here is $selectedDay');
-                    if (data3.businessTime?[selectedHour][selectedDay - 1] ==
-                        true) {
-                      print('營業中');
+                    int selectedDay;
+                    if (DateTime.now().weekday == 7) {
+                      selectedDay = 0;
+                    } else {
+                      selectedDay = DateTime.now().weekday;
+                    }
+
+                    if (data3.businessTime?[selectedHour][selectedDay] ==
+                            true ||
+                        data3.status! <= 180) {
+                      print('22營業中');
                       businessTime = true;
                     } else {
-                      print('尚未營業');
+                      print('22尚未營業');
                       businessTime = false;
                     }
 
@@ -161,7 +170,7 @@ class FormPage4State extends State<FormPage4>
                                         children: [
                                           CachedNetworkImage(
                                             imageUrl:
-                                                'https://foodone-s3.s3.amazonaws.com/store/main/${arguments['id']}',
+                                                'https://foodone-s3.s3.amazonaws.com/store/main/${arguments['id']}?${data3.last_update}',
                                             errorWidget:
                                                 (context, url, error) =>
                                                     Container(
@@ -177,6 +186,12 @@ class FormPage4State extends State<FormPage4>
                                                   ),
                                                 ),
                                                 color: Colors.grey,
+                                                image: const DecorationImage(
+                                                  image: AssetImage(
+                                                    'images/preImage.jpg',
+                                                  ),
+                                                  fit: BoxFit.cover,
+                                                ),
                                               ),
                                             ),
                                             progressIndicatorBuilder:
@@ -194,6 +209,12 @@ class FormPage4State extends State<FormPage4>
                                                   ),
                                                 ),
                                                 color: Colors.grey,
+                                                image: const DecorationImage(
+                                                  image: AssetImage(
+                                                    'images/preImage.jpg',
+                                                  ),
+                                                  fit: BoxFit.cover,
+                                                ),
                                               ),
                                             ),
                                             imageBuilder:
@@ -285,6 +306,7 @@ class FormPage4State extends State<FormPage4>
                                               //     arguments['delivertime'],
                                               'businessTime':
                                                   data3.businessTime,
+                                              'status': data3.status,
                                             },
                                           );
                                         }
@@ -340,7 +362,7 @@ class FormPage4State extends State<FormPage4>
                                         size: Dimensions.icon25,
                                       ),
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
                               SliverToBoxAdapter(
@@ -395,6 +417,7 @@ class FormPage4State extends State<FormPage4>
                                                   item.product!,
                                                   data3,
                                                   businessTime!,
+                                                  data3.last_update!,
                                                 );
                                               }
                                             },

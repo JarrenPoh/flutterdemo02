@@ -34,6 +34,8 @@ class Result3 {
   String? describe;
   List<Result>? product;
   String? discount;
+  String? last_update;
+  double? status;
 
   Result3({
     this.name,
@@ -46,6 +48,8 @@ class Result3 {
     this.product,
     this.image,
     this.discount,
+    this.last_update,
+    this.status,
   });
 
   Result3.fromJson(Map<String, dynamic> json) {
@@ -69,6 +73,8 @@ class Result3 {
     }
     image = json['image'];
     discount = json['discount'];
+    last_update = json['last_update'];
+    status = json['status']??1000;
   }
 
   Map<String, dynamic> toJson() {
@@ -83,6 +89,8 @@ class Result3 {
     data['product'] = this.product;
     data['image'] = this.image;
     data['discount'] = this.discount;
+    data['status'] = this.status;
+    data['last_update'] = this.last_update;
     return data;
   }
 }

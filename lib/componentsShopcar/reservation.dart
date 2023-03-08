@@ -11,23 +11,26 @@ import '../models/TabsText.dart';
 import '../provider/Shared_Preference.dart';
 
 class Reservation extends StatefulWidget {
-  Reservation({
-    Key? key,
-    required this.notifyParent,
-    required this.businessTime,
-    required this.selectTime,
-    required this.BoolCallBack,
-  }) : super(key: key);
+  Reservation(
+      {Key? key,
+      required this.notifyParent,
+      required this.businessTime,
+      required this.selectTime,
+      required this.BoolCallBack,
+      required this.status})
+      : super(key: key);
   Function() notifyParent;
   List<List<dynamic>> businessTime;
   bool selectTime = false;
   final ValueChanged<bool> BoolCallBack;
+  double status;
   @override
   State<Reservation> createState() => _ReservationState(
         notifyParent: notifyParent,
         businessTime: businessTime,
         selectTime: selectTime,
         BoolCallBack: BoolCallBack,
+        status: status,
       );
 }
 
@@ -37,7 +40,9 @@ class _ReservationState extends State<Reservation> {
     required this.businessTime,
     required this.selectTime,
     required this.BoolCallBack,
+    required this.status,
   });
+  double status;
   List<List<dynamic>> businessTime;
   CartController cartController = Get.find();
   Function() notifyParent;
@@ -65,16 +70,15 @@ class _ReservationState extends State<Reservation> {
     );
     if (availableHours[lindex] == nowTime.hour.toInt() + 1) {
       int x = nowTime.minute ~/ 10; //取整數
-      
-        startMin = [
-          ['00', '10', '20', '30', '40', '50']
-        ];
-        endMin = [
-          ['10', '20', '30', '40', '50', '00']
-        ];
-        startMin.first.removeRange(0, x + 1);
-        endMin.first.removeRange(0, x + 1);
-      
+
+      startMin = [
+        ['00', '10', '20', '30', '40', '50']
+      ];
+      endMin = [
+        ['10', '20', '30', '40', '50', '00']
+      ];
+      startMin.first.removeRange(0, x + 1);
+      endMin.first.removeRange(0, x + 1);
     } else {
       startMin.add(['00', '10', '20', '30', '40', '50']);
       endMin.add(['10', '20', '30', '40', '50', '00']);
@@ -88,7 +92,12 @@ class _ReservationState extends State<Reservation> {
       hour: TimeOfDay.now().hour,
       minute: TimeOfDay.now().minute,
     );
-    int selectedDay = DateTime.now().weekday;
+    int selectedDay;
+    if (DateTime.now().weekday == 7) {
+      selectedDay = 0;
+    } else {
+      selectedDay = DateTime.now().weekday;
+    }
     nowMin = nowTime.minute;
     for (nowMin = nowTime.minute; nowMin % 5 != 0; nowMin++) {}
     nowTime = TimeOfDay(
@@ -98,7 +107,8 @@ class _ReservationState extends State<Reservation> {
     availableHours = [];
     for (var i = 0; i < businessTime.length; i++) {
       print('now time is $nowTime');
-      if (businessTime[i][selectedDay] == true && i >= nowTime.hour.toInt() + 1) {
+      if (businessTime[i][selectedDay] == true &&
+          i >= nowTime.hour.toInt() + 1) {
         availableHours.add(i);
       }
     }
@@ -112,14 +122,20 @@ class _ReservationState extends State<Reservation> {
   @override
   void initState() {
     setHour();
-    int selectedDay = DateTime.now().weekday;
-    if (businessTime[nowTime.hour][selectedDay] == true) {
+    int selectedDay;
+    if (DateTime.now().weekday == 7) {
+      selectedDay = 0;
+    } else {
+      selectedDay = DateTime.now().weekday;
+    }
+    if (businessTime[nowTime.hour][selectedDay] == true || status <= 180) {
       print('營業中');
       businessNow = true;
-    } else if(businessTime[nowTime.hour][selectedDay] == false){
+    } else if (businessTime[nowTime.hour][selectedDay] == false) {
       print('尚未營業');
       businessNow = false;
-    };
+    }
+    ;
     print('businessNow is $businessNow');
     // TODO: implement initState
     super.initState();
@@ -215,7 +231,7 @@ class _ReservationState extends State<Reservation> {
                           );
                         },
                       );
-                    } else if (businessNow == true){
+                    } else if (businessNow == true) {
                       if (choseNow == true) {
                         choseNow = false;
                         selectTime = false;

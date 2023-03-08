@@ -53,7 +53,6 @@ class _historyCardState extends State<historyCard> {
               Navigator.pushNamed(context, '/history2', arguments: {
                 'shopname': Data.storeInfo!.name,
                 'address': Data.storeInfo!.address,
-                'image': Data.image,
                 'discount': Data.discount,
                 'finalprice': Data.total,
                 'Data': Data,

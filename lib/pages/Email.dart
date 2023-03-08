@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutterdemo02/models/MiddleText.dart';
 import 'package:flutterdemo02/provider/Shared_Preference.dart';
+import 'package:flutterdemo02/provider/googleMapKey.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
@@ -28,9 +29,9 @@ class _EmailState extends State<Email> {
       Uri.parse('https://api.emailjs.com/api/v1.0/email/send'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
-        'service_id': 'service_4cxurh4',
-        'template_id': 'template_uyhh4rn',
-        'user_id': 'oC_J8W8m15fe8CJa6',
+        'service_id': serviceid,
+        'template_id': templateid,
+        'user_id': userid,
         'template_params': {
           'user_name': UserSimplePreferences.getUserName(),
           'user_email': UserSimplePreferences.getUserEmail(),

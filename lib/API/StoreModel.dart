@@ -29,6 +29,8 @@ class Result {
   String? describe;
   Locationss? location;
   List? product;
+  String? last_update;
+  double? status;
 
   Result({
     this.name,
@@ -42,6 +44,8 @@ class Result {
     this.describe,
     this.location,
     this.product,
+    this.last_update,
+    this.status,
   });
 
   Result.fromJson(Map<String, dynamic> json) {
@@ -51,11 +55,13 @@ class Result {
     id = json['id'];
     image = json['image'];
     discount = json['discount'];
-    businessTime=json['businessTime'];
+    businessTime = json['businessTime'];
     product = json['product'];
-    timeEstimate=json['timeEstimate'];
+    timeEstimate = json['timeEstimate'];
     describe = json['describe'];
-     location = json['location'] != null
+    last_update = json['last_update'];
+    status = json['status'] ?? 1000;
+    location = json['location'] != null
         ? new Locationss.fromJson(json['location'])
         : null;
   }

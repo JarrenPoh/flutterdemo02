@@ -60,6 +60,12 @@ class imageItems extends StatelessWidget {
                           ),
                         ),
                         color: Colors.grey,
+                        image: const DecorationImage(
+                          image: AssetImage(
+                            'images/preImage.jpg',
+                          ),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     progressIndicatorBuilder: (context, url, progress) =>
@@ -73,6 +79,12 @@ class imageItems extends StatelessWidget {
                           ),
                         ),
                         color: Colors.grey,
+                        image: const DecorationImage(
+                          image: AssetImage(
+                            'images/preImage.jpg',
+                          ),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     imageBuilder: (context, imageProvider) => Container(
@@ -153,6 +165,32 @@ class imageItems extends StatelessWidget {
                         ),
                       ),
                     ),
+                  if (businessTime == false)
+                    Container(
+                      height: Dimensions.screenHeigt / 4.85,
+                      width: Dimensions.screenWidth,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            Colors.white.withOpacity(0.5),
+                            Colors.white.withOpacity(0.5),
+                          ],
+                        ),
+                      ),
+                      child: Center(
+                        child: BigText(
+                          color: Colors.white,
+                          text: businessStartTime != null
+                              ? businessStartTime == 0
+                                  ? '00:00 開始營業'
+                                  : '$businessStartTime:00 開始營業'
+                              : '店家今天已不營業了!',
+                          fontFamily: 'NotoSansMedium',
+                        ),
+                      ),
+                    ),
                   Padding(
                     padding: EdgeInsets.only(
                       top: Dimensions.screenHeigt / 6.6,
@@ -200,32 +238,6 @@ class imageItems extends StatelessWidget {
                       ],
                     ),
                   ),
-                  if (businessTime == false)
-                    Container(
-                      height: Dimensions.screenHeigt / 4.85,
-                      width: Dimensions.screenWidth,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          colors: [
-                            Colors.white.withOpacity(0.5),
-                            Colors.white.withOpacity(0.5),
-                          ],
-                        ),
-                      ),
-                      child: Center(
-                        child: BigText(
-                          color: Colors.white,
-                          text: businessStartTime != null
-                              ? businessStartTime == 0
-                                  ? '00:00 開始營業'
-                                  : '$businessStartTime:00 開始營業'
-                              : '店家今天已不營業了!',
-                          fontFamily: 'NotoSansMedium',
-                        ),
-                      ),
-                    ),
                 ],
               ),
             ),

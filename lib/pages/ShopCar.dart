@@ -88,7 +88,7 @@ class _shopCarState extends State<shopCar> {
   bool selectTime = false;
   ////////////
   refresh() {
-    print('cartController.ifUpdateCar is ${cartController.ifUpdateCar}');
+    print('fre ${cartController.ifUpdateCar}');
     if (cartController.ifUpdateCar == true) {
       UserSimplePreferences.setFinalPrice(0);
       inspect().then(
@@ -231,6 +231,7 @@ class _shopCarState extends State<shopCar> {
                       color: kBottomColor,
                     ),
                     Reservation(
+                      status: arguments['status'],
                       notifyParent: refresh,
                       businessTime: arguments['businessTime'],
                       selectTime: selectTime,

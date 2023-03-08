@@ -21,7 +21,6 @@ class BooksApi {
       var obj = Store.fromJson(jsonDecode(response.body));
       var myaddress = (obj.result as List<Result?>);
             
-    print('營業時間 is ${myaddress.first!.businessTime}');
       debugPrint('status200 in form3');
       return myaddress;
     } else if (response.statusCode == 403) {

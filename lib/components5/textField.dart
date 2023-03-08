@@ -3,11 +3,16 @@ import 'package:flutterdemo02/models/ColorSettings.dart';
 import 'package:flutterdemo02/models/MiddleText.dart';
 import 'package:flutterdemo02/models/TabsText.dart';
 
-class textField extends StatelessWidget {
+class textField extends StatefulWidget {
   final TextEditingController textController;
 
   const textField({Key? key, required this.textController}) : super(key: key);
 
+  @override
+  State<textField> createState() => _textFieldState();
+}
+
+class _textFieldState extends State<textField> {
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
@@ -31,7 +36,7 @@ class textField extends StatelessWidget {
                 ),
                 SizedBox(height: Dimensions.height10),
                 TextField(
-                  controller: textController,
+                  controller: widget.textController,
                   maxLength: 500,
                   maxLines: 4,
                   decoration: InputDecoration(

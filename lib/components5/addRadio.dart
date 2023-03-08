@@ -8,7 +8,6 @@ import 'package:flutterdemo02/models/TabsText.dart';
 class addRadio extends StatefulWidget {
   addRadio({
     Key? key,
-    required this.arguments,
     required this.addCheckBool,
     required this.addCheckPrices,
     required this.PricesCallBack,
@@ -27,7 +26,6 @@ class addRadio extends StatefulWidget {
   }) : super(key: key);
   final ValueChanged<int> PricesCallBack;
   final ValueChanged<bool> BoolCallBack;
-  Map arguments;
   List<List> addCheckBool;
   num addCheckPrices;
   List addList;
@@ -43,7 +41,6 @@ class addRadio extends StatefulWidget {
   String? min;
   @override
   State<addRadio> createState() => _addRadioState(
-        arguments: arguments,
         addCheckBool: addCheckBool,
         addCheckPrices: addCheckPrices,
         PricesCallBack: PricesCallBack,
@@ -64,7 +61,6 @@ class addRadio extends StatefulWidget {
 
 class _addRadioState extends State<addRadio> {
   _addRadioState({
-    required this.arguments,
     required this.addCheckBool,
     required this.addCheckPrices,
     required this.PricesCallBack,
@@ -85,7 +81,6 @@ class _addRadioState extends State<addRadio> {
   List<List> addCheckBool;
   final ValueChanged<int> PricesCallBack;
   final ValueChanged<bool> BoolCallBack;
-  Map arguments;
   num addCheckPrices;
   String addTitle;
   bool multipleBool;

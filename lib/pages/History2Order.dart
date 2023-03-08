@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterdemo02/componentsHistory/history21st.dart';
 import 'package:flutterdemo02/componentsHistory/history3rd.dart';
@@ -104,11 +105,65 @@ class _HistoryPage2State extends State<HistoryPage2> {
               flexibleSpace: FlexibleSpaceBar(
                 background: Column(
                   children: [
-                    if (arguments['image'] != null)
-                      Image.asset(
-                        arguments['image'],
-                        fit: BoxFit.cover,
+                    CachedNetworkImage(
+                      imageUrl:
+                          'https://foodone-s3.s3.amazonaws.com/store/main/${arguments['store']}',
+                      errorWidget: (context, url, error) => Container(
+                        width: Dimensions.screenWidth,
+                        height: Dimensions.screenHeigt / 4.85,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.vertical(
+                            bottom: Radius.elliptical(
+                              Dimensions.screenWidth,
+                              30,
+                            ),
+                          ),
+                          color: Colors.grey,
+                          image: const DecorationImage(
+                            image: AssetImage(
+                              'images/preImage.jpg',
+                            ),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
+                      progressIndicatorBuilder: (context, url, progress) =>
+                          Container(
+                        width: Dimensions.screenWidth,
+                        height: Dimensions.screenHeigt / 4.85,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.vertical(
+                            bottom: Radius.elliptical(
+                              Dimensions.screenWidth,
+                              30,
+                            ),
+                          ),
+                          color: Colors.grey,
+                          image: const DecorationImage(
+                            image: AssetImage(
+                              'images/preImage.jpg',
+                            ),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      imageBuilder: (context, imageProvider) => Container(
+                        width: Dimensions.screenWidth,
+                        height: Dimensions.screenHeigt / 4.85,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.vertical(
+                            bottom: Radius.elliptical(
+                              Dimensions.screenWidth,
+                              30,
+                            ),
+                          ),
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 //在上升的時候背景圖片固定

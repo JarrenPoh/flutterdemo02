@@ -12,11 +12,10 @@ import '../provider/Shared_Preference.dart';
 import 'package:http/http.dart' as http;
 
 class CartController extends GetxController {
-  List<CartModel> cartlist = <CartModel>[].obs;
-  List<CartModel> newcartlist = <CartModel>[].obs;
+  RxList<CartModel> cartlist = <CartModel>[].obs;
   late CartModel cartModel;
-  List<dynamic> radiolist = <dynamic>[].obs;
-  List<dynamic> Radiolist = <dynamic>[].obs;
+  RxList<dynamic> radiolist = <dynamic>[].obs;
+  RxList<dynamic> Radiolist = <dynamic>[].obs;
   bool tableware = false;
   
   String? reservationTime ;
@@ -31,7 +30,7 @@ class CartController extends GetxController {
     required int quantity,
     required String shopname,
     String? description,
-    String? image,
+    String? imageUrl,
     required String textprice,
     List<List>? radiolist,
     List<String?>? radioTitleList,
@@ -57,7 +56,7 @@ class CartController extends GetxController {
       price: price,
       quantity: quantity,
       description: description,
-      image: image,
+      imageUrl: imageUrl,
       radiolist: radiolist,
       radioTitleList: radioTitleList,
       radioMultiple: radioMultiple,

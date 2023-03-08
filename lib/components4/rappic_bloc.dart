@@ -66,7 +66,6 @@ class RappiBLoC with ChangeNotifier {
   void onScrollListener() {
     final BuildContext? context = profilekey.currentContext;
     profileHeight = context!.size!.height;
-    print('0322$profileHeight');
     if (_listen) {
       for (int i = 0; i < tabs.length; i++) {
         final tab = tabs[i];
@@ -125,10 +124,11 @@ class RappiTabCategory {
   });
 
   RappiTabCategory copyWith(bool selected) => RappiTabCategory(
-      category: category,
-      selected: selected,
-      offsetFrom: offsetFrom,
-      offsetTo: offsetTo);
+        category: category,
+        selected: selected,
+        offsetFrom: offsetFrom,
+        offsetTo: offsetTo,
+      );
 
   final category;
   final bool selected;

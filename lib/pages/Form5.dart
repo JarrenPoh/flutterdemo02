@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterdemo02/API/MenuModel.dart';
 import 'package:flutterdemo02/components5/textField.dart';
 import 'package:flutterdemo02/controllers/cart_controller.dart';
 import 'package:flutterdemo02/models/BetweenSM.dart';
@@ -17,7 +19,7 @@ class FormPage5 extends StatefulWidget {
   FormPage5({Key? key, required this.arguments}) : super(key: key);
 
   @override
-  State<FormPage5> createState() => _FormPage5State(arguments: arguments);
+  State<FormPage5> createState() => _FormPage5State();
 }
 
 class _FormPage5State extends State<FormPage5> {
@@ -25,7 +27,7 @@ class _FormPage5State extends State<FormPage5> {
   final cartController = Get.put(CartController());
   var textController = TextEditingController(text: '無備註');
   @override
-  _FormPage5State({required this.arguments});
+
   ////必選多選單選總商品清單
   List<List> radiolist = []; //[[選擇1, 選擇3, 選擇2], [選擇5], [選擇7, 選擇8], [選擇10]]
   List<String?> radioTitleList = []; //[title,title,title,title]
@@ -46,38 +48,65 @@ class _FormPage5State extends State<FormPage5> {
   num addCheckPrices = 0; //加選商品價
   List<List> addCheckBool = []; //加選哪幾項被選中
   ////
-  Map arguments;
+
+  List options = [];
+  int firstNumber = 1;
+  bool id = false;
+  String Id = '';
+  String name = '';
+  String textprice='';
+  int price = 0;
+  String shopname = '';
+  String description = '';
+  String ToCart = '';
+  String? imageUrl = '';
 
   @override
   void initState() {
-    print(arguments['options']);
+    print('object00');
+    options = widget.arguments['options'];
+    firstNumber =widget.arguments['firstNumber'];
+    id = widget.arguments['id'];
+    Id = widget.arguments['Id'];
+    name = widget.arguments['name'];
+    textprice = widget.arguments['textprice'];
+    price = widget.arguments['price'];
+    shopname = widget.arguments['shopname'];
+    description = widget.arguments['description'];
+    ToCart = widget.arguments['ToCart'];
+    imageUrl = widget.arguments['imageUrl'];
+    print('object01');
+
+
+    print(options);
     ////如果沒有必選那購物車打開
     if (requiredList().isEmpty) {
       radiobool = true;
     }
     print('add list ${addList()}');
     ////從購物車來，就換這些資料因為總價會寫在ToCart上
-    setState(() {
-      if (arguments['radiopricesnum'] != null) {
-        radiopricesnum = arguments['radiopricesnum'];
-        radiobool = true;
-        textController = TextEditingController(text: arguments['text']);
-        print('yes');
-      }
-      if (arguments['Radiopricesnum'] != null) {
-        Radiopricesnum = arguments['Radiopricesnum'];
-        textController = TextEditingController(text: arguments['text']);
-        print('yes');
-      }
-      // if (arguments['addCheckPrices'] != null) {
-      //   addCheckPrices += arguments['addCheckPrices'];
-      // }
-    });
+
+    if (widget.arguments['radiopricesnum'] != null) {
+      radiopricesnum = widget.arguments['radiopricesnum'];
+      radiobool = true;
+      textController = TextEditingController(text: widget.arguments['text']);
+      print('yes');
+    }
+    if (widget.arguments['Radiopricesnum'] != null) {
+      Radiopricesnum =  widget.arguments['Radiopricesnum'];
+      textController = TextEditingController(text: widget.arguments['text']);
+      print('yes');
+    }
+    // if (arguments['addCheckPrices'] != null) {
+    //   addCheckPrices += arguments['addCheckPrices'];
+    // }
+
     super.initState();
   }
 
   @override
   void dispose() {
+    textController.dispose();
     super.dispose();
   }
 
@@ -85,7 +114,7 @@ class _FormPage5State extends State<FormPage5> {
   List<dynamic> requiredList() {
     List<dynamic> data3 = [];
     List data2 = [];
-    List data = arguments['options'];
+    List data = options;
 
     data2 = data.where((element) => element['requires'] == true).toList();
 
@@ -97,7 +126,7 @@ class _FormPage5State extends State<FormPage5> {
   List addList() {
     List data3 = [];
     List data2 = [];
-    List data = arguments['options'];
+    List data = options;
 
     data2 = data.where((element) => element['requires'] == false).toList();
     return data2;
@@ -132,10 +161,10 @@ class _FormPage5State extends State<FormPage5> {
                     ),
                     onPressed: () {
                       setState(() {
-                        if (arguments['firstNumber'] > 1) {
-                          arguments['firstNumber']--;
+                        if (firstNumber > 1) {
+                          firstNumber--;
                         } else {
-                          arguments['firstNumber'] = 1;
+                          firstNumber = 1;
                           print('最小了啦');
                         }
                       });
@@ -143,7 +172,7 @@ class _FormPage5State extends State<FormPage5> {
                   ),
                   MiddleText(
                     color: kBodyTextColor,
-                    text: '${arguments['firstNumber']}',
+                    text: '${firstNumber}',
                     weight: FontWeight.bold,
                   ),
                   IconButton(
@@ -154,10 +183,10 @@ class _FormPage5State extends State<FormPage5> {
                     ),
                     onPressed: () {
                       setState(() {
-                        if (arguments['firstNumber'] > 0) {
-                          arguments['firstNumber']++;
+                        if (firstNumber > 0) {
+                          firstNumber++;
                         } else {
-                          arguments['firstNumber'] = 1;
+                          firstNumber = 1;
                         }
                       });
                     },
@@ -185,8 +214,7 @@ class _FormPage5State extends State<FormPage5> {
                             // final List choses =[chosename,chosenumber,choseprice];
                             // Navigator.pop(context,choses);
 
-                            if (radiobool == true ||
-                                arguments['radiovalue'] != null) {
+                            if (radiobool == true ) {
                               Navigator.pop(context, false);
                               String? text;
                               if (textController.text.isEmpty) {
@@ -194,7 +222,7 @@ class _FormPage5State extends State<FormPage5> {
                               } else {
                                 text = textController.text;
                               }
-                              if (arguments['id'] == false) {
+                              if (id == false) {
                                 cartController
                                     .delete(cartController.updateDeleteIndex);
                               }
@@ -212,19 +240,19 @@ class _FormPage5State extends State<FormPage5> {
                                 radiolist: radiolist,
                                 radioTitleList: radioTitleList,
                                 radioMultiple: radioMultiple,
-                                id: arguments['Id'],
-                                name: arguments['name'],
-                                price: arguments['price'],
-                                quantity: arguments['firstNumber'],
-                                textprice: arguments['textprice'],
+                                id: Id,
+                                name: name,
+                                price: price,
+                                quantity: firstNumber,
+                                textprice: textprice,
                                 text: text,
-                                shopname: arguments['shopname'],
-                                image: arguments['image'],
-                                description: arguments['description'],
+                                shopname:shopname,
+                                imageUrl: imageUrl,
+                                description:description,
                                 addCheckBool: addCheckBool,
                                 radioprices: radioprices,
                                 radiopricesnum: radiopricesnum,
-                                options: arguments['options'],
+                                options: options,
                                 requiredCheckBool: requiredCheckBool,
                                 RadioTitleList: RadioTitleList,
                                 RadioMultiple: RadioMultiple,
@@ -241,14 +269,14 @@ class _FormPage5State extends State<FormPage5> {
                             children: [
                               MiddleText(
                                 color: radiobool ? Colors.white : kBottomColor,
-                                text: arguments['ToCart'],
+                                text: ToCart,
                                 weight: FontWeight.w700,
                               ),
                               if (radiobool == true)
                                 MiddleText(
                                   color: Colors.white,
                                   text:
-                                      '${(arguments['price'] + Radiopricesnum + radiopricesnum) * arguments['firstNumber']}',
+                                      '${(price + Radiopricesnum + radiopricesnum) * firstNumber}',
                                   weight: FontWeight.w700,
                                 ),
                             ],
@@ -287,10 +315,66 @@ class _FormPage5State extends State<FormPage5> {
                         return FlexibleSpaceBar(
                           background: Column(
                             children: [
-                              if (arguments['image'] != null)
-                                Image.asset(
-                                  arguments['image'],
-                                  fit: BoxFit.cover,
+                              if (imageUrl != null)
+                                CachedNetworkImage(
+                                  imageUrl: imageUrl!,
+                                  errorWidget: (context, String url, error) =>
+                                      Container(
+                                    width: Dimensions.screenWidth,
+                                    height: Dimensions.screenHeigt / 4.85,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.vertical(
+                                        bottom: Radius.elliptical(
+                                          Dimensions.screenWidth,
+                                          30,
+                                        ),
+                                      ),
+                                      color: Colors.grey,
+                                      image: const DecorationImage(
+                                        image: AssetImage(
+                                          'images/preImage.jpg',
+                                        ),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  progressIndicatorBuilder:
+                                      (context, url, progress) => Container(
+                                    width: Dimensions.screenWidth,
+                                    height: Dimensions.screenHeigt / 4.85,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.vertical(
+                                        bottom: Radius.elliptical(
+                                          Dimensions.screenWidth,
+                                          30,
+                                        ),
+                                      ),
+                                      color: Colors.grey,
+                                      image: const DecorationImage(
+                                        image: AssetImage(
+                                          'images/preImage.jpg',
+                                        ),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    width: Dimensions.screenWidth,
+                                    height: Dimensions.screenHeigt / 4.85,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.vertical(
+                                        bottom: Radius.elliptical(
+                                          Dimensions.screenWidth,
+                                          30,
+                                        ),
+                                      ),
+                                      image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                             ],
                           ),
@@ -303,13 +387,13 @@ class _FormPage5State extends State<FormPage5> {
                               children: [
                                 MiddleText(
                                   color: kBodyTextColor,
-                                  text: arguments['name'],
+                                  text: name,
                                   fontFamily: 'NotoSansMedium',
                                 ),
                                 SizedBox(width: Dimensions.width20 * 4),
                                 BetweenSM(
                                     color: kBodyTextColor,
-                                    text: '\$ ${arguments['textprice']} 起',
+                                    text: '\$ $textprice 起',
                                     fontFamily: 'NotoSansMedium'),
                               ],
                             ),
@@ -359,7 +443,7 @@ class _FormPage5State extends State<FormPage5> {
                                 flex: 8,
                                 child: BigText(
                                   color: kBodyTextColor,
-                                  text: arguments['name'],
+                                  text: name,
                                   weight: FontWeight.bold,
                                   maxLines: 1,
                                 ),
@@ -371,7 +455,7 @@ class _FormPage5State extends State<FormPage5> {
                                 children: [
                                   TabText(
                                     color: kBodyTextColor,
-                                    text: '\$ ${arguments['price']} 起',
+                                    text: '\$ $price 起',
                                     weight: FontWeight.bold,
                                   ),
                                 ],
@@ -385,18 +469,18 @@ class _FormPage5State extends State<FormPage5> {
                                   color: kTextLightColor),
                               BetweenSM(
                                   color: kTextLightColor,
-                                  text: arguments['shopname'])
+                                  text: shopname)
                             ],
                           ),
                           SizedBox(height: Dimensions.height10),
-                          if (arguments['description'] != null)
+                          if (description != null)
                             Row(
                               children: [
                                 Expanded(
                                   child: TabText(
                                     maxLines: 5,
                                     color: kTextLightColor,
-                                    text: arguments['description'],
+                                    text: description,
                                   ),
                                 ),
                               ],
@@ -417,16 +501,16 @@ class _FormPage5State extends State<FormPage5> {
                             children:
                                 List.generate(requiredList().length, (index) {
                               ////如果從購物車傳來，給初始
-                              if (arguments['radiolist'] != null) {
-                                radiolist = arguments['radiolist'];
+                              if (widget.arguments['radiolist'] != null) {
+                                radiolist = (widget.arguments['radiolist']);
                               }
 
-                              if (arguments['radioprices'] != null) {
-                                radioprices = arguments['radioprices'];
+                              if (widget.arguments['radioprices'] != null) {
+                                radioprices = (widget.arguments['radioprices']);
                               }
-                              if (arguments['requiredCheckBool'] != null) {
+                              if (widget.arguments['requiredCheckBool'] != null) {
                                 requiredCheckBool =
-                                    arguments['requiredCheckBool'];
+                                    widget.arguments['requiredCheckBool'];
                               }
 
                               ///
@@ -454,7 +538,6 @@ class _FormPage5State extends State<FormPage5> {
                                     radiopricesnum = value;
                                   });
                                 },
-                                arguments: arguments,
                                 radiobool: radiobool,
                                 radioTitleList: radioTitleList,
                                 radioMultiple: radioMultiple,
@@ -485,15 +568,15 @@ class _FormPage5State extends State<FormPage5> {
                           child: Column(
                             children: List.generate(addList().length, (index) {
                               //如果從購物車傳來，給初始
-                              if (arguments['Radiolist'] != null) {
-                                Radiolist = arguments['Radiolist'];
+                              if (widget.arguments['Radiolist'] != null) {
+                                Radiolist = widget.arguments['Radiolist'];
                               }
 
-                              if (arguments['addCheckBool'] != null) {
-                                addCheckBool = arguments['addCheckBool'];
+                              if (widget.arguments['addCheckBool'] != null) {
+                                addCheckBool = widget.arguments['addCheckBool'];
                               }
-                              if (arguments['Radioprices'] != null) {
-                                Radioprices = arguments['Radioprices'];
+                              if (widget.arguments['Radioprices'] != null) {
+                                Radioprices = widget.arguments['Radioprices'];
                               }
 
                               ///
@@ -509,30 +592,29 @@ class _FormPage5State extends State<FormPage5> {
                               }
 
                               return addRadio(
-                                BoolCallBack: (value) {
-                                  setState(() {
-                                    radiobool = value;
-                                  });
-                                },
-                                PricesCallBack: (value) {
-                                  setState(() {
-                                    Radiopricesnum = value;
-                                  });
-                                },
-                                arguments: arguments,
-                                addCheckBool: addCheckBool,
-                                addCheckPrices: addCheckPrices,
-                                addList: addList()[index]['option'],
-                                addTitle: addList()[index]['title'],
-                                multipleBool: addList()[index]['multiple'],
-                                max: addList()[index]['max'],
-                                min: addList()[index]['min'],
-                                RadioTitleList: RadioTitleList,
-                                RadioMultiple: RadioMultiple,
-                                Radiolist: Radiolist,
-                                Radioprices: Radioprices,
-                                lindex: index,
-                                Radiopricesnum: Radiopricesnum);
+                                  BoolCallBack: (value) {
+                                    setState(() {
+                                      radiobool = value;
+                                    });
+                                  },
+                                  PricesCallBack: (value) {
+                                    setState(() {
+                                      Radiopricesnum = value;
+                                    });
+                                  },
+                                  addCheckBool: addCheckBool,
+                                  addCheckPrices: addCheckPrices,
+                                  addList: addList()[index]['option'],
+                                  addTitle: addList()[index]['title'],
+                                  multipleBool: addList()[index]['multiple'],
+                                  max: addList()[index]['max'],
+                                  min: addList()[index]['min'],
+                                  RadioTitleList: RadioTitleList,
+                                  RadioMultiple: RadioMultiple,
+                                  Radiolist: Radiolist,
+                                  Radioprices: Radioprices,
+                                  lindex: index,
+                                  Radiopricesnum: Radiopricesnum);
                             }),
                           ),
                         ),

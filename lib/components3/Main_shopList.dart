@@ -22,6 +22,7 @@ class mainList extends StatefulWidget {
 
 class _mainListState extends State<mainList> {
   final cartController = Get.put(CartController());
+  String imageUrl = '';
   _mainListState({
     required this.data,
   });
@@ -32,17 +33,24 @@ class _mainListState extends State<mainList> {
     return SingleChildScrollView(
       child: Column(
         children: List.generate(data.length, (index) {
+          imageUrl =
+              'https://foodone-s3.s3.amazonaws.com/store/main/${data[index].id!}?${data[index].last_update}';
           bool businessTime;
-          int? businessStartTime ;
+          int? businessStartTime;
           int selectedHour = TimeOfDay.now().hour;
-          if (data[index].businessTime![selectedHour]==true) {
+          data[index].businessTime!.forEach((element) {print(element);});
+          
+          if (data[index].businessTime![selectedHour] == true ||
+              data[index].status! <= 180) {
             print('營業中');
             businessTime = true;
           } else {
             print('尚未營業');
             businessTime = false;
-            for(int i = selectedHour ;i < data[index].businessTime!.length;i++){
-              if(data[index].businessTime![i]==true){
+            for (int i = selectedHour;
+                i < data[index].businessTime!.length;
+                i++) {
+              if (data[index].businessTime![i] == true) {
                 businessStartTime = i;
                 break;
               }
@@ -52,12 +60,12 @@ class _mainListState extends State<mainList> {
           return imageItems(
             timeEstimate: data[index].timeEstimate,
             businessTime: businessTime,
-            businessStartTime:businessStartTime,
+            businessStartTime: businessStartTime,
             discount: jsonDecode(data[index].discount!),
             name: data[index].name!,
             address: data[index].address,
-            image: 'https://foodone-s3.s3.amazonaws.com/store/main/${data[index].id!}',
-            id:data[index].id!,
+            image: imageUrl,
+            id: data[index].id!,
             press: () async {
               if (cartController.cartlist.isNotEmpty &&
                   cartController.cartlist.first.shopname != data[index].name) {

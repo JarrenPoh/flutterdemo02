@@ -14,10 +14,12 @@ import '../models/MiddleText.dart';
 class RappiProductItem extends StatefulWidget {
   Result3 data3;
   bool businessTime;
+  String last_update;
   RappiProductItem(
     this.product,
     this.data3,
     this.businessTime,
+    this.last_update,
   );
   final Result product;
 
@@ -26,14 +28,19 @@ class RappiProductItem extends StatefulWidget {
       _RappiProductItemState(data3: data3, businessTime: businessTime);
 }
 
-class _RappiProductItemState extends State<RappiProductItem> {
+class _RappiProductItemState extends State<RappiProductItem>{
+
   Result3 data3;
   _RappiProductItemState({required this.data3, required this.businessTime});
   List options = [];
   bool businessTime;
+  String imageUrl = '';
 
   @override
   Widget build(BuildContext context) {
+    imageUrl =
+        'https://foodone-s3.s3.amazonaws.com/store/product/${widget.product.id}?${widget.last_update}';
+
     if (widget.product.options != null) {
       options = jsonDecode(widget.product.options!);
     }
@@ -46,7 +53,7 @@ class _RappiProductItemState extends State<RappiProductItem> {
           onTap: () async {
             if (businessTime == true) {
               cartController.deleteindex = null;
-              final choses = await Navigator.pushNamed(
+              await Navigator.pushNamed(
                 context,
                 '/form5',
                 arguments: {
@@ -60,6 +67,7 @@ class _RappiProductItemState extends State<RappiProductItem> {
                   'ToCart': '加入購物車',
                   'firstNumber': 1,
                   'options': options,
+                  'imageUrl': imageUrl,
                 },
               );
             } else if (businessTime == false) {
@@ -155,8 +163,7 @@ class _RappiProductItemState extends State<RappiProductItem> {
                         children: [
                           if (widget.product.id != null)
                             CachedNetworkImage(
-                              imageUrl:
-                                  'https://foodone-s3.s3.amazonaws.com/store/product/${widget.product.id}',
+                              imageUrl: imageUrl,
                               errorWidget: (context, url, error) => Container(
                                 height: Dimensions.screenHeigt / 9.17,
                                 width: Dimensions.screenWidth / 4.36,
@@ -165,6 +172,12 @@ class _RappiProductItemState extends State<RappiProductItem> {
                                     Dimensions.radius15,
                                   ),
                                   color: Colors.grey,
+                                  image: const DecorationImage(
+                                    image: AssetImage(
+                                      'images/preImage.jpg',
+                                    ),
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                               progressIndicatorBuilder:
@@ -176,6 +189,13 @@ class _RappiProductItemState extends State<RappiProductItem> {
                                     Dimensions.radius15,
                                   ),
                                   color: Colors.grey,
+                                  
+                                  image: const DecorationImage(
+                                    image: AssetImage(
+                                      'images/preImage.jpg',
+                                    ),
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                               imageBuilder: (context, imageProvider) =>

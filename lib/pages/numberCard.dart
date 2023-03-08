@@ -73,10 +73,6 @@ class numberCardState extends State<numberCard> {
             }
           }
 
-          for (var i = 0; i < data2.length; i++) {
-            print('data2 accept is ${data2[i].accept}');
-            print('data2 finish is ${data2[i].finish}');
-          }
           var status = '';
 
           return AlertDialog(

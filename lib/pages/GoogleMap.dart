@@ -205,7 +205,7 @@ class _googleMapState extends ConsumerState<googleMap> {
     if (originbooks![prevPage]!.id != null) {
       setState(() {
         placeImg =
-            "https://foodone-s3.s3.amazonaws.com/store/main/${originbooks![prevPage]!.id!}";
+            "https://foodone-s3.s3.amazonaws.com/store/main/${originbooks![prevPage]!.id!}?${originbooks![prevPage]!.last_update}";
       });
     } else {
       setState(() {
@@ -936,19 +936,26 @@ class _googleMapState extends ConsumerState<googleMap> {
     } else {
       var placeImg = originbooks![index]!.product![photoGalleryIndex];
       var tempDisplayIndex = photoGalleryIndex + 1;
+      String imageUrl =
+          'https://foodone-s3.s3.amazonaws.com/store/product/$placeImg?${originbooks![index]!.last_update}';
       return Column(
         children: [
           SizedBox(height: Dimensions.height10),
           if (placeImg != null)
             CachedNetworkImage(
-              imageUrl:
-                  'https://foodone-s3.s3.amazonaws.com/store/product/$placeImg',
+              imageUrl: imageUrl,
               errorWidget: (context, url, error) => Container(
                 height: Dimensions.height50 * 2,
                 width: Dimensions.width20 * 5,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Dimensions.radius10),
                   color: Colors.grey,
+                  image: const DecorationImage(
+                    image: AssetImage(
+                      'images/preImage.jpg',
+                    ),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               progressIndicatorBuilder: (context, url, progress) => Container(
@@ -957,6 +964,12 @@ class _googleMapState extends ConsumerState<googleMap> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Dimensions.radius10),
                   color: Colors.grey,
+                  image: const DecorationImage(
+                    image: AssetImage(
+                      'images/preImage.jpg',
+                    ),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               imageBuilder: (context, imageProvider) => Container(
@@ -1138,10 +1151,7 @@ class _googleMapState extends ConsumerState<googleMap> {
                   child: Column(
                     children: [
                       _pageController.position.haveDimensions
-                          ? _pageController.page!.toInt() == index 
-                          // ||
-                                  // _pageController.page!.toInt() == index + 1 ||
-                                  // _pageController.page!.toInt() == index - 1
+                          ? _pageController.page!.toInt() == index
                               ? CachedNetworkImage(
                                   imageUrl: placeImg,
                                   errorWidget: (context, url, error) =>
@@ -1156,6 +1166,12 @@ class _googleMapState extends ConsumerState<googleMap> {
                                             Dimensions.radius10),
                                       ),
                                       color: Colors.grey,
+                                      image: const DecorationImage(
+                                        image: AssetImage(
+                                          'images/preImage.jpg',
+                                        ),
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   ),
                                   progressIndicatorBuilder:
@@ -1170,6 +1186,12 @@ class _googleMapState extends ConsumerState<googleMap> {
                                             Dimensions.radius10),
                                       ),
                                       color: Colors.grey,
+                                      image: const DecorationImage(
+                                        image: AssetImage(
+                                          'images/preImage.jpg',
+                                        ),
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   ),
                                   imageBuilder: (context, imageProvider) =>

@@ -77,7 +77,6 @@ class _shopOrdersState extends State<shopOrders> {
                         'textprice': cartController.cartlist[index].textprice,
                         'description':
                             cartController.cartlist[index].description,
-                        'image': cartController.cartlist[index].image,
                         'shopname': cartController.cartlist[index].shopname,
                         'ToCart': '更新購物車',
                         'firstNumber': cartController.cartlist[index].quantity,
@@ -98,6 +97,7 @@ class _shopOrdersState extends State<shopOrders> {
                         'Radiopricesnum':
                             cartController.cartlist[index].Radiopricesnum,
                         'Id': cartController.cartlist[index].id,
+                        'imageUrl':cartController.cartlist[index].imageUrl,
                       });
                       widget.notifyParent();
                     },

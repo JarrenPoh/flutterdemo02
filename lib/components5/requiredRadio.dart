@@ -16,7 +16,6 @@ class RequiredRadio extends StatefulWidget {
     required this.radiolist,
     required this.BoolCallBack,
     required this.radiobool,
-    required this.arguments,
     required this.radioprices,
     required this.radiopricesnum,
     required this.NumCallBack,
@@ -35,7 +34,6 @@ class RequiredRadio extends StatefulWidget {
   List<List> radiolist;
   int lindex;
   bool radiobool;
-  Map arguments;
   List<int> radioprices;
   int radiopricesnum;
   List requiredList;
@@ -54,7 +52,6 @@ class RequiredRadio extends StatefulWidget {
         radiolist: radiolist,
         BoolCallBack: BoolCallBack,
         radiobool: radiobool,
-        arguments: arguments,
         radioprices: radioprices,
         radiopricesnum: radiopricesnum,
         NumCallBack: NumCallBack,
@@ -76,7 +73,6 @@ class _RequiredRadioState extends State<RequiredRadio> {
     required this.radiolist,
     required this.BoolCallBack,
     required this.radiobool,
-    required this.arguments,
     required this.radioprices,
     required this.radiopricesnum,
     required this.NumCallBack,
@@ -90,7 +86,6 @@ class _RequiredRadioState extends State<RequiredRadio> {
   });
   final ValueChanged<bool> BoolCallBack;
   final ValueChanged<int> NumCallBack;
-  Map arguments;
   List<String?> radioTitleList = [];
   List<bool?> radioMultiple = [];
   List<List> radiolist = [];

@@ -331,10 +331,31 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            MiddleText(
-                                              text: '所有餐廳',
-                                              color: kBodyTextColor,
-                                              fontFamily: 'NotoSansMedium',
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                MiddleText(
+                                                  text: '所有餐廳',
+                                                  color: kBodyTextColor,
+                                                  fontFamily: 'NotoSansMedium',
+                                                ),
+                                                IconButton(
+                                                  iconSize: 32,
+                                                  onPressed: () {
+                                                    Navigator
+                                                        .pushReplacementNamed(
+                                                      context,
+                                                      '/form3',
+                                                    );
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.refresh,
+                                                    color: kMaimColor,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
