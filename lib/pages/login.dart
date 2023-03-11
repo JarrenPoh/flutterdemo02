@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io' show Platform;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutterdemo02/pages/SplashScreen.dart';
+import 'package:new_version_plus/new_version_plus.dart';
 import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -12,7 +13,6 @@ import 'package:flutterdemo02/API/loginApi.dart';
 import 'package:flutterdemo02/models/ColorSettings.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:new_version/new_version.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import '../API/oneSignalApi.dart';
@@ -39,37 +39,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   void initState() {
-    _checkVersion();
-    // TODO: implement initState
     super.initState();
   }
 
-  void _checkVersion() async {
-    final newVersion = NewVersion(
-      androidId: 'com.FORDON.flutterdemo02',
-      iOSId: 'com.FORDON.flutterdemo02',
-    );
-
-    final status = await newVersion.getVersionStatus();
-    if (status != null) {
-      if (status.canUpdate) {
-        newVersion.showUpdateDialog(
-            context: context,
-            versionStatus: status,
-            dialogTitle: '更新',
-            allowDismissal: true,
-            dismissButtonText: '退出',
-            dialogText: '請更新foodone app至最高版本',
-            updateButtonText: '更新',
-            dismissAction: () {
-              SystemNavigator.pop();
-            });
-      }
-    }
-
-    debugPrint('device version : ${status?.localVersion}');
-    debugPrint('store version : ${status?.storeVersion}');
-  }
 
   @override
   Widget build(BuildContext context) {

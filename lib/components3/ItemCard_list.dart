@@ -3,6 +3,8 @@ import 'package:flutterdemo02/API/groupModel.dart';
 import 'package:flutterdemo02/models/ColorSettings.dart';
 import 'package:flutterdemo02/res/listData.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import '../res/listData.dart';
 import 'Item_card.dart';
 
@@ -77,13 +79,18 @@ class _ItemListState extends State<ItemList> {
                       itemBuilder: ((context, index) {
                         return GestureDetector(
                           onTap: () {
-                            press();
-                            BodyCallBack({
-                              'subtitle': group![index]!.subtitle!,
-                              'image': group![index]!.image,
-                              'title': group![index]!.title!,
-                              'url' : group![index]!.url,
-                            });
+                            if(group![index]!.url!=null){
+                              launchUrlString(group![index]!.url!);
+                            }
+                            
+                            // press();
+                            // BodyCallBack({
+                            //   'subtitle': group![index]!.subtitle!,
+                            //   'image': group![index]!.image,
+                            //   'title': group![index]!.title!,
+                            //   'url': group![index]!.url,
+                            // });
+                          
                           },
                           child: ItemCard(
                             index: index,

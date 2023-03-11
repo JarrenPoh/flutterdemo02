@@ -61,6 +61,7 @@ class _historyCardState extends State<historyCard> {
                 CustomPageRoute(
                   child: HistoryPage2(
                     arguments: {
+                      'dATE':Data.dATE,
                       'refused': widget.refused,
                       'shopname': Data.storeInfo!.name,
                       'address': Data.storeInfo!.address,
@@ -118,7 +119,7 @@ class _historyCardState extends State<historyCard> {
                                           children: [
                                             CachedNetworkImage(
                                               imageUrl:
-                                                  'https://foodone-s3.s3.amazonaws.com/store/main/${Data.store}',
+                                                  'https://foodone-s3.s3.amazonaws.com/store/main/${Data.store}?${Data.dATE}',
                                               errorWidget:
                                                   (context, url, error) =>
                                                       Container(

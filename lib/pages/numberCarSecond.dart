@@ -154,13 +154,20 @@ class numberCardSecondState extends State<numberCardSecond> {
       await UserSimplePreferences.setToken(getToken.headers['token']!);
       shopCarApi.getCar(UserSimplePreferences.getToken());
     }
-    if (ss.code == true) {
-      inspect2();
-    } else {
+    print('ss is  $ss');
+    if (ss == false) {
       setState(() {
         //店家剛好打烊
         closed = true;
+        Get.snackbar(
+          "發生錯誤",
+          "很抱歉，店家剛好歇業，請下次再訂餐~",
+          snackPosition: SnackPosition.BOTTOM,
+          duration: const Duration(seconds: 2),
+        );
       });
+    } else if (ss.code == true) {
+      inspect2();
     }
   }
 
@@ -321,6 +328,7 @@ class numberCardSecondState extends State<numberCardSecond> {
               ((selectHour * 60 + selectMinute) - (hour * 60 + minute)) * 60;
           print('finalSecond ia $finalSecond');
         }
+        print('OOOOOOOOOOOOOOOOOOOOMG');
         await service.showScheduledNotification(
           id: 0,
           title: '時間快到囉',
@@ -341,7 +349,7 @@ class numberCardSecondState extends State<numberCardSecond> {
     if (data2 != null) {
       order = jsonDecode(data2!.order!);
       for (var i = 0; i < order!.length; i++) {
-        int inin = order![i]['price'];
+        int inin = order![i]['price']*order![i]['count'];
         totalprice += inin;
         print('totalprice1 is $totalprice');
       }
@@ -468,9 +476,31 @@ class numberCardSecondState extends State<numberCardSecond> {
                                 child: Column(
                                   children: [
                                     Container(
-                                      height: 50,
-                                      width: 50,
-                                      color: Colors.red,
+                                      child: Image.asset(
+                                        'images/retireByToday.png',
+                                      ),
+                                    ),
+                                    BigText(
+                                      color: Colors.blueGrey,
+                                      text: '非常抱歉，店家剛好打烊',
+                                      fontFamily: 'NotoSansMedium',
+                                    ),
+                                    SizedBox(height: Dimensions.height15),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          CustomPageRoute(
+                                            child: FormPage3(),
+                                          ),
+                                        );
+                                        cartController.deleteAll();
+                                      },
+                                      child: TabText(
+                                        color: Colors.blue,
+                                        text: '知道了',
+                                        fontFamily: 'NotoSansMedium',
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -481,21 +511,21 @@ class numberCardSecondState extends State<numberCardSecond> {
                       //店家拒單
                       ? Center(
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(
                                 height: Dimensions.height50,
+                              ),
+                              Container(
+                                child: Image.asset(
+                                  'images/retireByToday.png',
+                                ),
                               ),
                               BigText(
                                 color: Colors.blueGrey,
                                 text: '非常抱歉，店家拒絕了您的訂單',
                                 fontFamily: 'NotoSansMedium',
                               ),
-                              // Container(
-                              //   color: Colors.white,
-                              //   child: Image.asset(
-                              //     'images/foodone_page-0001_4-removebg-preview.png',
-                              //   ),
-                              // ),
                               SizedBox(height: Dimensions.height15),
                               if (comments != 'null' && comments != null)
                                 Row(
@@ -513,6 +543,22 @@ class numberCardSecondState extends State<numberCardSecond> {
                                   ],
                                 ),
                               SizedBox(height: Dimensions.height15),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    CustomPageRoute(
+                                      child: FormPage3(),
+                                    ),
+                                  );
+                                  cartController.deleteAll();
+                                },
+                                child: TabText(
+                                  color: Colors.blue,
+                                  text: '知道了',
+                                  fontFamily: 'NotoSansMedium',
+                                ),
+                              ),
                             ],
                           ),
                         )
@@ -567,7 +613,8 @@ class numberCardSecondState extends State<numberCardSecond> {
                                                   Navigator.push(
                                                     context,
                                                     CustomPageRoute(
-                                                        child: FormPage3()),
+                                                      child: FormPage3(),
+                                                    ),
                                                   );
                                                   cartController.deleteAll();
                                                 }

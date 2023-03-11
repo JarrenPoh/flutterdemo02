@@ -66,7 +66,7 @@ class numberCardState extends State<numberCard> {
         if (!snapshot.hasData) {
           return const Center(child: CircularProgressIndicator());
         } else {
-          List<Result2> data = snapshot.data;
+          List<Result2> data = (snapshot.data as List<Result2>).reversed.toList();
           List<Result2> data2 = [];
           for (var i = 0; i < data.length; i++) {
             if (data[i].complete != true) {

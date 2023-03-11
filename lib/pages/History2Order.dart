@@ -30,7 +30,7 @@ class _HistoryPage2State extends State<HistoryPage2> {
   void initState() {
     order = arguments['order'];
     for (var i = 0; i < order.length; i++) {
-      int inin = order[i]['price'];
+      int inin = order[i]['price']*order[i]['count'];
       totalprice += inin;
       print('totalprice1 is $totalprice');
     }
@@ -112,7 +112,7 @@ class _HistoryPage2State extends State<HistoryPage2> {
                   children: [
                     CachedNetworkImage(
                       imageUrl:
-                          'https://foodone-s3.s3.amazonaws.com/store/main/${arguments['id']}',
+                          'https://foodone-s3.s3.amazonaws.com/store/main/${arguments['id']}?${arguments['dATE']}',
                       errorWidget: (context, url, error) => Container(
                         width: Dimensions.screenWidth,
                         height: Dimensions.screenHeigt / 4.85,

@@ -306,22 +306,25 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
                                     ),
                                   ),
                                   SliverToBoxAdapter(
-                                    child: ItemList(
-                                      BodyCallBack: (value) {
-                                        setState(() {
-                                          body = value;
-                                        });
-                                      },
-                                      group: SS,
-                                      press: () {
-                                        showModalBottomSheet(
-                                          isScrollControlled: true,
-                                          backgroundColor: Colors.transparent,
-                                          context: context,
-                                          builder: (context) => buildSheet(),
-                                        );
-                                      },
-                                    ),
+                                    child: 
+                                          ItemList(
+                                        BodyCallBack: (value) {
+                                          setState(() {
+                                            body = value;
+                                          });
+                                        },
+                                        group: SS,
+                                        press: () {
+                                          
+                                          // showModalBottomSheet(
+                                          //   isScrollControlled: true,
+                                          //   backgroundColor: Colors.transparent,
+                                          //   context: context,
+                                          //   builder: (context) => buildSheet(),
+                                          // );
+                                        },
+                                      ),
+                                    
                                   ),
                                   SliverPadding(
                                     padding: EdgeInsets.symmetric(
@@ -570,8 +573,8 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
                       builder: (context, followLink) => TextButton(
                         onPressed: followLink,
                         child: TabText(
-                          color: kTextLightColor,
-                          text: '詳情',
+                          color: Colors.blue,
+                          text: '參訪網站',
                           fontFamily: 'NotoSansMedium',
                         ),
                       ),

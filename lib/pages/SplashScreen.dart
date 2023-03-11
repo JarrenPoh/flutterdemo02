@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/services.dart';
 import 'package:flutterdemo02/pages/Form3.dart';
 import 'package:flutterdemo02/pages/login.dart';
+import 'package:new_version_plus/new_version_plus.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterdemo02/provider/Shared_Preference.dart';
@@ -124,49 +126,77 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void spectator() async {
-    //沒有Goolglekey就去login
-    if (UserSimplePreferences.GetGoogleKey() == null) {
-      print('object');
-      Timer(Duration(seconds: 1), () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LoginPage(),
-          ),
+    final newVersion = NewVersionPlus(
+      // androidId: 'com.tencent.mm',
+      // androidId: 'com.canva.editor',
+      androidId: 'com.FORDON.flutterdemo02',
+      iOSId: 'com.FORDON.flutterdemo02',
+    );
+
+    final status = await newVersion.getVersionStatus();
+    if (status != null) {
+      if (status.canUpdate) {
+        newVersion.showUpdateDialog(
+          context: context,
+          versionStatus: status,
+          dialogTitle: '更新',
+          allowDismissal: false,
+          // dismissButtonText: '退出',
+          dialogText: '請更新foodone app至最高版本',
+          updateButtonText: '更新',
+          // dismissAction: () {
+          //   SystemNavigator.pop();
+          // }
         );
-      });
-      //沒有refreshToken但有googlekey就去存refreshtoken
-    } else if (UserSimplePreferences.GetGoogleKey() != null &&
-        UserSimplePreferences.getRefreshToken() == null) {
-      print('object1');
-      var users = await loginApi.getUsers(UserSimplePreferences.GetGoogleKey());
-      ////googleKey過期才會申請失敗，else if 轉到login
-      if (users != null) {
-        print('object12');
-        await UserSimplePreferences.setRefreshToken(
-            users.headers['refresh_token']!);
-        Map list = jsonDecode(users.body);
-        await UserSimplePreferences.setUserInformation(list['result']['email'],
-            list['result']['name'], list['result']['picture']);
-        // print('第二個${users.headers}');
-        // print('第二個${users.body}');f
-        TokenApiInspect();
-        //有refreshToken
-      } else if (users == null) {
-        Timer(
-          Duration(seconds: 1),
-          () {
+      } else {
+        //沒有Goolglekey就去login
+        if (UserSimplePreferences.GetGoogleKey() == null) {
+          print('object');
+          Timer(Duration(seconds: 1), () {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) => LoginPage(),
               ),
             );
-          },
-        );
+          });
+          //沒有refreshToken但有googlekey就去存refreshtoken
+        } else if (UserSimplePreferences.GetGoogleKey() != null &&
+            UserSimplePreferences.getRefreshToken() == null) {
+          print('object1');
+          var users =
+              await loginApi.getUsers(UserSimplePreferences.GetGoogleKey());
+          ////googleKey過期才會申請失敗，else if 轉到login
+          if (users != null) {
+            print('object12');
+            await UserSimplePreferences.setRefreshToken(
+                users.headers['refresh_token']!);
+            Map list = jsonDecode(users.body);
+            await UserSimplePreferences.setUserInformation(
+                list['result']['email'],
+                list['result']['name'],
+                list['result']['picture']);
+            // print('第二個${users.headers}');
+            // print('第二個${users.body}');f
+            TokenApiInspect();
+            //有refreshToken
+          } else if (users == null) {
+            Timer(
+              Duration(seconds: 1),
+              () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(),
+                  ),
+                );
+              },
+            );
+          }
+        } else if (UserSimplePreferences.getRefreshToken() != null) {
+          TokenApiInspect();
+        }
       }
-    } else if (UserSimplePreferences.getRefreshToken() != null) {
-      TokenApiInspect();
     }
   }
 

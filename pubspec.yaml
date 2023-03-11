@@ -72,8 +72,8 @@ dependencies:
   timezone: ^0.9.0
   rxdart: ^0.27.5
   onesignal_flutter: ^3.4.1
-  new_version: ^0.3.1
-  package_info_plus: ^1.4.3+1
+  new_version_plus: ^0.0.9
+  package_info_plus: ^3.0.2
   rename: ^2.0.1
   firebase_core: ^2.1.1
   firebase_auth: ^4.1.0
@@ -117,23 +117,7 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - images/396929.jpg
-    - images/2.0x/396929.jpg
-    - images/3.0x/396929.jpg
-    - images/111111.jpg
-    - images/pexels-photo-628776.jpeg
-    - images/pexels-photo-1279330.jpeg
-    - images/pexels-photo-1410236.jpeg
-    - images/pexels-photo-1775043.jpeg
-    - images/pexels-photo-2182979.jpeg
-    - images/pexels-photo-691077.jpeg
-    - images/pexels-photo-3734031.jpeg
-    - images/model-planes-airplanes-miniatur-wunderland-hamburg-163792.jpeg
-    - images/405690-removebg-preview.png 
     - images/foodone_page-0001_4-removebg-preview.png
-    - images/413742.jpg
-    - images/foodone_Logo_page-0001.jpg
-    - images/foodone_logo_pink_1000.jpg
     - images/foodone_logo_pink_1000.png
     - assets/animassets/mapanimation.json
     - images/location.png
@@ -142,6 +126,7 @@ flutter:
     - images/number2.png
     - images/marker2.png
     - images/preImage.jpg
+    - images/retireByToday.png
 
 
     
