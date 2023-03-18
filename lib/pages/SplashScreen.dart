@@ -133,22 +133,22 @@ class _SplashScreenState extends State<SplashScreen> {
       iOSId: 'com.FORDON.flutterdemo02',
     );
 
-    final status = await newVersion.getVersionStatus();
-    if (status != null) {
-      if (status.canUpdate) {
-        newVersion.showUpdateDialog(
-          context: context,
-          versionStatus: status,
-          dialogTitle: '更新',
-          allowDismissal: false,
-          // dismissButtonText: '退出',
-          dialogText: '請更新foodone app至最高版本',
-          updateButtonText: '更新',
-          // dismissAction: () {
-          //   SystemNavigator.pop();
-          // }
-        );
-      } else {
+    // final status = await newVersion.getVersionStatus();
+    // if (status != null) {
+    //   if (status.canUpdate) {
+    //     newVersion.showUpdateDialog(
+    //       context: context,
+    //       versionStatus: status,
+    //       dialogTitle: '更新',
+    //       allowDismissal: false,
+    //       // dismissButtonText: '退出',
+    //       dialogText: '請更新foodone app至最高版本',
+    //       updateButtonText: '更新',
+    //       // dismissAction: () {
+    //       //   SystemNavigator.pop();
+    //       // }
+    //     );
+    //   } else {
         //沒有Goolglekey就去login
         if (UserSimplePreferences.GetGoogleKey() == null) {
           print('object');
@@ -196,8 +196,8 @@ class _SplashScreenState extends State<SplashScreen> {
         } else if (UserSimplePreferences.getRefreshToken() != null) {
           TokenApiInspect();
         }
-      }
-    }
+    //   }
+    // }
   }
 
   @override
