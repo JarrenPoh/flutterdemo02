@@ -31,7 +31,7 @@ class _BookMarkPageState extends State<BookMarkPage> {
       Offset position = box.localToGlobal(Offset.zero);
 
       if (scrollcont.offset >= position.dy) {
-        DefaultTabController.of(tabContext!)!
+        DefaultTabController.of(tabContext!)
             .animateTo(i, duration: const Duration(milliseconds: 100));
       }
     }
