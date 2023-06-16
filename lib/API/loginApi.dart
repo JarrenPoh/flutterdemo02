@@ -4,16 +4,14 @@ import 'dart:convert';
 import 'dart:async';
 
 class loginApi {
-  loginApi({required this.token});
-  String token;
-  static Future<http.Response?> getUsers(key) async {
+  static Future<http.Response?> getGoogleUsers(key) async {
     var response = await http.post(
-        Uri.parse(
-            "https://www.foodone.tw/member/google/mlogin"),
-        headers: {
-          "google_token": key,
-          "Content-Type": "application/x-www-form-urlencoded"
-        });
+      Uri.parse("https://www.foodone.tw/member/google/mlogin"),
+      headers: {
+        "google_token": key,
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+    );
     print("this is statuscode in loginApi ${response.statusCode}");
     print("this is responseBody in loginApi ${response.body}");
 
@@ -23,6 +21,23 @@ class loginApi {
       return response;
     } else {
       return null;
+    }
+  }
+
+  static Future<http.Response?> getAppleUsers(email, password) async {
+    var response = await http.post(
+      Uri.parse("https://www.foodone.tw/member/login"),
+      body: {
+        "email": email,
+        "password": password,
+      },
+    );
+    print("this is statuscode in loginApi ${response.statusCode}");
+    print("this is responseBody in loginApi ${response.body}");
+    if (response.statusCode == 200) {
+      return response;
+    } else {
+      return response;
     }
   }
 }
