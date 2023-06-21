@@ -165,7 +165,7 @@ class _SplashScreenState extends State<SplashScreen> {
             UserSimplePreferences.getRefreshToken() == null) {
           print('object1');
           var users =
-              await loginApi.getUsers(UserSimplePreferences.GetGoogleKey());
+              await loginApi.getGoogleUsers(UserSimplePreferences.GetGoogleKey());
           ////googleKey過期才會申請失敗，else if 轉到login
           if (users != null) {
             print('object12');

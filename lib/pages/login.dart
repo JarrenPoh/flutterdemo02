@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io' show Platform;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutterdemo02/pages/SplashScreen.dart';
+import 'package:http/http.dart';
 import 'package:new_version_plus/new_version_plus.dart';
 import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,7 +42,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   void initState() {
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -161,7 +161,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         await UserSimplePreferences.setGoogleKey(key!);
         print('object1');
         var users =
-            await loginApi.getUsers(UserSimplePreferences.GetGoogleKey());
+            await loginApi.getGoogleUsers(UserSimplePreferences.GetGoogleKey());
         print('object2');
         await UserSimplePreferences.setRefreshToken(
             users!.headers['refresh_token']!);
@@ -195,11 +195,26 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   Future<void> AppleSignIn() async {
     try {
       final authService = ref.watch(authappleService);
-      final user = await authService
-          .signInWithApple(scopes: [Scope.email, Scope.fullName]);
+      final user = await authService.signInWithApple(
+        scopes: [
+          Scope.email,
+          Scope.fullName,
+        ],
+      );
       print('uid: ${user.uid}');
       print('name: ${user.displayName}');
-      print('uid: ${user.email}');
+      print('email: ${user.email}');
+      print('user: ${user}');
+
+      //去登陸
+      Response? login = await loginApi.getAppleUsers(
+        user.email,
+        user.uid,
+      );
+      print('login api statusCode: ${login?.statusCode}');
+      print('login api body: ${login?.body}');
+      //沒有資料去註冊（填使用者姓名）＋登陸 //uid: UYBGD1GK2ogroPPEDq0ADOFNyuF3 檢查有沒有變
+      //
     } catch (e) {
       // TODO: Show alert here
       print(e);
