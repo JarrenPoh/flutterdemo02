@@ -117,7 +117,7 @@ class numberCardSecondState extends State<numberCardSecond> {
   bool refused = false;
 
   void refreshInformation() {
-    print('data2 is null ${data2 == null}');
+    print('data2 is null ${data2 != null}');
     if (data2 != null) {
       print(' pass here 01');
       if (accept == true && finish == null) {
@@ -135,11 +135,11 @@ class numberCardSecondState extends State<numberCardSecond> {
       () {
         print('setState finished in numCard2.dart');
         print('_curStep is $_curStep');
-        print('$finish');
+        print('finish is $finish');
         print('accept is $accept}');
-        print('$comments}');
-        print('complete is$complete}');
-        print('refused is$refused}');
+        print('comments is $comments}');
+        print('complete is $complete}');
+        print('refused is $refused}');
       },
     );
   }
@@ -327,14 +327,15 @@ class numberCardSecondState extends State<numberCardSecond> {
           finalSecond =
               ((selectHour * 60 + selectMinute) - (hour * 60 + minute)) * 60;
           print('finalSecond ia $finalSecond');
+
+          print('OOOOOOOOOOOOOOOOOOOOMG');
+          await service.showScheduledNotification(
+            id: 0,
+            title: '時間快到囉',
+            body: '您預定的取餐時間"${reservation}"快到了，請留意餐點進度',
+            seconds: finalSecond,
+          );
         }
-        print('OOOOOOOOOOOOOOOOOOOOMG');
-        await service.showScheduledNotification(
-          id: 0,
-          title: '時間快到囉',
-          body: '您預定的取餐時間"${reservation}"快到了，請留意餐點進度',
-          seconds: finalSecond!,
-        );
       },
     );
   }
@@ -349,7 +350,7 @@ class numberCardSecondState extends State<numberCardSecond> {
     if (data2 != null) {
       order = jsonDecode(data2!.order!);
       for (var i = 0; i < order!.length; i++) {
-        int inin = order![i]['price']*order![i]['count'];
+        int inin = order![i]['price'] * order![i]['count'];
         totalprice += inin;
         print('totalprice1 is $totalprice');
       }

@@ -54,7 +54,7 @@ class _UserProfileState extends State<UserProfile> {
       await UserSimplePreferences.setToken(getToken.headers['token']!);
       ss = await deleteAccount(UserSimplePreferences.getToken(), name.text);
     }
-    print('ss is $ss');
+
     if (ss['status'] == '帳號已成功刪除') {
       errorText = ss['result'];
       errorStatus = ss['status'];

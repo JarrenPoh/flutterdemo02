@@ -104,6 +104,7 @@ class _SplashScreenState extends State<SplashScreen> {
         }
         if (obj['result']['phone'] != null) {
           await UserSimplePreferences.setUserPhone(obj['result']['phone']);
+          print('你好你好');
         }
         if (obj['result']['phoneVerify'] != null) {
           await UserSimplePreferences.setPhoneVerify(

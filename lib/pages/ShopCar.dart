@@ -89,7 +89,6 @@ class _shopCarState extends State<shopCar> {
   bool selectTime = false;
   ////////////
   refresh() {
-    print('fre ${cartController.ifUpdateCar}');
     if (cartController.ifUpdateCar == true) {
       UserSimplePreferences.setFinalPrice(0);
       inspect().then(

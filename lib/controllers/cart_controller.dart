@@ -129,10 +129,7 @@ class CartController extends GetxController {
   ////////////
   ///////清空購物車////
   void deleteAll() {
-    for (var element in cartlist) {
-      cartlist.remove(element);
-    }
-    return null;
+    cartlist.removeWhere((element) => true);
   }
 
   ////////////
