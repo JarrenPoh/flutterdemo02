@@ -1,0 +1,89 @@
+Flutter crash report.
+Please report a bug at https://github.com/flutter/flutter/issues.
+
+## command
+
+flutter run --machine --start-paused -d d4aac0017f2b119517de94326003f8227cb22f0f --devtools-server-address http://127.0.0.1:9101/ --target lib/main.dart
+
+## exception
+
+FileSystemException: FileSystemException: Directory listing failed, path = '/Users/ov/Documents/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/project/flutterdemo02/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/configura' (OS Error: File name too long, errno = 63)
+
+```
+#0      _Directory._fillWithDirectoryListing (dart:io-patch/directory_patch.dart:42:24)
+#1      _Directory.listSync (dart:io/directory_impl.dart:243:5)
+#2      ForwardingDirectory.listSync (package:file/src/forwarding/forwarding_directory.dart:43:12)
+#3      ForwardingDirectory.listSync (package:file/src/forwarding/forwarding_directory.dart:43:12)
+#4      RunCommand.usageValues (package:flutter_tools/src/commands/run.dart:441:14)
+<asynchronous suspension>
+#5      FlutterCommand.verifyThenRunCommand (package:flutter_tools/src/runner/flutter_command.dart:1371:15)
+<asynchronous suspension>
+#6      FlutterCommand.run.<anonymous closure> (package:flutter_tools/src/runner/flutter_command.dart:1209:27)
+<asynchronous suspension>
+#7      AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:150:19)
+<asynchronous suspension>
+#8      CommandRunner.runCommand (package:args/command_runner.dart:209:13)
+<asynchronous suspension>
+#9      FlutterCommandRunner.runCommand.<anonymous closure> (package:flutter_tools/src/runner/flutter_command_runner.dart:281:9)
+<asynchronous suspension>
+#10     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:150:19)
+<asynchronous suspension>
+#11     FlutterCommandRunner.runCommand (package:flutter_tools/src/runner/flutter_command_runner.dart:229:5)
+<asynchronous suspension>
+#12     run.<anonymous closure>.<anonymous closure> (package:flutter_tools/runner.dart:62:9)
+<asynchronous suspension>
+#13     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:150:19)
+<asynchronous suspension>
+#14     main (package:flutter_tools/executable.dart:91:3)
+<asynchronous suspension>
+```
+
+## flutter doctor
+
+```
+[✓] Flutter (Channel stable, 3.3.4, on macOS 13.2 22D49 darwin-x64, locale zh-Hant-TW)
+    • Flutter version 3.3.4 on channel stable at /Users/ov/flutter
+    • Upstream repository https://github.com/flutter/flutter.git
+    • Framework revision eb6d86ee27 (6 months ago), 2022-10-04 22:31:45 -0700
+    • Engine revision c08d7d5efc
+    • Dart version 2.18.2
+    • DevTools version 2.15.0
+
+[✓] Android toolchain - develop for Android devices (Android SDK version 33.0.0)
+    • Android SDK at /Users/ov/Library/Android/sdk
+    • Platform android-33, build-tools 33.0.0
+    • Java binary at: /Applications/Android Studio.app/Contents/jre/Contents/Home/bin/java
+    • Java version OpenJDK Runtime Environment (build 11.0.15+0-b2043.56-8887301)
+    • All Android licenses accepted.
+
+[✓] Xcode - develop for iOS and macOS (Xcode 14.2)
+    • Xcode at /Applications/Xcode.app/Contents/Developer
+    • Build 14C18
+    • CocoaPods version 1.11.3
+
+[✓] Chrome - develop for the web
+    • Chrome at /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
+
+[✓] Android Studio (version 2022.1)
+    • Android Studio at /Applications/Android Studio.app/Contents
+    • Flutter plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/9212-flutter
+    • Dart plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/6351-dart
+    • Java version OpenJDK Runtime Environment (build 11.0.15+0-b2043.56-8887301)
+
+[✓] VS Code (version 1.75.1)
+    • VS Code at /Applications/Visual Studio Code.app/Contents
+    • Flutter extension version 3.58.0
+
+[✓] Connected device (4 available)
+    • Jarren的iPhone (mobile)     • d4aac0017f2b119517de94326003f8227cb22f0f • ios            • iOS 15.6.1 19G82
+    • iPhone 14 Pro Max (mobile) • CE2CCD5C-6E59-4C6F-B611-DCD8B26C857F     • ios            • com.apple.CoreSimulator.SimRuntime.iOS-16-2 (simulator)
+    • macOS (desktop)            • macos                                    • darwin-x64     • macOS 13.2 22D49 darwin-x64
+    • Chrome (web)               • chrome                                   • web-javascript • Google Chrome 111.0.5563.64
+
+[✓] HTTP Host Availability
+    • All required HTTP hosts are available
+
+• No issues found!
+```

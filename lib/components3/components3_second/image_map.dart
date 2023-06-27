@@ -52,24 +52,49 @@ class imageItems extends StatelessWidget {
                 children: [
                   CachedNetworkImage(
                     imageUrl: image!,
-                    errorWidget: (context, url, error) => Container(
-                      width: Dimensions.screenWidth,
-                      height: Dimensions.screenHeigt / 4.85,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(
-                            Dimensions.radius15,
+                    errorWidget: (context, url, error) {
+                      print('error is $error');
+                      if (error) {
+                        print('error is $error');
+                        return Container(
+                          width: Dimensions.screenWidth,
+                          height: Dimensions.screenHeigt / 4.85,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(
+                                Dimensions.radius15,
+                              ),
+                            ),
+                            color: Colors.grey,
+                            image: const DecorationImage(
+                              image: AssetImage(
+                                'images/preImage.jpg',
+                              ),
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                        ),
-                        color: Colors.grey,
-                        image: const DecorationImage(
-                          image: AssetImage(
-                            'images/preImage.jpg',
+                        );
+                      } else {
+                        return Container(
+                          width: Dimensions.screenWidth,
+                          height: Dimensions.screenHeigt / 4.85,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(
+                                Dimensions.radius15,
+                              ),
+                            ),
+                            color: Colors.grey,
+                            image: const DecorationImage(
+                              image: AssetImage(
+                                'images/preImage.jpg',
+                              ),
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
+                        );
+                      }
+                    },
                     progressIndicatorBuilder: (context, url, progress) =>
                         Container(
                       width: Dimensions.screenWidth,
