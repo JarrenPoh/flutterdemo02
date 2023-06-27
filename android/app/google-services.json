@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "827645634937",
+    "project_id": "absolute-text-353909",
+    "storage_bucket": "absolute-text-353909.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:827645634937:android:80c437b04ffaa942d3a7a8",
+        "android_client_info": {
+          "package_name": "com.FORDON.flutterdemo02"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "827645634937-je0h9ii2gvknm8cc7lrc5q7qghsdr40q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.FORDON.flutterdemo02",
+            "certificate_hash": "a97a516dc1bdbfc5c0b31059aeafd03412eff903"
+          }
+        },
+        {
+          "client_id": "827645634937-ntqg18hiotkirl4vt7jp9ric6qpmhhje.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.FORDON.flutterdemo02",
+            "certificate_hash": "90264bed3da2209e71354c13cd2cc816d352a9e8"
+          }
+        },
+        {
+          "client_id": "827645634937-qeane5flu00fr07amcqnn21ndebsphto.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdDky0dxSPZU_iJAa0z1DY9F-aQ40JOPM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "827645634937-qeane5flu00fr07amcqnn21ndebsphto.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "827645634937-g6q4ufgdtn0d471eg47qb92ifi8o6fc3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.FORDON.flutterdemo02"
+              }
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-6475805063262025~1102750294"
+    }
+  ],
+  "configuration_version": "1"
+}

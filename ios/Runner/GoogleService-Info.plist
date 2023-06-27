@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>827645634937-g6q4ufgdtn0d471eg47qb92ifi8o6fc3.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.827645634937-g6q4ufgdtn0d471eg47qb92ifi8o6fc3</string>
+	<key>ANDROID_CLIENT_ID</key>
+<<<<<<< HEAD
+	<string>827645634937-ntqg18hiotkirl4vt7jp9ric6qpmhhje.apps.googleusercontent.com</string>
+=======
+	<string>827645634937-je0h9ii2gvknm8cc7lrc5q7qghsdr40q.apps.googleusercontent.com</string>
+>>>>>>> 83bc408bef9a8763a9c1a09c7e6fc46c9ae8b4bb
+	<key>API_KEY</key>
+	<string>AIzaSyD5ifnI9b_0hZfoqGPvGUikJdtD8YdIlmE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>827645634937</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.FORDON.flutterdemo02</string>
+	<key>PROJECT_ID</key>
+	<string>absolute-text-353909</string>
+	<key>STORAGE_BUCKET</key>
+	<string>absolute-text-353909.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:827645634937:ios:72d2360cf093b71cd3a7a8</string>
+</dict>
+</plist>
