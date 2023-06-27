@@ -8,6 +8,7 @@ import 'package:flutterdemo02/provider/custom_page_route.dart';
 import 'package:get/get.dart';
 
 import '../controllers/cart_controller.dart';
+import '../provider/googleMapKey.dart';
 
 class mainList extends StatefulWidget {
   mainList({
@@ -35,8 +36,9 @@ class _mainListState extends State<mainList> {
     return SingleChildScrollView(
       child: Column(
         children: List.generate(data.length, (index) {
-          imageUrl =
-              'https://foodone-s3.s3.amazonaws.com/store/main/${data[index].id!}?${data[index].last_update}';
+          imageUrl = data[index].thumbnail == null
+              ? foodoneBackImg
+              : 'https://foodone-s3.s3.amazonaws.com/store/main/${data[index].id!}?${data[index].last_update}';
           bool businessTime;
           int? businessStartTime;
           int selectedHour = TimeOfDay.now().hour;

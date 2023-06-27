@@ -428,6 +428,7 @@ class FormPage4State extends State<FormPage4>
                                                   data3,
                                                   businessTime!,
                                                   data3.last_update!,
+                                                  data3.thumbnail!,
                                                 );
                                               }
                                             },

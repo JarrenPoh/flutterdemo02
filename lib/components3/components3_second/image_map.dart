@@ -300,7 +300,6 @@ class imageItems extends StatelessWidget {
                       ),
                     );
                   });
-                  print('currentLocation');
                 },
                 child: Container(
                   width: 30,

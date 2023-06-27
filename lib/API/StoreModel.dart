@@ -23,6 +23,7 @@ class Result {
   String? place;
   String? id;
   String? image;
+  String? thumbnail;
   String? discount;
   List? businessTime;
   String? timeEstimate;
@@ -39,6 +40,7 @@ class Result {
     this.id,
     this.discount,
     this.image,
+    this.thumbnail,
     this.businessTime,
     this.timeEstimate,
     this.describe,
@@ -54,6 +56,7 @@ class Result {
     place = json['place'];
     id = json['id'];
     image = json['image'];
+    thumbnail = json['thumbnail'];
     discount = json['discount'];
     businessTime = json['businessTime'];
     product = json['product'];

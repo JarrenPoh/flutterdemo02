@@ -10,6 +10,7 @@ import 'package:flutterdemo02/models/TabsText.dart';
 import 'package:flutterdemo02/pages/Form5.dart';
 import 'package:flutterdemo02/pages/Tabs.dart';
 import 'package:flutterdemo02/provider/custom_page_route.dart';
+import 'package:flutterdemo02/provider/googleMapKey.dart';
 
 import '../models/MiddleText.dart';
 
@@ -17,11 +18,13 @@ class RappiProductItem extends StatefulWidget {
   Result3 data3;
   bool businessTime;
   String last_update;
+  String? thumbnail;
   RappiProductItem(
     this.product,
     this.data3,
     this.businessTime,
     this.last_update,
+    this.thumbnail,
   );
   final Result product;
 
@@ -39,8 +42,9 @@ class _RappiProductItemState extends State<RappiProductItem> {
 
   @override
   Widget build(BuildContext context) {
-    imageUrl =
-        'https://foodone-s3.s3.amazonaws.com/store/product/${widget.product.id}?${widget.last_update}';
+    imageUrl = widget.thumbnail == null
+        ? 'https://foodone-s3.s3.amazonaws.com/store/product/${widget.product.id}?${widget.last_update}'
+        : foodoneBackImg;
 
     if (widget.product.options != null) {
       options = jsonDecode(widget.product.options!);
