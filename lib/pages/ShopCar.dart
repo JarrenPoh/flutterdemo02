@@ -347,12 +347,14 @@ class _shopCarState extends State<shopCar> {
                                     fontFamily: 'NotoSansMedium',
                                     maxLines: 10,
                                   ),
-                                  TabText(
-                                    color: kTextLightColor,
-                                    text: ' 選擇: $optionsString',
-                                    fontFamily: 'NotoSansMedium',
-                                    maxLines: 300000,
-                                  ),
+                                  options == []
+                                      ? TabText(
+                                          color: kTextLightColor,
+                                          text: ' 選擇: $optionsString',
+                                          fontFamily: 'NotoSansMedium',
+                                          maxLines: 300000,
+                                        )
+                                      : Container(),
                                   TabText(
                                     color: kTextLightColor,
                                     text: order[index]['note'] == '無備註'

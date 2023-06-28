@@ -280,7 +280,6 @@ class numberCardSecondState extends State<numberCardSecond> {
     // globals.globalToNumCard2 = GlobalKey<numberCardSecondState>();
 
     OneSignal.shared.setNotificationOpenedHandler((openedResult) async {
-      print('openedResult.action!.type; is ${openedResult.action!.type}');
 
       await globals.appNavigator?.currentState?.push(
         MaterialPageRoute(
@@ -296,6 +295,7 @@ class numberCardSecondState extends State<numberCardSecond> {
 
       await globals.globalToNumCard?.currentState?.inspect();
       print('start numCard inspect2 is successful');
+
     });
     OneSignal.shared.setOnWillDisplayInAppMessageHandler((message) {
       message.messageId;

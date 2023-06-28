@@ -61,7 +61,7 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
     globals.globalToNumCard2 = GlobalKey<numberCardSecondState>();
     globals.globalToNumCard = GlobalKey<numberCardState>();
     OneSignal.shared.setNotificationOpenedHandler((openedResult) async {
-      print('openedResult.action!.type; is ${openedResult.action!.type}');
+      print('走到這01');
 
       await globals.appNavigator?.currentState?.push(
         MaterialPageRoute(
@@ -70,13 +70,15 @@ class FormPage3State extends State<FormPage3> with TickerProviderStateMixin {
           ),
         ),
       );
-      print('navigator to orderCard2 is successful');
+      print('走到這02');
 
       await globals.globalToNumCard2?.currentState?.inspect2();
-      print('start numCard2 inspect2 is successful');
+      print('走到這03');
 
       await globals.globalToNumCard?.currentState?.inspect();
-      print('start numCard inspect2 is successful');
+      print('走到這04');
+
+      
     });
 
     OneSignal.shared.setNotificationWillShowInForegroundHandler(
