@@ -56,14 +56,14 @@ class _SplashScreenState extends State<SplashScreen> {
     if (getToken.statusCode == 200) {
       await UserSimplePreferences.setToken(getToken.headers['token']!);
       ////FIrebase/////
-      await FirebaseAnalytics.instance.logEvent(
-        name: 'login_success_detail',
-        parameters: {
-          'name': UserSimplePreferences.getUserName(),
-          'gmail': UserSimplePreferences.getUserEmail(),
-          'phone': UserSimplePreferences.getUserPhone(),
-        },
-      );
+      // await FirebaseAnalytics.instance.logEvent(
+      //   name: 'login_success_detail',
+      //   parameters: {
+      //     'name': UserSimplePreferences.getUserName(),
+      //     'gmail': UserSimplePreferences.getUserEmail(),
+      //     'phone': UserSimplePreferences.getUserPhone(),
+      //   },
+      // );
       ////////////////
 
       var appid;

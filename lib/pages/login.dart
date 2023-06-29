@@ -160,7 +160,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     setState(() {
       isLoading = true;
     });
-    final user = await GoogleSignInApi.login();
     GoogleSignIn().signIn().then((result) {
       result!.authentication.then((googleKey) async {
         print('googleKey.accessToken is ${googleKey.accessToken}');
