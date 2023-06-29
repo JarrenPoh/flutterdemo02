@@ -55,7 +55,6 @@ class _MapSplashState extends State<MapSplash> {
     super.initState();
     init().then((value) {
       if (value != null) {
-        print('object is ${arguments['initialpage']}');
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

@@ -242,18 +242,27 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           user.email,
           user.uid,
         );
-        setState(() {
-          isLoading = false;
-        });
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SplashScreen(),
-          ),
-        );
       }
-      //沒有資料去註冊（填使用者姓名）＋登陸 //uid: UYBGD1GK2ogroPPEDq0ADOFNyuF3 檢查有沒有變
-      //
+
+      //設定資料
+      await UserSimplePreferences.setRefreshToken(
+          login!.headers['refresh_token']!);
+      print('object3');
+      Map list = jsonDecode(login.body);
+      await UserSimplePreferences.setUserInformation(
+        list['result']['email'],
+        list['result']['name'],
+        list['result']['picture'] ?? '',
+      );
+      setState(() {
+        isLoading = false;
+      });
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SplashScreen(),
+        ),
+      );
     } catch (e) {
       // TODO: Show alert here
       print(e);

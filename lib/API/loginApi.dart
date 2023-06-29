@@ -32,8 +32,9 @@ class loginApi {
         "password": password,
       },
     );
-    print("this is statuscode in loginApi ${response.statusCode}");
-    print("this is responseBody in loginApi ${response.body}");
+    print("getAppleUsers statuscode in loginApi ${response.statusCode}");
+    print("getAppleUsers responseBody in loginApi ${response.body}");
+    print("getAppleUsers headers in loginApi ${response.headers}");
     if (response.statusCode == 200) {
       return response;
     } else {

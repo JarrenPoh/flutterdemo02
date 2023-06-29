@@ -11,6 +11,8 @@ import 'package:flutterdemo02/pages/login.dart';
 import 'package:flutterdemo02/provider/Shared_Preference.dart';
 import 'package:flutterdemo02/provider/custom_page_route.dart';
 
+import '../provider/googleMapKey.dart';
+
 class NavigationDrawer extends StatelessWidget {
   NavigationDrawer({
     Key? key,
@@ -37,7 +39,9 @@ class NavigationDrawer extends StatelessWidget {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         image: NetworkImage(
-                            '${UserSimplePreferences.getUserPicture()}'),
+                            UserSimplePreferences.getUserPicture() == ''
+                                ? foodoneBackImg
+                                : '${UserSimplePreferences.getUserPicture()}'),
                       ),
                     ),
                   ),
@@ -70,7 +74,7 @@ class NavigationDrawer extends StatelessWidget {
                 Navigator.push(
                   context,
                   CustomPageRoute(
-                    child:  prefix.UserProfile(),
+                    child: prefix.UserProfile(),
                   ),
                 );
               },
@@ -87,7 +91,7 @@ class NavigationDrawer extends StatelessWidget {
                 Navigator.push(
                   context,
                   CustomPageRoute(
-                    child:  Email(),
+                    child: Email(),
                   ),
                 );
               },
@@ -103,7 +107,7 @@ class NavigationDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                 CustomPageRoute(
+                  CustomPageRoute(
                     child: Privacy(),
                   ),
                 );
