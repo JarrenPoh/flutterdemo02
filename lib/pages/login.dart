@@ -37,10 +37,17 @@ class LoginPage extends ConsumerStatefulWidget {
 class _LoginPageState extends ConsumerState<LoginPage> {
   bool isLoading = false;
   final _firebaseAuth = FirebaseAuth.instance;
+  TextEditingController _nameController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
   }
 
   @override
@@ -201,24 +208,82 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           Scope.fullName,
         ],
       );
-      print('uid: ${user.uid}');
-      print('name: ${user.displayName}');
-      print('email: ${user.email}');
-      print('user: ${user}');
 
+      setState(() {
+        isLoading = true;
+      });
       //去登陸
       Response? login = await loginApi.getAppleUsers(
         user.email,
         user.uid,
       );
-      print('login api statusCode: ${login?.statusCode}');
-      print('login api body: ${login?.body}');
+      setState(() {
+        isLoading = false;
+      });
+
+      //登陸發生錯誤
+      if (login?.statusCode == 400) {
+        String registerName = '';
+        if (user.displayName == null) {
+          //讓使用者輸入姓名
+          registerName = (await showDeleteDialod())!;
+        } else {
+          registerName = user.displayName!;
+        }
+
+        setState(() {
+          isLoading = true;
+        });
+        Response? register = await loginApi.registerAppleUsers(
+          registerName,
+          user.email,
+          user.uid,
+        );
+        login = await loginApi.getAppleUsers(
+          user.email,
+          user.uid,
+        );
+        setState(() {
+          isLoading = false;
+        });
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SplashScreen(),
+          ),
+        );
+      }
       //沒有資料去註冊（填使用者姓名）＋登陸 //uid: UYBGD1GK2ogroPPEDq0ADOFNyuF3 檢查有沒有變
       //
     } catch (e) {
       // TODO: Show alert here
       print(e);
     }
+  }
+
+  Future<String?> showDeleteDialod() {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('第一次登入，幫自己取個名字吧'),
+          content: TextField(
+            controller: _nameController,
+            decoration: InputDecoration(hintText: 'Name'),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                String name = _nameController.text;
+                // 在这里处理用户输入的姓名
+                Navigator.of(context).pop(name); // 关闭对话框并返回用户输入的姓名
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 

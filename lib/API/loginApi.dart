@@ -40,4 +40,22 @@ class loginApi {
       return response;
     }
   }
+
+  static Future<http.Response?> registerAppleUsers(name, email, password) async {
+    var response = await http.post(
+      Uri.parse("https://www.foodone.tw/member/register"),
+      body: {
+        "name": name,
+        "email": email,
+        "password": password,
+      },
+    );
+    print("register statuscode in loginApi ${response.statusCode}");
+    print("register responseBody in loginApi ${response.body}");
+    if (response.statusCode == 200) {
+      return response;
+    } else {
+      return response;
+    }
+  }
 }
