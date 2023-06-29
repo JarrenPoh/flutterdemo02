@@ -25,7 +25,7 @@
   </intent>
 </queries>
    <application
-        android:label="foodone - 福團團"
+        android:label="foodone福團團"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

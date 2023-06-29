@@ -30,7 +30,7 @@ class NavigationDrawer extends StatelessWidget {
                       color: Colors.white,
                       text: '${UserSimplePreferences.getUserName()}'),
                   accountEmail: TabText(
-                      color: Colors.white,
+                      color: Color(0xFFFFFFFF),
                       text: '${UserSimplePreferences.getUserEmail()}'),
                   currentAccountPicture: Container(
                     decoration: BoxDecoration(

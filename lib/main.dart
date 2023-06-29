@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors, duplicate_ignore, file_names
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutterdemo02/API/getTokenApi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
