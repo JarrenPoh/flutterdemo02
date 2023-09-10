@@ -251,6 +251,7 @@ class FormPage4State extends State<FormPage4>
                                         duration:
                                             const Duration(milliseconds: 1),
                                         child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             MiddleText(
                                               color: kBodyTextColor,
